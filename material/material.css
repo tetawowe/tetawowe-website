@@ -1,0 +1,192 @@
+body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0px;
+      background: #fff;
+      text-align: left;
+      color: #333;
+      line-height: 1.6;
+    }
+
+#material-list {
+  margin-top: 50px; /* ✅ 改成井号版本就能生效 */
+}
+
+.section {
+  margin-bottom: 25px; /* 每个字母组之间留出间隔 */
+}
+
+.section-title {
+  margin-left: 365px;
+  display: inline-block;              /* 只让标题长度包裹文字 */
+  font-size: 20px;
+  font-weight: bold;
+  border-bottom: 2px solid #333;      /* 下划线 */
+  margin-bottom: 5px;
+  letter-spacing: 1px;
+  color: #464646;
+  line-height: 1.2; /* ✅ 让文字高度紧贴下划线 */
+}
+
+.material-item {
+  display: block;      /* 只包住文字，不让整行都可点 */
+  width: 400px;               /* 固定点击宽度 */
+  margin-left: 365px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.material-item:hover {
+  color: #000000;
+  text-decoration: underline;
+}
+
+.material-item.active {
+  border-bottom: 1px solid #ccc;
+  transition: border-color 0.2s ease;
+  line-height: 1.2;
+}
+
+.search-container {
+  position: fixed;      /* ✅ 改成 fixed，让它固定在视口 */
+  top: 90px;            /* 距离页面上方的距离，可根据 header 高度微调 */
+  right: 360px;         /* 与页面右边对齐位置保持一致 */
+  background: #fff;     /* 避免文字重叠在内容上 */
+  z-index: 100;         /* 保证在所有内容之上 */
+  padding-bottom: 8px;  /* 留点底部空间，让阴影或建议框不会贴边 */
+}
+
+#search-box {
+  padding: 6px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 220px;
+}
+
+#suggestion-box {
+  position: absolute;
+  top: 36px;                /* 紧贴输入框下方 */
+  right: 0;
+  width: 220px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  display: none;            /* 默认隐藏 */
+  z-index: 10;
+}
+
+.suggestion-item {
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}
+
+
+/* 搜索框激活样式 */
+#search-box.active {
+  border: 1px solid #333;
+  box-shadow: 0 0 0 1px #333;
+}
+
+.suggestion-item.highlighted {
+  background-color: #e0e0e0;
+}
+
+/* --- ✅ 右侧 Material Detail 区域 --- */
+.material-inline-detail {
+  position: relative;        /* 参与文档流 */
+  margin-left: 365px;        /* 与列表对齐 */
+  width: 400px;              /* 和列表同宽 */
+}
+
+.material-inline-detail h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.material-inline-detail .project-block {
+  margin-bottom: 45px;
+}
+
+.material-inline-detail .project-info p {
+  font-size: 13px;
+  color: #555;
+  margin: 2px 0;
+}
+
+.material-inline-detail .project-info h4 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 15px;
+  margin-bottom: 6px; /* 标题与下面 Year 等信息的距离 */
+  color: #333;
+}
+
+.material-inline-detail .project-note {
+  font-style: italic;
+  color: #666;
+  font-size: 12px;
+  margin-top: 6px;
+
+    /* ✅ 新增以下三行 */
+  width: 800px;          /* 放宽宽度 */
+  display: block;        /* 确保能单独换行显示 */
+  margin-left: 0;        /* 保持与上方文字左对齐 */
+}
+
+.material-inline-detail::after {
+  content: "";
+  display: block;
+  width: 400px;
+  height: 1px;
+  background-color: #ccc; /* 分隔线颜色，可改为 #aaa 或 #ddd */
+  margin: 40px auto 0 auto; /* 上方留 40px 间距，水平居中 */
+}
+
+/* --- ✅ Gallery 样式 --- */
+.gallery-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: -10px;
+}
+
+.gallery-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.gallery-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.gallery-nav:hover {
+  background: rgba(255, 255, 255, 1);
+}
+
+.gallery-nav.prev {
+  left: 6px;
+}
+
+.gallery-nav.next {
+  right: 6px;
+}
+
+

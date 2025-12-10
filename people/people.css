@@ -1,0 +1,138 @@
+/* --- 全局 --- */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0px;
+  background: #fff;
+  text-align: center;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* --- 上方主要文字区 --- */
+.text {
+  padding: 20px 358px 75px 362px;
+  font-size: 15px;
+  color: #333;
+  text-align: left;
+}
+
+/* --- 首张图片 --- */
+.first img {
+  display: block;
+  max-width: 965px;
+  width: 100%;
+  height: 95%;
+  margin: 0 auto;
+}
+
+/* --- Gallery 网格 4 Columns --- */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 230px);
+  gap: 15px;
+  row-gap: 35px;
+  justify-content: start;
+  padding: 0px 358px 50px 360px;
+  margin-top: -15px;
+}
+
+.top-150 {
+  margin-top: 150px;
+}
+
+.top-75 {
+  margin-top: 75px;
+}
+
+.item img {
+  width: 230px;
+  height: 230px;
+  object-fit: cover;
+  display: block;
+}
+
+.name {
+  margin: 12px 0;
+  text-align: left;
+  font-size: 16px;
+  line-height: 0.75;
+}
+
+.desc {
+  font-size: 10px;
+  line-height: 0.4;
+  text-align: left;
+}
+
+/* --- People Section 小标题 --- */
+.texttitle1 {
+  padding: 20px 360px 0px 358px;
+  font-size: 18px;
+  margin-bottom: -5px;
+  color: #333;
+  text-align: left;
+}
+
+.texttitle2 {
+  padding: 20px 360px 0px 358px;
+  font-size: 18px;
+  margin-bottom: -5px;
+  color: #333;
+  text-align: right;
+}
+
+/* --- Former Colleague / Former Internship --- */
+
+/* 外层容器对齐整体页面 */
+.friends-colleague,
+.friends-internship {
+  max-width: 975px;
+  margin: 0px auto 50px auto;
+  padding: 0 357px 0 355px;
+}
+
+/* 每个组别容器 */
+.friends-group {
+  line-height: 1.4;       /* 行距更紧凑 */
+  margin: 10px 0;         /* 上下间距更小 */
+}
+
+/* 左组：靠左，限定宽度 550px */
+.friends-group.left {
+  width: 760px;
+  text-align: left;
+  margin-right: auto;     /* 靠左 */
+}
+
+/* 右组：靠右，限定宽度 550px */
+.friends-group.right {
+  width: 600px;
+  text-align: right;
+  margin-left: auto;      /* 靠右 */
+}
+
+/* 单个成员 */
+.member {
+  display: inline-block;
+  margin: 1 3px;
+  line-height: 1.4;  /* 可以再微调行高 */
+}
+
+.member-name {
+  font-size: 14px;
+  display: inline;   /* 保持在一行 */
+  margin: 0;         /* 去掉上下默认 margin */
+  color: #4c4c4c;
+}
+
+.member-role {
+  font-size: 10px;
+  color: #666;
+}
+
+/* 分隔点 */
+.dot {
+  margin: 0 6px;
+  color: #999;
+}

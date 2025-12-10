@@ -1,0 +1,7 @@
+title: Red Brick House
+project-type: Private Residence
+team: xxxxx
+location: xxxxx
+project-year: xxxxx
+
+description: xxxx

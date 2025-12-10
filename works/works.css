@@ -1,0 +1,99 @@
+/* 基础重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Arial", sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+h1 {
+    font-weight: normal; /* 不加粗 */
+    margin-bottom: 20px; /* 可选，增加下方间距 */
+}
+
+.works-header {
+  display: flex;
+  justify-content: space-between; /* 左右两端对齐 */
+  align-items: center;            /* 垂直居中 */
+  margin: 40px 360px 20px 365px;  /* 保留原来的上下和左右间距 */
+}
+
+.works-title {
+  font-weight: normal;
+  font-size: 18px;
+  color: #000000;
+}
+
+.sort-text {
+  font-size: 16px;
+  color:#454545;
+}
+
+.sort-text span {
+  cursor: pointer;
+}
+
+.sort-text span.active {
+  text-decoration: underline;
+}
+
+
+.type-section h2 {
+  font-size: 17px;
+  font-weight: normal; /* 不加粗 */
+  text-decoration: underline;
+  margin-bottom: 2px;
+  margin-left: 365px;
+}
+
+.type-section {
+    margin-bottom: 35px;
+}
+
+.year-section {
+  margin-bottom: 35px;
+}
+
+.year-section h2 {
+  font-size: 17px;
+  font-weight: normal; /* 不加粗 */
+  text-decoration: underline;
+  margin-bottom: 2px;
+  margin-left: 365px;
+}
+
+.project-item {
+    font-size: 16px;
+    display: inline-block;  /* 只包裹文字宽度 */
+    min-width: 400px;        /* 固定触发宽度 (大约等于30个字符) */
+    margin-left: 365px;
+    margin-top: 0px;        /* 控制上下间距 */
+    margin-bottom: 0px;        /* 控制上下间距 */
+    cursor: pointer;      
+    text-decoration: none;
+    color: #333;
+}
+
+
+.project-item:hover {
+    text-decoration: underline;
+}
+
+#preview-image {
+    position: fixed;          /* 固定在视口上 */
+    width: 300px;
+    height: 200px;
+    pointer-events: none;     /* 不阻挡鼠标操作 */
+    display: none;            /* 默认隐藏 */
+    border: 1px solid #ccc;
+    background-size: cover;
+    background-position: center;
+    z-index: 999;
+}
+
+

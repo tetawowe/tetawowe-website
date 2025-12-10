@@ -1,0 +1,7 @@
+title: Nimbus Office
+project-type: Office
+team: Tey Tat Sing, Jasmin Tan, Tan Jwo Chyi 
+location: KL Sentral
+project-year: 
+
+description: 

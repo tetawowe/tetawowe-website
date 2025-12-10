@@ -1,0 +1,7 @@
+title: Purple Cane @Ipoh
+project-type: Food & Beverage
+team: Tey Tat Sing, Wong Wei Ping
+location: Ipoh
+project-year: 2010
+
+description: xxxx

@@ -1,0 +1,7 @@
+title: Factory 19
+project-type: Development, Retail / Event Space, Placemaking
+team: Wong Wei Ping, Lim Zhuan Yang, Ken Wan
+location: Gasing
+project-year: 2025
+
+description: 

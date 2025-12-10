@@ -1,0 +1,41 @@
+/* contact.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.view img{
+  display: block;          /* 让它可以用 margin auto 居中 */
+  max-width: 965px;        /* 最大宽度限制 */
+  width: 100%;             /* 自适应缩放，保持比例 */
+  height: auto;            /* 保持比例 */
+  margin: 0 auto;          /* 居中 */
+}
+
+body {
+    font-family: "Arial", sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+.contact-section {
+    max-width: 600px;
+    margin: 20px 0 20px 365px; /* 左移 365px */
+}
+
+.contact-section .company {
+    font-size: 16px;
+}
+
+.contact-section .company strong {
+    font-weight: bold; /* 公司名称加粗 */
+}
+
+.contact-section .company span {
+    font-weight: normal; /* 注册号正常 */
+}

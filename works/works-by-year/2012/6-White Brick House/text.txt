@@ -1,0 +1,7 @@
+title: White Brick House
+project-type: Private Residence
+team: xxxxx
+location: xxxxx
+project-year: 2011-2012
+
+description: xxxx

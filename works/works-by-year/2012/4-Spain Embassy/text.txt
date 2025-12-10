@@ -1,0 +1,7 @@
+title: Spain Embassy
+project-type: Institution
+team: Tey Tat Sing, Wong Wei Ping
+location: xxxxx
+project-year: xxxxx
+
+description: The design approach taken in this particular building orients toward a more expressive use of raw materials and finishes; meticulously maintaining its professional outlook.
