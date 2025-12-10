@@ -1,0 +1,69 @@
+/* =======================
+   全局字体设置（可覆盖）
+======================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+header {
+  width: 100%;
+  height: 70px; /* 你可以根据需要改 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff; /* 背景色 */
+  border-bottom: 1px solid #e5e5e5;
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; /* 字体统一 */
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+
+/* ========== 左侧 Logo ========== */
+header .logo {
+  font-size: 22px;
+  font-weight: 600;
+  color: #111;
+  text-decoration: none;
+  margin-left: 365px;
+}
+
+/* ========== 导航 ========== */
+header nav {
+  display: flex;
+  gap: 30px;
+  margin-right: 360px;
+}
+
+header nav a {
+  font-size: 16px;
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+header nav a:hover {
+  color: #6d6d6d; /* hover 高亮 */
+}
+
+
+/* ========== 响应式 ========== */
+@media (max-width: 768px) {
+  header {
+    padding: 0 20px;
+  }
+
+  header nav {
+    gap: 20px;
+  }
+
+  header nav a {
+    font-size: 14px;
+  }
+
+  header .btn {
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+}
