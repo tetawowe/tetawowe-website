@@ -1,10 +1,8 @@
 const headerContainer = document.getElementById('header-placeholder');
 
-fetch('../header/header.html')
+fetch('../header/header.html', { cache: "no-cache" })
   .then(response => response.text())
   .then(data => {
     headerContainer.innerHTML = data;
   })
   .catch(err => console.error('Failed to load header.html:', err));
-
-
