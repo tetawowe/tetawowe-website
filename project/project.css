@@ -223,7 +223,7 @@ body {
   max-width: 965px;
   width: 100%;
   display: block;
-  margin: 0px auto; /* 居中并留点间隔 */
+  margin: -40px auto; /* 居中并留点间隔 */
 }
 
 .middle-description {
