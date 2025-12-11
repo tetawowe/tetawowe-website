@@ -2,7 +2,7 @@
 const worksContainer = document.getElementById('works-grid');
 const preview = document.getElementById('preview-image');
 
-fetch('thumbnails.json')
+fetch('/homepage/thumbnails.json')
   .then(res => res.json())
   .then(data => {
     data.forEach(project => {
@@ -170,3 +170,4 @@ document.querySelector(".gallery-slider .arrow.left").addEventListener("click", 
 
 // 初始化 caption
 updateCaption(currentIndex);
+
