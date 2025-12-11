@@ -1414,20 +1414,6 @@
       "layout": ""
     },
     {
-      "id": "14-honda-imx-kuek-motor-#2",
-      "title": "Honda IMX Kuek Motor #2",
-      "year": "2025",
-      "folder": "../works/works-by-year/2025/14-Honda IMX Kuek Motor #2",
-      "images": [],
-      "text": "text.txt",
-      "type": "Retail / Event Space, Showroom / Gallery",
-      "team": "Tey Tat Sing, Wong Jie Shan",
-      "location": "Nilai",
-      "description": "",
-      "middle-description": "",
-      "layout": ""
-    },
-    {
       "id": "15-slumberbug-house",
       "title": "Slumberbug House",
       "year": "",
@@ -1468,4 +1454,5 @@
       "layout": ""
     }
   ]
+
 }
