@@ -1,7 +1,0 @@
-title: Honda IMX Kuek Motor #2
-project-type: Retail / Event Space, Showroom / Gallery
-team: Tey Tat Sing, Wong Jie Shan
-location: Nilai
-project-year: 2025
-
-description: 
