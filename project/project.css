@@ -244,6 +244,7 @@ body {
   object-fit: cover;     /* 居中裁剪 */
   object-position: center;
   margin-bottom: 15px;
+  margin-top: 35px;
 }
 
 /* 縮略圖容器：最多兩行，每行 7 張 */
