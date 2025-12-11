@@ -1,189 +1,190 @@
 [
   {
     "title": "Plan B @TRX",
-    "image": "thumbnail/1-Plan B @TRX.jpg",
+    "image": "/homepage/thumbnail/1-Plan B @TRX.jpg",
     "order": 1,
     "id": "1-plan-b-@trx-park"
   },
   {
     "title": "Hsinchun Pavilion",
-    "image": "thumbnail/02-Hsinchun Pavilion.jpg",
+    "image": "/homepage/thumbnail/02-Hsinchun Pavilion.jpg",
     "order": 2,
     "id": "1-hsinchu-pavilion",
     "special": true,
-    "folder": "../works/works-by-year/2018/1-Hsinchu-Pavilion"
+    "folder": "/works/works-by-year/2018/1-Hsinchu-Pavilion"
   },
   {
     "title": "SunBather",
-    "image": "thumbnail/03-SunBather.jpg",
+    "image": "/homepage/thumbnail/03-SunBather.jpg",
     "order": 3,
     "id": "3-the-sunbather-@the-sphere"
   },
   {
     "title": "Microhouse",
-    "image": "thumbnail/04-Microhouse.jpg",
+    "image": "/homepage/thumbnail/04-Microhouse.jpg",
     "order": 4,
     "id": "2-microhousing",
     "special": true,
-    "folder": "../works/works-by-year/2018/2-Microhousing"
+    "folder": "/works/works-by-year/2018/2-Microhousing"
   },
   {
     "title": "Battle Arena",
-    "image": "thumbnail/05-Battle Arena.jpg",
+    "image": "/homepage/thumbnail/05-Battle Arena.jpg",
     "order": 5,
     "id": "4-battle-arena"
   },
   {
     "title": "Jungle Lodge",
-    "image": "thumbnail/06-Jungle Lodge.jpg",
+    "image": "/homepage/thumbnail/06-Jungle Lodge.jpg",
     "order": 6,
     "id": "1-jungle-lodge"
   },
   {
     "title": "Twin House",
-    "image": "thumbnail/07-Twin House.jpg",
+    "image": "/homepage/thumbnail/07-Twin House.jpg",
     "order": 7,
     "id": "1-twin-house"
   },
   {
     "title": "Greenhouse by Muir",
-    "image": "thumbnail/08-Greenhouse by Muir.jpg",
+    "image": "/homepage/thumbnail/08-Greenhouse by Muir.jpg",
     "order": 8,
     "id": "2-greenhouse-by-muir"
   },
   {
     "title": "Lexus Showroom",
-    "image": "thumbnail/09-Lexus Showroom.jpg",
+    "image": "/homepage/thumbnail/09-Lexus Showroom.jpg",
     "order": 9,
     "id": "2-lexus-showroom"
   },
   {
     "title": "Capsule Hotel",
-    "image": "thumbnail/10-Capsule Hotel.jpg",
+    "image": "/homepage/thumbnail/10-Capsule Hotel.jpg",
     "order": 10,
     "id": "2-capsule-transit-@klia2"
   },
   {
     "title": "Container Hotel Penang",
-    "image": "thumbnail/11-Container Hotel Penang.jpg",
+    "image": "/homepage/thumbnail/11-Container Hotel Penang.jpg",
     "order": 11,
     "id": "2-capsule-transit-@penang"
   },
   {
     "title": "Purple Can Tea Restaurant",
-    "image": "thumbnail/12-Purple Can Tea Restaurant.jpg",
+    "image": "/homepage/thumbnail/12-Purple Can Tea Restaurant.jpg",
     "order": 12,
     "id": "1-purple-cane-tea-restaurant"
   },
   {
     "title": "Poly-glass Showroom",
-    "image": "thumbnail/13-Poly-glass Showroom.jpg",
+    "image": "/homepage/thumbnail/13-Poly-glass Showroom.jpg",
     "order": 13,
     "id": "1-poly-glass-showroom"
   },
   {
     "title": "Garden House",
-    "image": "thumbnail/14-Garden House.jpg",
+    "image": "/homepage/thumbnail/14-Garden House.jpg",
     "order": 14,
     "id": "1-garden-house"
   },
   {
     "title": "Cognac Distillery",
-    "image": "thumbnail/15-Cognac Distillery.jpg",
+    "image": "/homepage/thumbnail/15-Cognac Distillery.jpg",
     "order": 15,
     "id": "1-cognac-distillery"
   },
   {
     "title": "L45",
-    "image": "thumbnail/16-L45.jpg",
+    "image": "/homepage/thumbnail/16-L45.jpg",
     "order": 16,
     "id": "1-l45"
   },
   {
     "title": "Duo Duplex",
-    "image": "thumbnail/17-Duo Duplex.jpg",
+    "image": "/homepage/thumbnail/17-Duo Duplex.jpg",
     "order": 17,
     "id": "1-duo-duplex",
     "special": true,
-    "folder": "../works/works-by-year/2013/1-Duo Duplex"
+    "folder": "/works/works-by-year/2013/1-Duo Duplex"
   },
   {
     "title": "White Brick House",
-    "image": "thumbnail/18-White Brick House.jpg",
+    "image": "/homepage/thumbnail/18-White Brick House.jpg",
     "order": 18,
     "id": "6-white-brick-house"
   },
   {
     "title": "Red Brick House",
-    "image": "thumbnail/19-Red Brick House.jpg",
+    "image": "/homepage/thumbnail/19-Red Brick House.jpg",
     "order": 19,
     "id": "3-red-brick-house"
   },
   {
     "title": "Ipoh Oldblock",
-    "image": "thumbnail/20-Ipoh Oldblock.jpg",
+    "image": "/homepage/thumbnail/20-Ipoh Oldblock.jpg",
     "order": 20,
     "id": "2-old-block"
   },
   {
     "title": "Jungle Lodge 2",
-    "image": "thumbnail/21-Jungle Lodge 2.jpg",
+    "image": "/homepage/thumbnail/21-Jungle Lodge 2.jpg",
     "order": 21,
     "id": "5-jungle-lodge-2"
   },
   {
     "title": "Concrete Box",
-    "image": "thumbnail/22-Concrete Box.jpg",
+    "image": "/homepage/thumbnail/22-Concrete Box.jpg",
     "order": 22,
     "id": "1-concrete-block"
   },
   {
     "title": "Spain Embassy",
-    "image": "thumbnail/23-Spain Embassy.jpg",
+    "image": "/homepage/thumbnail/23-Spain Embassy.jpg",
     "order": 23,
     "id": "4-spain-embassy"
   },
   {
     "title": "SS16 House",
-    "image": "thumbnail/24-SS16 House.jpg",
+    "image": "/homepage/thumbnail/24-SS16 House.jpg",
     "order": 24,
     "id": "5-ss16-house"
   },
   {
     "title": "Warm Armed",
-    "image": "thumbnail/25-Warm Armed.jpg",
+    "image": "/homepage/thumbnail/25-Warm Armed.jpg",
     "order": 25,
     "id": "2-warm-armed"
   },
   {
     "title": "Container House KL",
-    "image": "thumbnail/26-Container House KL.jpg",
+    "image": "/homepage/thumbnail/26-Container House KL.jpg",
     "order": 26,
     "id": "3-capsule-transit-@kuala-lumpur"
   },
   {
     "title": "I-Horison",
-    "image": "thumbnail/27-I-Horison.jpg",
+    "image": "/homepage/thumbnail/27-I-Horison.jpg",
     "order": 27,
     "id": "7-i-horison"
   },
   {
     "title": "Biblio Bistro",
-    "image": "thumbnail/28-Biblio Bistro.jpg",
+    "image": "/homepage/thumbnail/28-Biblio Bistro.jpg",
     "order": 28,
     "id": "1-biblio-bistro"
   },
   {
     "title": "Tea House",
-    "image": "thumbnail/29-Tea House.jpg",
+    "image": "/homepage/thumbnail/29-Tea House.jpg",
     "order": 29,
     "id": "3-purple-cane-@ipoh"
   },
   {
     "title": "T-Junction Office",
-    "image": "thumbnail/30-T-Junction Office.jpg",
+    "image": "/homepage/thumbnail/30-T-Junction Office.jpg",
     "order": 30,
     "id": "4-t-junction-office"
   }
 
 ]
+
