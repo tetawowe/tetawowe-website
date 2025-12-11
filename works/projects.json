@@ -1379,15 +1379,15 @@
       "images": [],
       "text": "text.txt",
       "type": "Placemaking",
-      "team": "Tey Tat Sing, Wong Wei Ping, Gan Jing Wen, Jasmin Tan",
+      "team": "Tey Tat Sing, Wong Wei Ping, Gan Jing Wen, Jasmine Tan",
       "location": "Kuala Lumpur",
       "description": "",
       "middle-description": "",
       "layout": ""
     },
     {
-      "id": "12-giggle-pj",
-      "title": "Giggle PJ",
+      "id": "12-giggles-pj",
+      "title": "Giggles PJ",
       "year": "2024-2025",
       "folder": "../works/works-by-year/2025/12-Giggle PJ",
       "images": [],
@@ -1456,3 +1456,4 @@
   ]
 
 }
+
