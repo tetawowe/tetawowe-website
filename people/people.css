@@ -126,13 +126,123 @@ body {
   color: #4c4c4c;
 }
 
-.member-role {
-  font-size: 10px;
-  color: #666;
-}
 
 /* 分隔点 */
 .dot {
   margin: 0 6px;
   color: #999;
+}
+
+
+/* ===========================
+   手机端样式
+=========================== */
+@media (max-width: 768px) {
+
+  /* 文字段落 */
+  .text {
+    padding: 20px 15px 20px 15px; /* 左右缩小 */
+    font-size: 14px;
+  }
+
+  /* 首张图片 */
+  .first img {
+    max-width: calc(100% - 30px); /* 减去左右各 15px */
+    width: 100%;
+    height: auto;
+    margin-left: 15px;
+    margin-right: 15px;
+    display: block;
+}
+
+
+  /* People 网格 */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* 自适应列数 */
+    gap: 15px;
+    row-gap: 25px;
+    justify-content: start;  /* 左对齐 */
+    padding: 0 15px 50px 15px; /* 左右缩小 */
+    margin-top: 10px;
+  }
+
+  .item img {
+    width: 100%;
+    height: auto;  /* 保持比例 */
+  }
+
+  .name {
+    font-size: 14px;
+    line-height: 0.5;
+    text-align: left;
+    margin: 8px 0;
+  }
+
+  .desc {
+    font-size: 10px;
+    line-height: 0.8;
+    text-align: left;
+  }
+
+  /* People Section 小标题 */
+  .texttitle1,
+  .texttitle2 {
+    padding: 15px;
+    font-size: 16px;
+    text-align: left;
+    margin-bottom: 0px;
+  }
+
+/* Former Colleague / Internship */
+.friends-colleague {
+  max-width: 100%;
+  margin: 0 15px 10px 15px; /* 下边距 40px 调整间隔 */
+  padding: 0;
+}
+
+.friends-internship {
+  max-width: 100%;
+  margin: 0 15px 50px 15px;
+  padding: 0;
+}
+
+/* 左右组容器 */
+.friends-group.left,
+.friends-group.right {
+  width: 85%;
+  text-align: left;
+  margin: 0;        /* 去掉负 margin-top */
+  margin-top: -15px;    /* 如果想微调可改成 5px~10px */
+}
+
+/* 每个成员 */
+.member {
+  display: inline-block;
+  margin: 2px 4px;
+  line-height: 1;
+}
+
+/* 人名字体大小 */
+.member-name {
+  font-size: 12px;  /* 可以根据需要改大或小 */
+  display: inline;
+  margin: 0;
+  color: #4c4c4c;
+  margin-left: -3px;
+}
+
+.dot {
+  margin: 0 5px;
+  color: #999;
+}
+
+.top-150 {
+  margin-top: 0px;
+}
+
+.top-75 {
+  margin-top: 0px;
+}
+
 }
