@@ -4,14 +4,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
 header {
+  position: relative; /* 新增 */
   width: 100%;
-  height: 70px; /* 你可以根据需要改 */
+  height: 70px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #ffffff; /* 背景色 */
+  background-color: #ffffff;
   border-bottom: 1px solid #e5e5e5;
-  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; /* 字体统一 */
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
   box-sizing: border-box;
   top: 0;
   left: 0;
@@ -47,23 +48,79 @@ header nav a:hover {
   color: #6d6d6d; /* hover 高亮 */
 }
 
+.hamburger {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+}
 
-/* ========== 响应式 ========== */
+#mobile-menu-lightbox {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 50px);
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(6px);
+  display: none; /* 默认隐藏 */
+  z-index: 9999;
+}
+
+.mobile-menu-content {
+  position: absolute;
+  top: 20px;      /* 让四个标题靠在 lightbox 顶部 */
+  left: 20px;     /* 跟手机端 logo 的对齐风格 */
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  text-align: left;
+}
+
+.mobile-menu-content a {
+  font-size: 18px;
+  text-decoration: none;
+  color: #111;
+}
+
+
+/* 手机端样式 */
 @media (max-width: 768px) {
   header {
-    padding: 0 20px;
+    padding: 10px 20px;
+    justify-content: space-between; /* 左右对齐 */
   }
 
+  header .logo {
+    margin-left: -30px;
+    text-align: left;
+  }
+
+    /* 缩小 logo */
+  header .logo img {
+    width: 200px; /* 或根据实际需要调整，比如原来是 200px */
+    height: auto; /* 保持比例 */
+  }
+
+  /* 显示汉堡按钮 */
+  .hamburger {
+    display: block;
+  }
+
+  /* 导航初始隐藏，点击汉堡展开 */
   header nav {
-    gap: 20px;
+    position: absolute;
+    top: 60px; /* 你的 header 高度，自己可调整 */
+    right: 0;
+    background: white;
+    display: none; /* 默认隐藏 */
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+    z-index: 999;
   }
 
-  header nav a {
-    font-size: 14px;
-  }
-
-  header .btn {
-    font-size: 13px;
-    padding: 6px 12px;
+  header nav.active {
+    display: flex;
   }
 }
