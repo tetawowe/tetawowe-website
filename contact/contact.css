@@ -39,3 +39,32 @@ html {
 .contact-section .company span {
     font-weight: normal; /* 注册号正常 */
 }
+
+/* ===========================
+   手机端样式
+=========================== */
+@media (max-width: 768px) {
+  
+  /* 首张图片左右增加 15px 间距 */
+  .view img {
+    margin-top: 15px;
+    margin-left: 15px;
+    margin-right: 15px;
+    width: calc(100% - 30px); /* 保证左右间距 */
+  }
+
+  /* 联系信息容器 */
+  .contact-section {
+    max-width: 100%;   /* 占满屏幕 */
+    margin: 20px 15px; /* 左右各 15px，内容靠左 */
+    padding: 0;
+  }
+
+  .contact-section .company {
+    font-size: 14px;  /* 手机端适当缩小字体 */
+  }
+
+  .contact-section p {
+    font-size: 14px;  /* 手机端正文字体 */
+  }
+}
