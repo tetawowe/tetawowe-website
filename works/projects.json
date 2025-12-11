@@ -1198,8 +1198,8 @@
   ],
   "2025": [
     {
-      "id": "1-rara-cafe",
-      "title": "RaRa Cafe",
+      "id": "1-rara-coffee",
+      "title": "RaRa Coffee",
       "year": "2025",
       "folder": "../works/works-by-year/2025/1-RaRa Cafe",
       "images": [
@@ -1456,4 +1456,5 @@
   ]
 
 }
+
 
