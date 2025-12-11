@@ -96,4 +96,55 @@ h1 {
     z-index: 999;
 }
 
+/* ===========================
+   手机端样式
+=========================== */
+@media (max-width: 768px) {
 
+    /* works-header 左右布局 */
+    .works-header {
+        display: flex;
+        justify-content: space-between; /* 左右分开 */
+        align-items: center;
+        margin: 20px 15px; /* 保留上下间距，左右小间距 */
+    }
+
+    .works-title {
+        font-size: 18px;
+        margin: 0; /* 左边对齐，不需要额外 margin */
+    }
+
+    .sort-text {
+        font-size: 16px;
+        margin: 0; /* 保持右边 */
+    }
+
+    #works {
+        margin: 0 15px; /* 左右小间距，与 header 对齐 */
+    }
+
+    .type-section h2,
+    .year-section h2 {
+        margin-left: 0px; /* 左对齐 */
+        margin-bottom: 5px;
+    }
+
+    .type-section,
+    .year-section {
+        margin-bottom: 50px;
+        line-height: 1.4;  /* 去掉 inline-block 之间的空隙 */
+    }
+
+.project-item {
+    display: inline-block;   /* 元素只包裹文字宽度 */
+    min-width: 100px;        /* 可以限制最小宽度 */
+    margin-left: 0;
+    font-size: 14px;
+}
+
+
+    #preview-image {
+        width: 200px;
+        height: 120px;
+    }
+}
