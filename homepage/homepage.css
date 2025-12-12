@@ -145,6 +145,7 @@ html, body {
     color: #000;
 }
 
+
 .disabled-slide {
     pointer-events: none;  /* 禁止点击 */
     cursor: default;       /* 鼠标显示默认箭头 */
@@ -224,4 +225,3 @@ html, body {
         font-size: 14px;
     }
 }
-
