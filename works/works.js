@@ -10,6 +10,8 @@ function renderByYear(data) {
   years.forEach(year => {
     const projects = data[year];
 
+    if (!projects || projects.length === 0) return;
+
     const yearSection = document.createElement('div');
     yearSection.className = 'year-section';
 
@@ -18,19 +20,27 @@ function renderByYear(data) {
     yearSection.appendChild(yearTitle);
 
     projects.forEach(project => {
-      const projectItem = document.createElement('a');
-      projectItem.className = 'project-item';
-      projectItem.textContent = project.title;
+      let projectItem;
 
-      // ✅ 判断是否是 special
-      if (project.layout && project.layout.toLowerCase() === "special") {
-        projectItem.href = `${project.folder}/project.html`; // 打开该项目自己的 project.html
+      if (project.skip && project.skip.toLowerCase() === "yes") {
+        // 完全不可点击的 span
+        projectItem = document.createElement('span');
+        projectItem.className = 'project-item disabled';
+        projectItem.textContent = project.title;
       } else {
-        projectItem.href = `../project/project.html?id=${project.id}`; // 默认模板
-      }
+        projectItem = document.createElement('a');
+        projectItem.className = 'project-item';
+        projectItem.textContent = project.title;
 
-      if (project.images && project.images.length > 0) {
-        projectItem.dataset.image = project.images[0];
+        if (project.layout && project.layout.toLowerCase() === "special") {
+          projectItem.href = `${project.folder}/project.html`;
+        } else {
+          projectItem.href = `../project/project.html?id=${encodeURIComponent(project.id)}`;
+        }
+
+        if (project.images && project.images.length > 0) {
+          projectItem.dataset.image = project.images[0];
+        }
       }
 
       yearSection.appendChild(projectItem);
@@ -63,11 +73,8 @@ function renderByType(data) {
     });
   });
 
-  // ✅ 按 type 字母顺序遍历
   Object.keys(typeGroups).sort((a, b) => a.localeCompare(b)).forEach(type => {
     const projects = typeGroups[type];
-
-    // ✅ 按标题首字母 A→Z 排序
     projects.sort((a, b) => a.title.localeCompare(b.title));
 
     const typeSection = document.createElement('div');
@@ -78,19 +85,26 @@ function renderByType(data) {
     typeSection.appendChild(typeTitle);
 
     projects.forEach(project => {
-      const projectItem = document.createElement('a');
-      projectItem.className = 'project-item';
-      projectItem.textContent = project.title;
+      let projectItem;
 
-      // special layout 判断
-      if (project.layout && project.layout.toLowerCase() === "special") {
-        projectItem.href = `${project.folder}/project.html`; 
+      if (project.skip && project.skip.toLowerCase() === "yes") {
+        projectItem = document.createElement('span');
+        projectItem.className = 'project-item disabled';
+        projectItem.textContent = project.title;
       } else {
-        projectItem.href = `../project/project.html?id=${project.id}`;
-      }
+        projectItem = document.createElement('a');
+        projectItem.className = 'project-item';
+        projectItem.textContent = project.title;
 
-      if (project.images && project.images.length > 0) {
-        projectItem.dataset.image = project.images[0];
+        if (project.layout && project.layout.toLowerCase() === "special") {
+          projectItem.href = `${project.folder}/project.html`;
+        } else {
+          projectItem.href = `../project/project.html?id=${encodeURIComponent(project.id)}`;
+        }
+
+        if (project.images && project.images.length > 0) {
+          projectItem.dataset.image = project.images[0];
+        }
       }
 
       typeSection.appendChild(projectItem);
@@ -101,31 +115,38 @@ function renderByType(data) {
   });
 }
 
-
 // === 主逻辑 ===
 fetch('projects.json')
   .then(res => res.json())
   .then(data => {
     allData = data;
-    renderByYear(allData); // 默认先显示按年份
+    renderByYear(allData); // 默认显示按年份
   })
   .catch(err => console.error("Failed to load projects.json:", err));
 
 // === 按钮绑定事件 ===
-document.getElementById('sort-year').addEventListener('click', () => {
+const sortYearSpan = document.getElementById('sort-year');
+const sortTypeSpan = document.getElementById('sort-type');
+
+sortYearSpan.addEventListener('click', () => {
   renderByYear(allData);
+  sortYearSpan.classList.add('active');
+  sortTypeSpan.classList.remove('active');
 });
 
-document.getElementById('sort-type').addEventListener('click', () => {
+sortTypeSpan.addEventListener('click', () => {
   renderByType(allData);
+  sortTypeSpan.classList.add('active');
+  sortYearSpan.classList.remove('active');
 });
 
-// ✅ hover 预览逻辑
+// ✅ hover 预览逻辑，只针对非 skip 项目
 const preview = document.getElementById('preview-image');
 
 document.addEventListener('mouseover', function(e) {
-  if (e.target.classList.contains('project-item')) {
+  if (e.target.classList.contains('project-item') && !e.target.classList.contains('disabled')) {
     let imgSrc = e.target.dataset.image;
+    if (!imgSrc) return;
     imgSrc = imgSrc.split('/').map(part => encodeURIComponent(part)).join('/');
     preview.style.backgroundImage = `url(${imgSrc})`;
     preview.style.display = 'block';
@@ -148,19 +169,4 @@ document.addEventListener('mouseout', function(e) {
   if (e.target.classList.contains('project-item')) {
     preview.style.display = 'none';
   }
-});
-
-const sortYearSpan = document.getElementById('sort-year');
-const sortTypeSpan = document.getElementById('sort-type');
-
-sortYearSpan.addEventListener('click', () => {
-  renderByYear(allData);
-  sortYearSpan.classList.add('active');
-  sortTypeSpan.classList.remove('active');
-});
-
-sortTypeSpan.addEventListener('click', () => {
-  renderByType(allData);
-  sortTypeSpan.classList.add('active');
-  sortYearSpan.classList.remove('active');
 });
