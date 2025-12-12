@@ -1,0 +1,8 @@
+title: Wooden House
+project-type: Private Residence
+team: Wong Wei Ping, Ken Wan, Sinyi
+location: Tapah
+project-year: 
+skip: yes
+
+description: 
