@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="../../../../header/favicon.ico">
+  <title>Hsinchu Pavilion — Special</title>
+
+  <!-- header.css 和 header.js -->
+  <link rel="stylesheet" href="../../../../header/header.css">
+
+  <!-- 复用 project.css -->
+  <link rel="stylesheet" href="../../../../project/project.css">
+
+  <!-- special 项目的覆盖样式 -->
+  <style>
+    /* meta + description 容器：左右并排，顶端对齐 */
+    #meta-text-wrapper {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;  /* 顶端对齐 */
+      margin: 24px auto;
+      max-width: 965px;
+      margin-top: 15px;   /* 强制顶端对齐 */
+    }
+
+    #project-meta {
+      flex: 0 0 200px;  /* 固定左栏宽度 */
+    }
+
+    #project-meta h2 {
+      margin: 0 0 0 0;
+    }
+
+    #project-text {
+      flex: 1;
+      margin-top: 0;   /* 强制顶端对齐 */
+      font-size: 14px;
+      line-height: 1.6;
+      margin-top: -21px; /* 数字可以自己调，比如 -4px, -8px */
+    }
+
+    /* special-block 样式 */
+    .special-block {
+      max-width: 965px;
+      margin: 24px auto;
+    }
+
+    .special-block img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* 004-1 到 004-4 的中英并排说明 */
+    .special-text-wrapper {
+      display: flex;
+      gap: 24px;
+      justify-content: space-between;
+      align-items: flex-start;   /* 顶部对齐 */
+      margin-top: 12px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .special-text-cn {
+      flex: 1;
+      text-align: left;
+      word-break: break-word;
+      max-width: 355px;
+      width: 100%;
+      margin-top: 35px;
+      margin-bottom: 35px;
+    }
+
+    .special-text-en {
+      flex: 1;
+      text-align: left;
+      margin-left: 25px;
+      color: #555;
+      word-break: break-word;
+      margin-top: 35px;
+      margin-bottom: 35px;
+    }
+
+    .gallery-wrapper {
+      margin: 24px auto;
+      max-width: 965px;
+      width: 100%;
+    }
+    .gallery-main {
+      width: 100%;
+      height: 625px;
+      display: block;
+      margin-bottom: 16px;
+    }
+/* 縮略圖容器：最多兩行，每行 7 張 */
+.gallery-thumbs {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 8px;
+  max-width: 965px;
+  margin: 0 auto;
+  margin-top: -10px;
+  margin-bottom: 100px;
+}
+
+/* 縮略圖 */
+.gallery-thumb {
+  width: 100%;
+  height: 80px;         /* 固定高度 */
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+}
+
+/* hover 效果 */
+.gallery-thumb:hover {
+  opacity: 1;
+}
+
+/* active 效果 */
+.gallery-thumb.active {
+  opacity: 1;
+}
+
+    /* Lightbox 样式 */
+    #lightbox {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      align-items: center;
+      justify-content: center;
+    }
+    #lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+#lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  font-size: 40px;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+}
+
+    /* 小屏幕时上下堆叠 */
+    @media (max-width: 768px) {
+      #meta-text-wrapper {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .special-text-wrapper {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .special-text-en {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header id="header-placeholder"></header>
+
+  <main id="project-container" class="special-main">
+
+    <!-- 001 封面 -->
+    <div id="project-first-image">
+      <img src="001.jpg" alt="Hsinchu Pavilion — Cover">
+    </div>
+
+    <!-- meta + 主描述 -->
+    <div id="meta-text-wrapper">
+      <div id="project-meta">
+        <h2>Hsinchu Pavilion</h2>
+        <div class="label">Year</div><div class="value">2018</div>
+        <div class="label">Type</div><div class="value">Community <br> Residential <br> Landscape</div>
+        <div class="label">Team</div><div class="value">Wong Wei Ping <br> Tet Tat Sing <br> Alex Tan</div>
+        <div class="label">Location</div><div class="value">新竹公園 / Hsinchu Park</div>
+      </div>
+
+      <div id="project-text">
+        This project speculates the basic necessities and the potential modes of a dwelling by using the idea of ‘Core’. Core is the simplest form and a singular entity that represents the simplest programme, consisting only the entrance, living area, room and toilet. By exploding these spaces like an axonometric drawing, the space is now appeared as a cluster of singular units with their own distinctive programme, having negative spaces in between. <br>
+        The ‘explosion’ of core  negative space is being captured in physical form, allow inhabitants to have more possibilities of dwelling. Archiblur, a Taiwanese Architecture firm collaborated throughout the design process to explore and actualize this project together as one of the architecture installation exhibited at Hsinchu Park Follies 2018. (實構築2018-新織理)
+      </div>
+    </div>
+
+    <!-- 002–003 普通图片 -->
+    <div id="project-images">
+      <img class="project-image" src="002.jpg" alt="002 — Hsinchu Pavilion">
+      <img class="project-image" src="003.jpg" alt="003 — Hsinchu Pavilion">
+    </div>
+
+    <!-- 004 特殊中英文说明 -->
+    <section id="special-004">
+      <div class="special-block">
+        <img src="004-1.jpg" alt="004-1">
+        <div class="special-text-wrapper">
+          <div class="special-text-cn">
+            <strong>[核]</strong> - 帶有多重意義; 它既是core - value, 也是nucleus - basic structure 和 seed - 催生 / 衍生。<br>
+            [核]是用來探討最根本的棲居以及各種衍生的可能。<br><br>
+            ⟪對話錄⟫<br>
+            - 始於窩工房黃偉斌、鄭達馨和Alex陳世杰之間的對話 :<br><br>
+            ​‘新竹想做甚麼？’​​<br>
+            ​‘我們不要做‘建築’啦，做一些怪怪的東西，例如廁所....<br>
+            在戶外上的廁所....完完全全的戶外。’<br>
+            ​​‘可不可以做個引起人們好奇心的建築？’</div>
+          <div class="special-text-en">
+            <strong>The idea of core</strong> - the core value and the core structure.<br>
+            This project speculates the basic necessities and the potential growth of a dwelling. <br><br>
+            [Dialogue]<br>
+            A conversation between Wong Wei Ping, Tey Tat Sing and Alex Tan:<br><br>
+            'what should we do for Hsinchu?'<br>
+            'Let's not restrict ourselves in just doing the typical architectural buildings. <br>
+            Perhaps we could look into space like toilet. Not a typical toilet but an outdoor toilet. <br>
+            An outdoor space.'<br>
+            'Can we build an architecture that spark curiosity?'</div>
+        </div>
+      </div>
+
+      <div class="special-block">
+        <img src="004-2.jpg" alt="004-2">
+        <div class="special-text-wrapper">
+                    <div class="special-text-cn">
+            ​‘機會難得，應該做些我們相信的architecture,<br>
+            比如我們常講的re-program architecture。<br>
+            有時會想，身為建築師，在設計的時候，<br>
+            在program方面應該參與多深？’<br><br>
+            ‘拿最近的露營來說，有甚麼想法？’<br><br>
+            ​‘露營的時候，我們擁有的是最小最小的空間，<br>
+            只足夠拿來睡覺。於是我們用戶外來當廚房、<br>
+            當客廳、河流當泳池。當我們擁有很小時，<br>
+            反而打破空間的侷限，還有想像。’</div>
+                    <div class="special-text-en">
+            'I think it's a great opportunity for us to design something that we truly believe in. For example, we always talk about re-programme architecture. Sometimes I always ask myself, what is the extend of us, as an architect to take part in thinking and creating the programme of the architecture’
+<br><br>
+            'What do you think about the idea of  'camping'? '<br><br>
+            'The idea of a camp as a dwelling actually helps the dweller to think of other possibilities of a living space. With a restriction of space in the camp, other daily activities such as cooking and living are being brought out to outdoor space. The river could even be our swimming pool! Back when we were young, everything is possible with imagination. Every space could be something and everything could be a space! Just with  simple boxes, we could build house, tunnels or even a fort'<br>
+          </div>
+        </div>
+      </div>
+
+      <div class="special-block">
+        <img src="004-3.jpg" alt="004-3">
+        <div class="special-text-wrapper">
+                              <div class="special-text-cn">
+            ‘我們就做一個最簡單的房子，給核心家庭。<br>
+            只有玄關，客廳，房間和廁所。回歸房子基本的<br>
+            program，然後讓它`炸`開來，讓這些program單獨成立。’<br><br><br>
+            ‘怎樣`炸`開來？’<br><br><br>
+            ‘就好像我們畫(建)一個真正的exploded isometric<br>
+            (爆炸圖)，再用虛線把個別的program連結起來，<br>
+            虛線就是我們想像力的具體。`炸`開來後會出現`負空間`。<br>
+            虛線的部分就是虛建築，正是我們夥伴archiblur的強項。’<br>
+          </div>
+                    <div class="special-text-en">
+            'In that case, let's go back to the basic. We can design a core house with the simplest programme, consisting only the  entrance, living area, room and toilet. <br>
+            Then… we will explode it! Instead of having all of them connecting together, each space is now appeared as a singular unit with its own distinctive programme.'<br><br>
+            'How should we actually explode them?'<br><br>
+           'Let's imagine a typical architectural exploded axonometric drawing. The building is exploded into a few parts, forming negatives spaces in between and the dotted lines are the indication of these parts joining together as a complete whole. Here is where our partner, Archiblur will join force to design these negatives spaces and the dotted lines. Designing negative space has always been Archiblur's forte.'
+          </div>
+        </div>
+      </div>
+
+      <div class="special-block">
+        <img src="004-4.jpg" alt="004-4">
+        <div class="special-text-wrapper">
+          <div class="special-text-cn">
+            ‘如果說實建築是上聯，那虛建築就是下聯。虛空間和實空間在這案子是對等的。窩工房處理實建築，ArchiBlur處理虛建築。於是我們兩個團隊於兩地(台灣和馬來西亞)各別發展自己的那一塊，整個設計案就像是個設計上的對話，接力和角力。’<br><br><br>
+            ​於是我們選了個現場有樹木的基地，讓樹木成為結合實、虛空間的媒介。<br>
+          </div>
+          <div class="special-text-en">
+            'If we describe positive space as a prologue, then the negative space will be the epilogue of an architecture that complements one another. Tetawowe will be designing the positive space, whereas Archiblur will be designing the negative space. This will be an interesting conversation between both of the firms from different countries, between Malaysian firm and Taiwanese firm. It will be a relay race between us, where the overlapping and layering of our thoughts will be a strong foundation for this project'<br><br>
+           Then, we chose a site with some existing trees, where these trees act as the negative space of our design.
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+  <div id="special-gallery"></div>
+
+  <div id="lightbox">
+    <span id="lightbox-close">&times;</span>
+  <img src="" alt="Lightbox Image">
+</div>
+
+  </main>
+
+  <script src="../../../../header/header.js">  </script>
+
+    <script>
+  // gallery 数据
+  const images = ["005.jpg","006.jpg","007.jpg","008.jpg","009.jpg","010.jpg","011.jpg","012.jpg"];
+
+  // 渲染 gallery
+  function renderGallery(imgList) {
+    if (!imgList || imgList.length === 0) return;
+    const galleryWrapper = document.createElement("div");
+    galleryWrapper.className = "gallery-wrapper";
+
+    // 大图
+    const mainImg = document.createElement("img");
+    mainImg.className = "gallery-main";
+    mainImg.src = imgList[0];
+    galleryWrapper.appendChild(mainImg);
+
+    // 缩略图
+    const thumbs = document.createElement("div");
+    thumbs.className = "gallery-thumbs";
+
+    imgList.forEach((src, index) => {
+      const thumb = document.createElement("img");
+      thumb.src = src;
+      thumb.className = "gallery-thumb";
+      if (index === 0) thumb.classList.add("active");
+
+      thumb.addEventListener("click", () => {
+        mainImg.src = src;
+        document.querySelectorAll(".gallery-thumb").forEach(t => t.classList.remove("active"));
+        thumb.classList.add("active");
+      });
+      thumbs.appendChild(thumb);
+    });
+
+    galleryWrapper.appendChild(thumbs);
+    document.getElementById("special-gallery").appendChild(galleryWrapper);
+  }
+  renderGallery(images);
+
+  // Lightbox 功能 - 所有大图
+  function enableLightbox() {
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = lightbox.querySelector("img");
+
+    // 选择所有大图
+    const allBigImages = document.querySelectorAll(
+      "#project-first-image img, .project-image, .special-block img, .gallery-main"
+    );
+
+    allBigImages.forEach(img => {
+      img.style.cursor = "pointer";
+      img.addEventListener("click", () => {
+        lightboxImg.src = img.src;
+        lightbox.style.display = "flex";
+      });
+    });
+
+    // 点击背景关闭
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) lightbox.style.display = "none";
+    });
+  }
+  enableLightbox();
+
+function adjustProjectImage() {
+  const images = document.querySelectorAll(".project-image");
+  if (!images.length) return;
+
+  images.forEach(img => {
+    // 图片距离页面顶部的距离
+    const topContentHeight = img.getBoundingClientRect().top + window.scrollY;
+
+    if (topContentHeight < 900) {
+      // 如果不足 900px，就强制让图片从 950px 开始
+      img.style.marginTop = (950 - topContentHeight) + "px";
+    } else {
+      // 如果超过 900px，就保持与上方内容 50px 间隔
+      img.style.marginTop = "50px";
+    }
+  });
+}
+
+// 页面加载时执行一次
+window.addEventListener("load", adjustProjectImage);
+// 窗口大小变动时也重算
+window.addEventListener("resize", adjustProjectImage);
+  </script>
+</body>
+</html>

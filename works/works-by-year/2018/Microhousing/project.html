@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Micro Housing</title>
+
+  <!-- header.css 和 header.js -->
+  <link rel="stylesheet" href="../../../../header/header.css">
+
+  <!-- 复用 project.css -->
+  <link rel="stylesheet" href="../../../../project/project.css">
+
+  <link rel="icon" type="image/x-icon" href="../../../../header/favicon.ico">
+
+  <!-- special 项目的覆盖样式 -->
+  <style>
+#project-first-image img {
+  object-position: left center; /* 从左边对齐，不居中 */
+}
+
+    /* meta + description 容器：左右并排，顶端对齐 */
+    #meta-text-wrapper {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;  /* 顶端对齐 */
+      margin: 24px auto;
+      max-width: 965px;
+      margin-top: 15px;   /* 强制顶端对齐 */
+    }
+
+    #project-meta {
+      flex: 0 0 200px;  /* 固定左栏宽度 */
+    }
+
+    #project-meta h2 {
+      margin: 0 0 0 0;
+    }
+
+    #project-text {
+      flex: 1;
+      margin-top: 0;   /* 强制顶端对齐 */
+      font-size: 14px;
+      line-height: 1.6;
+      margin-top: -21px; /* 数字可以自己调，比如 -4px, -8px */
+    }
+
+    /* special-block 样式 */
+    .special-block {
+      max-width: 965px;
+      margin: 24px auto;
+    }
+
+    .description { 
+      max-width: 965px; 
+      margin: 0px auto; /* 水平居中 + 上下间距 */ 
+      line-height: 1.6; 
+      font-size: 14px; 
+      padding: 0 20px; /* 保证小屏幕也有左右留白 */ 
+      white-space: pre-line; /* 保持换行 */ 
+      margin-bottom: 25px;
+    }
+
+    .description1 { 
+      max-width: 965px; 
+      margin: 0px auto; /* 水平居中 + 上下间距 */ 
+      line-height: 1.6; 
+      font-size: 14px; 
+      padding: 0 20px; /* 保证小屏幕也有左右留白 */ 
+      white-space: pre-line; /* 保持换行 */ 
+      margin-bottom: 75px;
+      margin-top: -40px;
+    }
+
+    .gallery-wrapper {
+      margin: 24px auto;
+      max-width: 965px;
+      width: 100%;
+      margin-bottom: 50px;
+    }
+    .gallery-main {
+      width: 100%;
+      height: 625px;
+      display: block;
+      margin-bottom: 16px;
+    }
+/* 縮略圖容器：最多兩行，每行 7 張 */
+.gallery-thumbs {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 8px;
+  max-width: 965px;
+  margin: 0 auto;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+/* 縮略圖 */
+.gallery-thumb {
+  width: 100%;
+  height: 80px;         /* 固定高度 */
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+}
+
+/* hover 效果 */
+.gallery-thumb:hover {
+  opacity: 1;
+}
+
+/* active 效果 */
+.gallery-thumb.active {
+  opacity: 1;
+}
+
+    /* Lightbox 样式 */
+    #lightbox {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      align-items: center;
+      justify-content: center;
+    }
+    #lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+#lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  font-size: 40px;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+}
+
+    /* 小屏幕时上下堆叠 */
+    @media (max-width: 768px) {
+      #meta-text-wrapper {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .special-text-wrapper {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .special-text-en {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header id="header-placeholder"></header>
+
+  <main id="project-container" class="special-main">
+
+    <!-- 001 封面 -->
+    <div id="project-first-image">
+      <img src="001.jpg" alt="Micro House — Cover">
+    </div>
+
+    <!-- meta + 主描述 -->
+    <div id="meta-text-wrapper">
+      <div id="project-meta">
+        <h2>Micro House</h2>
+        <div class="label">Year</div><div class="value">2018</div>
+        <div class="label">Type</div><div class="value">Community <br> Residential <br> Competition</div>
+        <div class="label">Team</div><div class="value">Wong Wei Ping <br> Andrew Leng</div>
+        <div class="label">Location</div><div class="value">Kuala Lumpur</div>
+      </div>
+
+      <div id="project-text">
+        <strong>Communal Living, a Social Experiment </strong> <br>
+         Kuala Lumpur downtown is now experiencing a doughnutised effect, a phenomenon of city dwellers slowly moving out from city centre. One of the main reason is undoubtedly high property value vs affordability of house buyers, this swift of migration of the city dweller to the outer city creates emptiness at the city centre district. We believe, one way to reverse this trend is to create affordable houses that paired up with well thought urban planning, good urban design and interesting programmes, to attract people to move back to the city centre.
+      </div>
+    </div>
+
+    <!-- 002 普通图片 -->
+    <div id="project-images">
+      <img class="project-image" src="002.jpg" alt="002 — Micro House">
+    </div>
+
+    <div class="description">
+        With much optimistic we anticipate the public transport would be improved and with the popularity of uber and grab cars, city dwellers in the future are less dependent on private cars as commuting means, thus car parks become excessive and can be opted for different usages, eg. micro housing for this instance. Our design solution focuses on a mere <strong>2 parking plots size </strong> (measuring 2.5 x 5m x 2 nos) on a hypothetical car park site owned by DBKL, with this in mind a design grid system of <strong>2.5 x 5</strong> is formulated. From there on, excessive car park plots will slowly be replaced by micro houses, driveways gradually turned into open place, green belts and bike lanes, unused car park plot in between houses can be adopted and turn into vegetables planting beds and various form of public space. This group of houses, in time, will grow into a <strong>urban micro village</strong>.
+      </div>
+
+<!-- Gallery 1 -->
+<div id="gallery-1"></div>
+<div class="description">
+        The design of a single micro house emphasises on the adaptability of it to various programmes and usages. The ground floor consists of an open plan with kitchen and laundry facilities, this place can be used as a semi-public meetup area and a dining place - alternatively it can be transformed into micro business such as running a mini bookshop, ‘super mini’ market, or even a food stall for the immediate neighbourhood. An all-in bathroom is placed at one corner in a more private domain hide away with a door and stairway leading to the mezzanine floor above, where there is a private living space and a sleeping deck. This arrangement allows public and private activities to take place at the same time and same zone without much interference. 
+      </div>
+      
+<!-- Gallery 2 -->
+<div id="gallery-2"></div>
+    <!-- 019 普通图片 -->
+    <div id="project-images">
+      <img class="project-image" src="019.jpg" alt="019 — Micro House">
+    </div>
+
+<div class="description1">
+        When the micro houses are placed together in a sizeable number, it’s highly adaptable ground floor plan encourages the formation of flexible semi-public space, hence become a basis to be a self sustained urban village with well-connected public space and facilities. This openness allows a sharing communal experience -‘kongsi’ spirit to take place, an informal activities such as sharing of private manga collection, sharing a good meal, a classic movie screening or even sharing good farm harvest are possible in such community. Urban micro shared villages help to recondition our rather rigid urban fabric, this could be a catalyst to define our city to a more liveable and human oriented direction. 
+      </div>
+
+<!-- Gallery 3 -->
+<div id="gallery-3"></div>
+<div class="description1">
+The microhouse is able to dissemble into 4 portion, hence allows easy transportation on truck.
+      </div>
+
+        <div id="lightbox">
+    <span id="lightbox-close">&times;</span>
+  <img src="" alt="Lightbox Image">
+</div>
+
+  </main>
+
+  <script src="../../../../header/header.js">  </script>
+
+    <script>
+  // 图片分组
+  const gallery1 = ["003.jpg","004.jpg","005.jpg","006.jpg","007.jpg","008.jpg","009.jpg"];
+  const gallery2 = ["010.jpg","012.jpg","013.jpg","014.jpg","015.jpg","016.jpg","017.jpg","018.jpg"];
+  const gallery3 = ["020.jpg","021.jpg","022.jpg","023.jpg"];
+
+  // 渲染 gallery 函数
+  function renderGallery(imgList, containerId) {
+    if (!imgList || imgList.length === 0) return;
+
+    const galleryWrapper = document.createElement("div");
+    galleryWrapper.className = "gallery-wrapper";
+
+    // 大图
+    const mainImg = document.createElement("img");
+    mainImg.className = "gallery-main";
+    mainImg.src = imgList[0];
+    galleryWrapper.appendChild(mainImg);
+
+    // 缩略图
+    const thumbs = document.createElement("div");
+    thumbs.className = "gallery-thumbs";
+
+    imgList.forEach((src, index) => {
+      const thumb = document.createElement("img");
+      thumb.src = src;
+      thumb.className = "gallery-thumb";
+      if (index === 0) thumb.classList.add("active");
+
+      thumb.addEventListener("click", () => {
+        mainImg.src = src;
+        thumbs.querySelectorAll(".gallery-thumb").forEach(t => t.classList.remove("active"));
+        thumb.classList.add("active");
+      });
+
+      thumbs.appendChild(thumb);
+    });
+
+    galleryWrapper.appendChild(thumbs);
+
+    // 插入到对应容器
+    document.getElementById(containerId).appendChild(galleryWrapper);
+  }
+
+  // 渲染三个 gallery
+  renderGallery(gallery1, "gallery-1");
+  renderGallery(gallery2, "gallery-2");
+  renderGallery(gallery3, "gallery-3");
+
+  // 调整普通项目图片间距
+  function adjustProjectImage() {
+    const images = document.querySelectorAll(".project-image");
+    if (!images.length) return;
+
+    images.forEach(img => {
+      const topContentHeight = img.getBoundingClientRect().top + window.scrollY;
+
+      if (topContentHeight < 900) {
+        img.style.marginTop = (950 - topContentHeight) + "px";
+      } else {
+        img.style.marginTop = "50px";
+      }
+    });
+  }
+
+  window.addEventListener("load", adjustProjectImage);
+  window.addEventListener("resize", adjustProjectImage);
+
+  // ============================
+  // Lightbox 功能
+  // ============================
+  function enableLightbox() {
+    // 创建 Lightbox DOM
+    let lightbox = document.getElementById("lightbox");
+    if (!lightbox) {
+      lightbox = document.createElement("div");
+      lightbox.id = "lightbox";
+      lightbox.innerHTML = '<span id="lightbox-close">&times;</span><img src="" alt="Lightbox Image">';
+      document.body.appendChild(lightbox);
+    }
+
+    const lightboxImg = lightbox.querySelector("img");
+    const lightboxClose = lightbox.querySelector("#lightbox-close");
+
+// 选择所有大图：普通项目图片 + gallery 大图 + 封面
+const allBigImages = document.querySelectorAll(".project-image, .gallery-main, #project-first-image img");
+
+
+    allBigImages.forEach(img => {
+      img.style.cursor = "pointer";
+      img.addEventListener("click", () => {
+        lightboxImg.src = img.src;
+        lightbox.style.display = "flex";
+      });
+    });
+
+    // 点击背景关闭
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) lightbox.style.display = "none";
+    });
+
+    // 点击右上角 × 关闭
+    lightboxClose.addEventListener("click", () => {
+      lightbox.style.display = "none";
+    });
+  }
+
+  // 页面加载时启用 Lightbox
+  window.addEventListener("load", enableLightbox);
+
+function adjustProjectImage() {
+  const images = document.querySelectorAll(".project-image");
+  if (!images.length) return;
+
+  images.forEach(img => {
+    // 图片距离页面顶部的距离
+    const topContentHeight = img.getBoundingClientRect().top + window.scrollY;
+
+    if (topContentHeight < 900) {
+      // 如果不足 900px，就强制让图片从 950px 开始
+      img.style.marginTop = (950 - topContentHeight) + "px";
+    } else {
+      // 如果超过 900px，就保持与上方内容 50px 间隔
+      img.style.marginTop = "50px";
+    }
+  });
+}
+
+// 页面加载时执行一次
+window.addEventListener("load", adjustProjectImage);
+// 窗口大小变动时也重算
+window.addEventListener("resize", adjustProjectImage);
+</script>
+
+</body>
+</html>
