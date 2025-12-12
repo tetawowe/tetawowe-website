@@ -1,7 +1,0 @@
-title: Madras Lane
-project-type: Placemaking
-team: Tey Tat Sing, Wong Wei Ping, Gan Jing Wen, Jasmin Tan
-location: Kuala Lumpur
-project-year: 2025
-
-description: 

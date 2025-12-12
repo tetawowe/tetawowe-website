@@ -1,7 +1,0 @@
-title: Melawati House
-project-type: Private Residence
-team: Wong Wei Ping, Lai Sin Yi, xxxxxxx 
-location: Melawati Heights
-project-year: 2025
-
-description: 

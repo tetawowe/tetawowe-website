@@ -1,7 +1,0 @@
-title: Warm Armed
-project-type: Retail / Event Space
-team: Wong Wei Ping, Tey Tat Sing
-location: xxxxx
-project-year: 2011
-
-description: 

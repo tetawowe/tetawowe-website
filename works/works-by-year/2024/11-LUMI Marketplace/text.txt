@@ -1,7 +1,0 @@
-title: LUMI Marketplace
-project-type: Food & Beverage
-team: Wong Wei Ping, Shien Chii, Claire Zhuang, Huey Mun
-location: Tropicana
-project-year: 
-
-description: 

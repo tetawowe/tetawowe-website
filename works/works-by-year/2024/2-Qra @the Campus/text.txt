@@ -1,7 +1,0 @@
-title: Qra @the Campus
-project-type: Retail / Event Space
-team: Tey Tat Sing, Lee Ni, Shum Li Sze
-location: the Campus
-project-year: 2024
-
-description: 

@@ -1,7 +1,0 @@
-title: Concrete Block
-project-type: Private Residence
-team: Wong Wei Ping
-location: xxxxx
-project-year: 2009
-
-description: The Concrete Box is a privately owned unit in a sequence of townhouses. It is a low-budget renovation that involves the process of inserting a complete separate piece of space into the existing space.

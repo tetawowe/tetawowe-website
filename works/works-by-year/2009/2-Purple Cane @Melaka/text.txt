@@ -1,7 +1,0 @@
-title: Purple Cane @Melaka
-project-type: Food & Beverage
-team: Tey Tat Sing, Wong Wei Ping
-location: Melaka
-project-year: 2009
-
-description: xxxx

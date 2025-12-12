@@ -1,7 +1,0 @@
-title: I-Horison
-project-type: Retail / Event Space
-team: Tey Tat Sing, Jnic Teoh
-location: xxx
-project-year: xxxxx
-
-description: xxxx

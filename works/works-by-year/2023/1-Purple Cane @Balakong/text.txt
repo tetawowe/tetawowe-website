@@ -1,7 +1,0 @@
-title: Purple Cane @Balakong
-project-type: Food & Beverage
-team: Tey Tat Sing, Poh Huey Mun
-location: Balakong
-project-year: 2023
-
-description: 

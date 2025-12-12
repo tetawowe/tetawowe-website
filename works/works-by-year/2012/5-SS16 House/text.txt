@@ -1,7 +1,0 @@
-title: SS16 House
-project-type: Private Residence
-team: Wong Wei Ping, Ee Wil Ken
-location: xxxxx
-project-year: xxxxx
-
-description: 

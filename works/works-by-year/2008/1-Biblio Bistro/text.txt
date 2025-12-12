@@ -1,7 +1,0 @@
-title: Biblio Bistro
-project-type: Food & Beverage
-team: Wong Wei Ping
-location: 2008
-project-year: xxxxx
-
-description: xxxx

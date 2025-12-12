@@ -1,7 +1,0 @@
-title: Hang Tuah Park 
-project-type: Park / Architecture Installation
-team: Tey Tat Sing, Wong Wei Ping, Lee Ni, Shum Li Sze
-location: PPR Hang Tuah, Kuala Lumpur
-project-year: 
-
-description: 

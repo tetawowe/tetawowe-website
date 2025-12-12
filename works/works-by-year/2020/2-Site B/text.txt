@@ -1,7 +1,0 @@
-title: Site B
-project-type: Publication
-team: Wong Wei Ping, Tey Tat Sing, Suzzane Kang, Ele Mun, Lim Huei Miin
-location: 
-project-year: 
-
-description: 

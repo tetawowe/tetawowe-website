@@ -1,7 +1,0 @@
-title: Capsule Transit @Kuala Lumpur
-project-type: Hospitality
-team: Wong Wei Ping, Lim Tiek Chia
-location: Kuala Lumpur
-project-year: 2017
-
-description: 

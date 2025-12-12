@@ -1,7 +1,0 @@
-title: Purple Cane @Fahrenheit
-project-type: Food & Beverage
-team: Tey Tat Sing, Wong Wei Ping
-location: Fahrenheit
-project-year: 2010
-
-description: xxxx
