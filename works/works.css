@@ -97,7 +97,7 @@ h1 {
 }
 
 .project-item.disabled {
-  color: #000000;           /* 灰色文字 */
+  color: #aaa;           /* 灰色文字 */
   text-decoration: none;    /* 去掉下划线 */
   cursor: text;             /* 大写 I */
   /* 不要 pointer-events: none */
