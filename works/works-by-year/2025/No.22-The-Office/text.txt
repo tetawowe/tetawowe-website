@@ -1,0 +1,8 @@
+title: No.22 The Office
+project-type: Office
+team: Wong Wei Ping, Tey Tat Sing, Ken Wan, Lim Zhuan Yang, Soh Xuan En, Ken Wan, Teh Yong Peng
+location: Jalan Sepakat
+project-year: 2025
+skip: yes
+
+description: 

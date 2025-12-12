@@ -1,0 +1,8 @@
+title: Klang River Festival 2025
+project-type: Placemaking
+team: Tey Tat Sing, Wong Wei Ping, Wong Jie Shan, Goh Zhou Jayne, Chairil Danish, Scarlet Koon Si Qi (KRF), Guma (KRF)
+location: Klang River
+project-year: 2025
+skip: yes
+
+description: 

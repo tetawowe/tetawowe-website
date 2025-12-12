@@ -1,0 +1,8 @@
+title: Pangkor Voyage Retreat II
+project-type: Development, Hospitality
+team: Tey Tat Sing, Lai Sin Yi, Lim Zhuan Yang
+location: Pangkor Island
+project-year: 2025
+skip: yes
+
+description: 
