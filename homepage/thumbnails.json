@@ -11,7 +11,7 @@
     "order": 2,
     "id": "hsinchu-pavilion",
     "special": true,
-    "folder": "../works/works-by-year/2018/Hsinchu-Pavilion"
+    "folder": "/works/works-by-year/2018/Hsinchu-Pavilion"
   },
   {
     "title": "SunBather",
@@ -25,7 +25,7 @@
     "order": 4,
     "id": "microhousing",
     "special": true,
-    "folder": "../works/works-by-year/2018/Microhousing"
+    "folder": "/works/works-by-year/2018/Microhousing"
   },
   {
     "title": "Battle Arena",
@@ -105,7 +105,7 @@
     "order": 17,
     "id": "duo-duplex",
     "special": true,
-    "folder": "../works/works-by-year/2013/Duo-Duplex"
+    "folder": "/works/works-by-year/2013/Duo-Duplex"
   },
   {
     "title": "White Brick House",
@@ -186,3 +186,4 @@
     "id": "t-junction-office"
   }
 ]
+
