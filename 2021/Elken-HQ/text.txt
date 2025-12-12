@@ -1,0 +1,8 @@
+title: Elken HQ
+project-type: Office
+team: Tey Tat Sing, Gue Yan Ting, Angellyn Cheong Kai Yin
+location: Subang Jaya
+project-year: 
+skip: yes
+
+description: 
