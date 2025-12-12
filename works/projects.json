@@ -1506,7 +1506,7 @@
       "description": "",
       "middle-description": "",
       "layout": "",
-      "skip": ""
+      "skip": "yes"
     },
     {
       "id": "rawang-town-house",
@@ -1541,3 +1541,4 @@
   ]
 
 }
+
