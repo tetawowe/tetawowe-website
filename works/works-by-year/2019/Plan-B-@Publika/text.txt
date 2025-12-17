@@ -1,8 +1,0 @@
-title: Plan B @Publika
-project-type: Food & Beverage
-team: Wong Wei Ping, Suzzane Kang
-location: 
-project-year: 
-skip: yes
-
-description: 

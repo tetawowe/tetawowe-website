@@ -1,0 +1,8 @@
+title: D'Island Glulam House
+project-type: Private Residence
+team: Tey Tat Sing, Andrew Leng
+location: Puchong
+project-year: 
+skip: yes
+
+description: 

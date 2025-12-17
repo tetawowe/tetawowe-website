@@ -1,7 +1,35 @@
 const worksContainer = document.getElementById('works');
 let allData = {}; // 存放 projects.json
 
+// ===============================
+// 工具：生成干净的 project URL
+// ===============================
+function getProjectUrl(project, yearKey) {
+  if (project.layout && project.layout.toLowerCase() === "special") {
+    return `${project.folder}/`;
+  }
+
+  // 如果 yearKey 为空或不存在，退回到 project.year 或 'unknown'
+  if (!yearKey || yearKey === "") {
+    yearKey = project.year || "unknown";
+  }
+
+  return `./works-by-year/${yearKey}/${project.id}/`;
+}
+
+// ===============================
+// 辅助：根据 allData 推断项目所属年份
+// ===============================
+function inferYear(project) {
+  for (const y in allData) {
+    if (allData[y].includes(project)) return y;
+  }
+  return "unknown";
+}
+
+// ===============================
 // 渲染按年份
+// ===============================
 function renderByYear(data) {
   worksContainer.innerHTML = ""; // 清空
 
@@ -9,7 +37,6 @@ function renderByYear(data) {
 
   years.forEach(year => {
     const projects = data[year];
-
     if (!projects || projects.length === 0) return;
 
     const yearSection = document.createElement('div');
@@ -23,7 +50,6 @@ function renderByYear(data) {
       let projectItem;
 
       if (project.skip && project.skip.toLowerCase() === "yes") {
-        // 完全不可点击的 span
         projectItem = document.createElement('span');
         projectItem.className = 'project-item disabled';
         projectItem.textContent = project.title;
@@ -32,14 +58,12 @@ function renderByYear(data) {
         projectItem.className = 'project-item';
         projectItem.textContent = project.title;
 
-        if (project.layout && project.layout.toLowerCase() === "special") {
-          projectItem.href = `${project.folder}/project.html`;
-        } else {
-          projectItem.href = `../project/project.html?id=${encodeURIComponent(project.id)}`;
-        }
+        // 使用年份 key 生成 URL
+        projectItem.href = getProjectUrl(project, year);
 
+        // hover 图片路径完整
         if (project.images && project.images.length > 0) {
-          projectItem.dataset.image = project.images[0];
+          projectItem.dataset.image = `${project.folder}/${project.images[0]}`;
         }
       }
 
@@ -51,31 +75,36 @@ function renderByYear(data) {
   });
 }
 
+// ===============================
 // 渲染按类型
+// ===============================
 function renderByType(data) {
   worksContainer.innerHTML = ""; // 清空
 
+  // 收集所有项目，同时附带所属年份
   let allProjects = [];
   Object.keys(data).forEach(year => {
-    allProjects = allProjects.concat(data[year]);
-  });
-
-  const typeGroups = {};
-
-  allProjects.forEach(project => {
-    const types = (project.type || "Others").split(",").map(t => t.trim());
-
-    types.forEach(type => {
-      if (!typeGroups[type]) {
-        typeGroups[type] = [];
-      }
-      typeGroups[type].push(project);
+    const projects = data[year];
+    projects.forEach(project => {
+      allProjects.push({ project, year }); // year 取外层 key
     });
   });
 
+  // 按类型分组
+  const typeGroups = {};
+  allProjects.forEach(({ project, year }) => {
+    const types = (project.type || "Others").split(",").map(t => t.trim());
+    types.forEach(type => {
+      if (!typeGroups[type]) typeGroups[type] = [];
+      typeGroups[type].push({ project, year });
+    });
+  });
+
+  // 渲染每个类型
   Object.keys(typeGroups).sort((a, b) => a.localeCompare(b)).forEach(type => {
-    const projects = typeGroups[type];
-    projects.sort((a, b) => a.title.localeCompare(b.title));
+    const projects = typeGroups[type].sort((a, b) =>
+      a.project.title.localeCompare(b.project.title)
+    );
 
     const typeSection = document.createElement('div');
     typeSection.className = 'type-section';
@@ -84,7 +113,7 @@ function renderByType(data) {
     typeTitle.textContent = type;
     typeSection.appendChild(typeTitle);
 
-    projects.forEach(project => {
+    projects.forEach(({ project, year }) => {
       let projectItem;
 
       if (project.skip && project.skip.toLowerCase() === "yes") {
@@ -96,14 +125,11 @@ function renderByType(data) {
         projectItem.className = 'project-item';
         projectItem.textContent = project.title;
 
-        if (project.layout && project.layout.toLowerCase() === "special") {
-          projectItem.href = `${project.folder}/project.html`;
-        } else {
-          projectItem.href = `../project/project.html?id=${encodeURIComponent(project.id)}`;
-        }
+        // ⭐ 这里使用外层年份 key
+        projectItem.href = getProjectUrl(project, year);
 
         if (project.images && project.images.length > 0) {
-          projectItem.dataset.image = project.images[0];
+          projectItem.dataset.image = `${project.folder}/${project.images[0]}`;
         }
       }
 
@@ -115,7 +141,10 @@ function renderByType(data) {
   });
 }
 
-// === 主逻辑 ===
+
+// ===============================
+// 主逻辑
+// ===============================
 fetch('projects.json')
   .then(res => res.json())
   .then(data => {
@@ -124,7 +153,9 @@ fetch('projects.json')
   })
   .catch(err => console.error("Failed to load projects.json:", err));
 
-// === 按钮绑定事件 ===
+// ===============================
+// 排序按钮
+// ===============================
 const sortYearSpan = document.getElementById('sort-year');
 const sortTypeSpan = document.getElementById('sort-type');
 
@@ -140,20 +171,25 @@ sortTypeSpan.addEventListener('click', () => {
   sortYearSpan.classList.remove('active');
 });
 
-// ✅ hover 预览逻辑，只针对非 skip 项目
+// ===============================
+// Hover 预览
+// ===============================
 const preview = document.getElementById('preview-image');
 
-document.addEventListener('mouseover', function(e) {
-  if (e.target.classList.contains('project-item') && !e.target.classList.contains('disabled')) {
+document.addEventListener('mouseover', e => {
+  if (e.target.classList.contains('project-item') &&
+      !e.target.classList.contains('disabled')) {
+
     let imgSrc = e.target.dataset.image;
     if (!imgSrc) return;
+
     imgSrc = imgSrc.split('/').map(part => encodeURIComponent(part)).join('/');
     preview.style.backgroundImage = `url(${imgSrc})`;
     preview.style.display = 'block';
   }
 });
 
-document.addEventListener('mousemove', function(e) {
+document.addEventListener('mousemove', e => {
   if (preview.style.display === 'block') {
     const xOffset = 20;
     const yOffset = 20;
@@ -165,7 +201,7 @@ document.addEventListener('mousemove', function(e) {
   }
 });
 
-document.addEventListener('mouseout', function(e) {
+document.addEventListener('mouseout', e => {
   if (e.target.classList.contains('project-item')) {
     preview.style.display = 'none';
   }

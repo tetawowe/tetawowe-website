@@ -1,7 +1,0 @@
-title: Purple Cane - Paradigm Mall
-project-type: Food & Beverage
-team: 
-location: 
-project-year: 
-
-description: 
