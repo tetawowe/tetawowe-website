@@ -1,8 +1,0 @@
-title: Purple Cane @Herren Street
-project-type: Food & Beverage
-team: Tey Tat Sing, Poh Huey Mun
-location: Melaka
-project-year: 2022
-skip: yes
-
-description: 

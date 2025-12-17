@@ -1,8 +1,0 @@
-title: Ben's
-project-type: Food & Beverage
-team: Wong Wei Ping, Angellyn Cheong Kai Yin
-location: Midvalley
-project-year: 
-skip: yes
-
-description: 

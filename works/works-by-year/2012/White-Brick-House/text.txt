@@ -1,7 +1,0 @@
-title: White Brick House
-project-type: Private Residence
-team: 
-location: 
-project-year: 2011-2012
-
-description: 

@@ -1,8 +1,0 @@
-title: 3Q Pavilion
-project-type: Development, Hospitality
-team: Wong Wei Ping, Lai Sin Yi 
-location: Rawang
-project-year: 2025
-skip: yes
-
-description: 

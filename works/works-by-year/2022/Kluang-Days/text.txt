@@ -1,8 +1,0 @@
-title: Kluang Days
-project-type: 
-team: 
-location: 
-project-year: 
-skip: yes
-
-description: 

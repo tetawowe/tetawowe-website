@@ -1,8 +1,0 @@
-title: Rawang Town House
-project-type: Development
-team: Tey Tat Sing, Soh Xuan En 
-location: Rawang
-project-year: 2025
-skip: yes
-
-description: 

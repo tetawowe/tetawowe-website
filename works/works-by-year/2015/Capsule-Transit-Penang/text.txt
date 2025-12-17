@@ -1,7 +1,0 @@
-title: Capsule Transit @Penang
-project-type: Hospitality
-team: Wong Wei Ping, Balqis Tajalli
-location: Penang
-project-year: 2014-2015
-
-description: 

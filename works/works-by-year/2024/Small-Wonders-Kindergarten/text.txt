@@ -1,8 +1,0 @@
-title: Small Wonders Kindergarten
-project-type: Institution
-team: Wong Wei Ping, Poh Huey Mun, Shum Li Sze
-location: Taman OUG
-project-year: 
-skip: yes
-
-description: 

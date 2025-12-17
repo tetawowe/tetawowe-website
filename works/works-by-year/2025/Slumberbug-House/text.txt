@@ -1,8 +1,0 @@
-title: Slumberbug House 
-project-type: 
-team: 
-location: 
-project-year: 
-skip: yes
-
-description: 

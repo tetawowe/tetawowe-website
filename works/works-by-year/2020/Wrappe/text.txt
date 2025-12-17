@@ -1,8 +1,0 @@
-title: Wrappe
-project-type: Food & Beverage
-team: Wong Wei Ping, Claire Zhuang
-location: Citta Mall
-project-year: 2020
-skip: yes
-
-description: 

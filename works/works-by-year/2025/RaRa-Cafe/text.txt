@@ -1,7 +1,0 @@
-title: RaRa Cafe
-project-type: Food & Beverage
-team: Tey Tat Sing, Gan Jing Wen
-location: Desa Sri Hartamas
-project-year: 2025
-
-description: 

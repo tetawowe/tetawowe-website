@@ -1,9 +1,0 @@
-title: Garden House
-project-type: Private Residence
-team: 
-location: 
-project-year: 
-
-description: This project served as a simple exercise in playing with the idea of layering and 'add-on's (adding and reorganising). The Garden house is a result of applying new concepts to redecorate an old building.
-
-The new layers include the courtyard that consists of a parking space and the entrance, new roofing, new gate, exterior floor finishes, and exterior natural embellishments.

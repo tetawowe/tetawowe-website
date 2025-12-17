@@ -1,7 +1,0 @@
-title: Old Block
-project-type: Hospitality
-team: Wong Wei Ping, Ee Wil Ken
-location: Old Town, Ipoh
-project-year: 
-
-description: 

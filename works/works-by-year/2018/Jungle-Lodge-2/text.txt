@@ -1,7 +1,0 @@
-title: Jungle Lodge 2
-project-type: Private Residence
-team: Wong Wei Ping, J'nic Teoh
-location: Janda Baik
-project-year: 2017-2018
-
-description:
