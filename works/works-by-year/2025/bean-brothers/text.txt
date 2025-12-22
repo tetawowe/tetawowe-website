@@ -1,0 +1,9 @@
+title: Bean Brothers
+project-type: Food & Beverage
+team: Wong Wei Ping, Poh Huey Man
+location: Pavilion Bukit Jalil
+project-year: 2025
+local-artisan: Gnihome Clay Plaster
+photographer: Lim Zhi Ru
+
+description: 
