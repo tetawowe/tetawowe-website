@@ -3,5 +3,15 @@ project-type: Food & Beverage
 team: Tey Tat Sing, Gan Jing Wen
 location: Desa Sri Hartamas
 project-year: 2025
+local-artisan: Mun Ming Co
+photographer: RaRa Coffee, Roger Tkk
 
-description: 
+description: Ra Ra @ Sri hartamas outlet is a double frontier store set to capture the essence of the neighborhood in various seating cove. The shopfront seating is a direct respond to the tall trees opposite the road that greets the guest with a serambi (raised timber platform) in front and a series of artisanal weaving stools blend in with surrounding landscape.
+
+Whereas the garden front is a celebration of outdoor al-fresco seating with a red brick garden setting (to be launched in phase 2) facing the sidewalk receiving the cyclist and pedestrian crowd from the main road, Jalan Sri Hartamas 22.
+
+middle description: The shopfront entrance features a large coffee making counter with high chair seatings around. This working counter is presented as the centrepiece, as if the whole space focus on the ritual of coffee making, namely a Barista's ritual. Guests will find the handwashing experience at the washroom resembling coffee-making process of a classic coffee machine portafilter, setting another gesture of homage to Barista's ritual.
+
+The internal dining space is carved into 2. First one is a dining hall with high ceiling comes with a huge window looking towards the landscape. Second one is a attic vibe with cosy banquette seating. A sliding shelf module allows both space can be connected to form a larger event space.
+
+This is an outlet with various seating vibe where everyone can find a corner of their own and when called upon, combine into connected event space as one.

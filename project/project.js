@@ -137,7 +137,7 @@ fetch("/works/projects.json")
   });
 
 // ===============================
-// 渲染 Meta + Text
+// 渲染 Meta + Text（支持可选字段）
 // ===============================
 function renderMetaAndText(project, text) {
   const wrapper = document.createElement("div");
@@ -152,19 +152,37 @@ function renderMetaAndText(project, text) {
   const firstImage = document.getElementById("project-first-image");
   firstImage.insertAdjacentElement("afterend", wrapper);
 
-  const types = project.type ? project.type.split(",").map(s => s.trim()) : [];
-  const team = project.team ? project.team.split(",").map(s => s.trim()) : [];
+  // 小工具：没有值就不渲染
+  function renderMetaRow(label, value) {
+    if (!value) return "";
+    return `
+      <div class="label">${label}</div>
+      <div class="value">${value}</div>
+    `;
+  }
+
+  const types = project.type
+    ? project.type.split(",").map(s => s.trim()).join("<br>")
+    : "";
+
+  const team = project.team
+    ? project.team.split(",").map(s => s.trim()).join("<br>")
+    : "";
 
   metaDiv.innerHTML = `
     <h2>${project.title}</h2>
-    <div class="label">Year</div><div class="value">${project.year}</div>
-    <div class="label">Type</div><div class="value">${types.join("<br>")}</div>
-    <div class="label">Team</div><div class="value">${team.join("<br>")}</div>
-    <div class="label">Location</div><div class="value">${project.location}</div>
+
+    ${renderMetaRow("Year", project.year)}
+    ${renderMetaRow("Type", types)}
+    ${renderMetaRow("Team", team)}
+    ${renderMetaRow("Location", project.location)}
+    ${renderMetaRow("Local Artisan", project["local-artisan"])}
+    ${renderMetaRow("Photographer", project.photographer)}
   `;
 
   textDiv.innerText = text;
 }
+
 
 // ===============================
 // Killer Images 調整

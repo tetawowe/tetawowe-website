@@ -4,6 +4,7 @@ team: Tey Tat Sing, Wong Wei Ping, Gan Jing Wen, Lim Zhuan Yang, Alex Tan, Gue Y
 location: Kluang
 project-year: 2025
 layout: special
+skip: yes
 
 description: Since the Kluang Railway Station began operations in 1913, the railway heritage trail connecting cities across Johor has taken root here for at least 113 years. Running north–south, it once split Kluang in half and formed the city’s central lifeline—or perhaps it used to.
 
