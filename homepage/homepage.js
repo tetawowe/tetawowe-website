@@ -9,9 +9,9 @@ fetch('/homepage/thumbnails.json')
       const projectItem = document.createElement('a');
       projectItem.className = 'project-item';
 
-      // ✅ 统一逻辑：只要有 folder 就直接访问 folder/index.html
+      // ✅ 统一逻辑：只要有 folder 就直接访问 folder/
       if (project.folder) {
-        projectItem.href = `${project.folder}/index.html`; // 或 project.html
+        projectItem.href = `${project.folder}/`; // 直接 folder/
         if (project.special) projectItem.dataset.special = "true";
         projectItem.dataset.folder = project.folder;
         projectItem.dataset.id = project.id;
@@ -103,10 +103,10 @@ function updateCaption(index) {
 
   const projectLink = slideLinks[realIndex];
 
-  // ✅ 优先使用 folder 路径
+  // ✅ 优先使用 folder/ 路径
   if (projectLink.dataset.folder) {
     caption.onclick = () => {
-      window.location.href = `${projectLink.dataset.folder}/index.html`; // 或 project.html
+      window.location.href = `${projectLink.dataset.folder}/`; // 直接 folder/
     };
   } else {
     caption.onclick = () => {
