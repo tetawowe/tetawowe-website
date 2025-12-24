@@ -169,6 +169,26 @@
         text-align: left;
       }
     }
+    .gallery-thumbs {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  max-width: 965px;
+  margin: 0 auto;
+  margin-top: -15px;
+  margin-bottom: 50px;
+}
+
+/* 縮略圖 */
+.gallery-thumb {
+  width: 100%;
+  height: 50px;         /* 固定高度 */
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.7;
+}
   </style>
 </head>
 <body>
