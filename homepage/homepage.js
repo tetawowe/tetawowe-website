@@ -9,18 +9,15 @@ fetch('/homepage/thumbnails.json')
       const projectItem = document.createElement('a');
       projectItem.className = 'project-item';
 
-      // ✅ 链接到项目页面或 special 项目页面
-      if (project.id) {
-        if (project.special && project.folder) {
-          // special 项目直接使用 folder 指向 project.html
-          projectItem.href = `${project.folder}/project.html`;
-          projectItem.dataset.special = "true";
-          projectItem.dataset.folder = project.folder;
-          projectItem.dataset.id = project.id;
-        } else {
-          // 普通项目跳转到 works 页面
-          projectItem.href = `../project/project.html?id=${project.id}`;
-        }
+      // ✅ 统一逻辑：只要有 folder 就直接访问 folder/index.html
+      if (project.folder) {
+        projectItem.href = `${project.folder}/index.html`; // 或 project.html
+        if (project.special) projectItem.dataset.special = "true";
+        projectItem.dataset.folder = project.folder;
+        projectItem.dataset.id = project.id;
+      } else if (project.id) {
+        // fallback
+        projectItem.href = `../project/project.html?id=${project.id}`;
       } else {
         projectItem.href = "#";
       }
@@ -37,9 +34,7 @@ fetch('/homepage/thumbnails.json')
       projectItem.appendChild(titleDiv);
 
       // 悬停显示大图
-      if (project.image) {
-        projectItem.dataset.image = project.image;
-      }
+      if (project.image) projectItem.dataset.image = project.image;
 
       worksContainer.appendChild(projectItem);
     });
@@ -48,14 +43,12 @@ fetch('/homepage/thumbnails.json')
 
 // --- 预览 hover ---
 document.addEventListener('mouseover', function(e) {
-  if (e.target.closest('.project-item')) {
-    const item = e.target.closest('.project-item');
-    if (item.dataset.image) {
-      let imgSrc = item.dataset.image;
-      imgSrc = imgSrc.split('/').map(encodeURIComponent).join('/');
-      preview.style.backgroundImage = `url(${imgSrc})`;
-      preview.style.display = 'block';
-    }
+  const item = e.target.closest('.project-item');
+  if (item && item.dataset.image) {
+    let imgSrc = item.dataset.image;
+    imgSrc = imgSrc.split('/').map(encodeURIComponent).join('/');
+    preview.style.backgroundImage = `url(${imgSrc})`;
+    preview.style.display = 'block';
   }
 });
 
@@ -110,10 +103,10 @@ function updateCaption(index) {
 
   const projectLink = slideLinks[realIndex];
 
-  // ✅ special 项目使用 folder
-  if (projectLink.dataset.special === "true" && projectLink.dataset.folder) {
+  // ✅ 优先使用 folder 路径
+  if (projectLink.dataset.folder) {
     caption.onclick = () => {
-      window.location.href = `${projectLink.dataset.folder}/project.html`;
+      window.location.href = `${projectLink.dataset.folder}/index.html`; // 或 project.html
     };
   } else {
     caption.onclick = () => {
@@ -170,4 +163,3 @@ document.querySelector(".gallery-slider .arrow.left").addEventListener("click", 
 
 // 初始化 caption
 updateCaption(currentIndex);
-
