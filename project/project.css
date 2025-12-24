@@ -189,7 +189,7 @@ body {
 }
 
 #project-meta {
-  width: 500px;
+  width: 350px;
   display: grid;
   grid-template-columns: 125px 1fr; /* 左侧固定 85px，右侧自适应 */
   gap: 8px 0;                      /* 行间距 */
@@ -269,4 +269,5 @@ body {
 
 
 }
+
 
