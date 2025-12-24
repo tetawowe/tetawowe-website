@@ -9,20 +9,16 @@ fetch('/homepage/thumbnails.json')
       const projectItem = document.createElement('a');
       projectItem.className = 'project-item';
 
-      // ✅ 链接到项目页面或 special 项目页面
-      if (project.id) {
-        if (project.special && project.folder) {
-          // special 项目直接使用 folder 指向 project.html
-          projectItem.href = `${project.folder}/project.html`;
-          projectItem.dataset.special = "true";
-          projectItem.dataset.folder = project.folder;
-          projectItem.dataset.id = project.id;
-        } else {
-          // 普通项目跳转到 works 页面
-          projectItem.href = `../project/project.html?id=${project.id}`;
-        }
+      // ✅ 统一：只要有 folder，就直接进入该目录（index.html）
+      if (project.folder) {
+        projectItem.href = project.folder.endsWith('/')
+          ? project.folder
+          : project.folder + '/';
+
+        // 给 slider / caption 用
+        projectItem.dataset.folder = project.folder;
       } else {
-        projectItem.href = "#";
+        projectItem.href = '#';
       }
 
       // 缩略图
@@ -44,22 +40,21 @@ fetch('/homepage/thumbnails.json')
       worksContainer.appendChild(projectItem);
     });
   })
-  .catch(err => console.error("Failed to load thumbnails.json:", err));
+  .catch(err => console.error('Failed to load thumbnails.json:', err));
+
 
 // --- 预览 hover ---
-document.addEventListener('mouseover', function(e) {
-  if (e.target.closest('.project-item')) {
-    const item = e.target.closest('.project-item');
-    if (item.dataset.image) {
-      let imgSrc = item.dataset.image;
-      imgSrc = imgSrc.split('/').map(encodeURIComponent).join('/');
-      preview.style.backgroundImage = `url(${imgSrc})`;
-      preview.style.display = 'block';
-    }
+document.addEventListener('mouseover', function (e) {
+  const item = e.target.closest('.project-item');
+  if (item && item.dataset.image) {
+    let imgSrc = item.dataset.image;
+    imgSrc = imgSrc.split('/').map(encodeURIComponent).join('/');
+    preview.style.backgroundImage = `url(${imgSrc})`;
+    preview.style.display = 'block';
   }
 });
 
-document.addEventListener('mousemove', function(e) {
+document.addEventListener('mousemove', function (e) {
   if (preview.style.display === 'block') {
     const xOffset = 20;
     const yOffset = 20;
@@ -71,78 +66,78 @@ document.addEventListener('mousemove', function(e) {
   }
 });
 
-document.addEventListener('mouseout', function(e) {
+document.addEventListener('mouseout', function (e) {
   if (e.target.closest('.project-item')) {
     preview.style.display = 'none';
   }
 });
 
+
 // --- Gallery Slider ---
-const slides = document.querySelector(".gallery-slider .slides");
-const slideLinks = document.querySelectorAll(".gallery-slider .slides a");
+const slides = document.querySelector('.gallery-slider .slides');
+const slideLinks = document.querySelectorAll('.gallery-slider .slides a');
 const slideCount = slideLinks.length;
-let currentIndex = 1; // 从第1张真实图开始
-const caption = document.querySelector(".gallery-caption");
+let currentIndex = 1;
+const caption = document.querySelector('.gallery-caption');
 
 // 获取标题
 const titles = Array.from(slideLinks).map(link => {
-  const img = link.querySelector("img");
-  return img ? img.alt || "Untitled Project" : "Untitled Project";
+  const img = link.querySelector('img');
+  return img ? img.alt || 'Untitled Project' : 'Untitled Project';
 });
 
-// 克隆第一张和最后一张，实现无缝轮播
+// 克隆第一张和最后一张
 const firstClone = slideLinks[0].cloneNode(true);
 const lastClone = slideLinks[slideCount - 1].cloneNode(true);
 slides.insertBefore(lastClone, slides.firstChild);
 slides.appendChild(firstClone);
 
 // 初始化位置
-slides.style.transition = "none";
+slides.style.transition = 'none';
 slides.style.transform = `translateX(-${currentIndex * 100}%)`;
 setTimeout(() => {
-  slides.style.transition = "transform 0.8s ease-in-out";
+  slides.style.transition = 'transform 0.8s ease-in-out';
 }, 50);
 
-// 更新 caption
+// 更新 caption（✅ 同样直跳 folder）
 function updateCaption(index) {
   const realIndex = (index - 1 + slideCount) % slideCount;
   caption.textContent = titles[realIndex];
 
   const projectLink = slideLinks[realIndex];
 
-  // ✅ special 项目使用 folder
-  if (projectLink.dataset.special === "true" && projectLink.dataset.folder) {
+  if (projectLink.dataset.folder) {
     caption.onclick = () => {
-      window.location.href = `${projectLink.dataset.folder}/project.html`;
+      window.location.href = projectLink.dataset.folder.endsWith('/')
+        ? projectLink.dataset.folder
+        : projectLink.dataset.folder + '/';
     };
   } else {
-    caption.onclick = () => {
-      window.location.href = projectLink.href;
-    };
+    caption.onclick = null;
   }
 }
 
 // 过渡动画控制
 function showSlide(index) {
-  slides.style.transition = "transform 0.8s ease-in-out";
+  slides.style.transition = 'transform 0.8s ease-in-out';
   slides.style.transform = `translateX(-${index * 100}%)`;
   updateCaption(index);
 }
 
-// 过渡结束处理无缝跳转
-slides.addEventListener("transitionend", () => {
+// 无缝轮播处理
+slides.addEventListener('transitionend', () => {
   if (currentIndex === 0) {
-    slides.style.transition = "none";
+    slides.style.transition = 'none';
     currentIndex = slideCount;
     slides.style.transform = `translateX(-${currentIndex * 100}%)`;
   } else if (currentIndex === slideCount + 1) {
-    slides.style.transition = "none";
+    slides.style.transition = 'none';
     currentIndex = 1;
     slides.style.transform = `translateX(-${currentIndex * 100}%)`;
   }
 });
 
-// 下一张、上一张
+// 下一张 / 上一张
 function nextSlide() {
   if (currentIndex >= slideCount + 1) return;
   currentIndex++;
@@ -159,15 +154,17 @@ function prevSlide() {
 let autoSlide = setInterval(nextSlide, 5000);
 
 // 箭头事件
-document.querySelector(".gallery-slider .arrow.right").addEventListener("click", () => {
-  nextSlide();
-  clearInterval(autoSlide);
-});
-document.querySelector(".gallery-slider .arrow.left").addEventListener("click", () => {
-  prevSlide();
-  clearInterval(autoSlide);
-});
+document.querySelector('.gallery-slider .arrow.right')
+  .addEventListener('click', () => {
+    nextSlide();
+    clearInterval(autoSlide);
+  });
+
+document.querySelector('.gallery-slider .arrow.left')
+  .addEventListener('click', () => {
+    prevSlide();
+    clearInterval(autoSlide);
+  });
 
 // 初始化 caption
 updateCaption(currentIndex);
-
