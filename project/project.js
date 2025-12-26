@@ -242,3 +242,4 @@ function enableLightbox() {
 }
 
 window.addEventListener("resize", adjustProjectImage);
+
