@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Furniture Gallery</title>
+
+  <!-- header -->
+  <link rel="stylesheet" href="/header/header.css">
+  <link rel="icon" type="image/x-icon" href="/header/favicon.ico">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #fff;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* =========================
+       标题
+    ========================= */
+    .gallery-title {
+      max-width: 985px;
+      margin: 40px auto 20px auto;
+      padding: 0 20px;
+      font-size: 18px;
+      font-weight: normal;
+      color: #2e2e2e;
+      letter-spacing: 0.5px;
+    }
+
+    /* =========================
+       外层：与 project 同宽
+    ========================= */
+    .gallery-wrapper {
+      max-width: 985px;
+      margin: 0 auto 80px auto;
+      padding: 0 20px;
+    }
+
+    .gallery-container {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    /* =========================
+       左侧 thumbnails（两列）
+    ========================= */
+    .thumbnails {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 5px;
+      width: 200px;
+      flex-shrink: 0;
+    }
+
+    .thumbnails img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
+    }
+
+    .thumbnails img:hover,
+    .thumbnails img.active {
+      opacity: 1;
+    }
+
+    /* =========================
+       右侧主图
+    ========================= */
+    .main-image {
+      flex: 1;
+    }
+
+    .main-image img {
+      width: 100%;
+      height: 625px;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+      background: #fff;
+    }
+
+    /* =========================
+       手机响应式
+    ========================= */
+    @media (max-width: 768px) {
+      .gallery-container {
+        flex-direction: column;
+      }
+
+      .thumbnails {
+        width: 100%;
+        grid-template-columns: repeat(6, 1fr);
+        margin-bottom: 15px;
+      }
+
+      .thumbnails img {
+        height: 50px;
+        aspect-ratio: auto;
+      }
+
+      .main-image img {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header id="header-placeholder"></header>
+
+  <!-- 标题 -->
+  <h1 class="gallery-title" id="gallery-title"></h1>
+
+  <main class="gallery-wrapper">
+    <div class="gallery-container">
+      <div class="thumbnails" id="thumbnails"></div>
+
+      <div class="main-image">
+        <img id="main-img" src="" alt="">
+      </div>
+    </div>
+  </main>
+
+  <!-- header -->
+  <script src="/header/header.js"></script>
+
+  <!-- gallery logic -->
+  <script>
+    // 当前文件夹名（furniture 名称）
+    const currentFolder = window.location.pathname
+      .split('/')
+      .filter(Boolean)
+      .pop();
+
+    fetch('/homepage/furniture-thumbnails.json')
+      .then(res => res.json())
+      .then(data => {
+        const project = data.find(p =>
+          p.id === currentFolder || p.folder.endsWith(currentFolder)
+        );
+
+        if (!project || !project.images || project.images.length === 0) {
+          console.error('No images found:', currentFolder);
+          return;
+        }
+
+        const thumbs = document.getElementById('thumbnails');
+        const mainImg = document.getElementById('main-img');
+        const titleEl = document.getElementById('gallery-title');
+
+        /* =========================
+           设置标题（页面 + 浏览器 tab）
+        ========================= */
+        titleEl.textContent = project.title;
+        document.title = project.title;
+
+        function showImage(index) {
+          mainImg.src = project.images[index];
+          thumbs.querySelectorAll('img').forEach((img, i) => {
+            img.classList.toggle('active', i === index);
+          });
+        }
+
+        // 生成 thumbnails
+        project.images.forEach((src, i) => {
+          const img = document.createElement('img');
+          img.src = src;
+          img.addEventListener('click', () => showImage(i));
+          if (i === 0) img.classList.add('active');
+          thumbs.appendChild(img);
+        });
+
+        // 默认显示第一张
+        showImage(0);
+      })
+      .catch(err => console.error('Gallery load error:', err));
+  </script>
+</body>
+</html>

@@ -189,12 +189,17 @@ function renderMetaAndText(project, text) {
 // Killer Images 調整
 // ===============================
 function adjustProjectImage() {
-  const images = document.querySelectorAll(".project-image");
+  const images = document.querySelectorAll(".project-image"); // 只选 Killer Images
   if (!images.length) return;
 
   images.forEach(img => {
-    const topContentHeight = img.offsetTop;
-    img.style.marginTop = topContentHeight < 900 ? (940 - topContentHeight) + "px" : "50px";
+    // 不要动态增加 margin，或者只在桌面端
+    if (window.innerWidth > 768) {
+      const topContentHeight = img.offsetTop;
+      img.style.marginTop = topContentHeight < 900 ? (940 - topContentHeight) + "px" : "50px";
+    } else {
+      img.style.marginTop = "20px"; // 手机端固定小 margin
+    }
   });
 }
 
