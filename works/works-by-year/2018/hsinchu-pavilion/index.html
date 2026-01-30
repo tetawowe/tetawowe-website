@@ -153,6 +153,13 @@
   user-select: none;
 }
 
+/* Lightbox 可点击图片鼠标变成手指 */
+.project-first-image,
+.project-image,
+.gallery-main {
+  cursor: pointer;
+}
+
     /* 小屏幕时上下堆叠 */
         @media (max-width: 768px) {
   #meta-text-wrapper {
@@ -274,7 +281,7 @@
 
     <!-- 001 封面 -->
     <div id="project-first-image">
-      <img src="001.jpg" alt="Hsinchu Pavilion — Cover">
+      <img src="001.jpg" class="project-first-img" alt="Hsinchu Pavilion — Cover">
     </div>
 
     <!-- meta + 主描述 -->
@@ -302,7 +309,7 @@
     <!-- 004 特殊中英文说明 -->
     <section id="special-004">
       <div class="special-block">
-        <img src="004-1.jpg" alt="004-1">
+        <img src="004-1.jpg" class="project-image" alt="004-1">
         <div class="special-text-wrapper">
           <div class="special-text-cn">
             <strong>[核]</strong> - 帶有多重意義; 它既是core - value, 也是nucleus - basic structure 和 seed - 催生 / 衍生。<br>
@@ -327,7 +334,7 @@
       </div>
 
       <div class="special-block">
-        <img src="004-2.jpg" alt="004-2">
+        <img src="004-2.jpg" class="project-image" alt="004-2">
         <div class="special-text-wrapper">
                     <div class="special-text-cn">
             ​‘機會難得，應該做些我們相信的architecture,<br>
@@ -349,7 +356,7 @@
       </div>
 
       <div class="special-block">
-        <img src="004-3.jpg" alt="004-3">
+        <img src="004-3.jpg" class="project-image" alt="004-3">
         <div class="special-text-wrapper">
                               <div class="special-text-cn">
             ‘我們就做一個最簡單的房子，給核心家庭。<br>
@@ -371,7 +378,7 @@
       </div>
 
       <div class="special-block">
-        <img src="004-4.jpg" alt="004-4">
+        <img src="004-4.jpg" class="project-image" alt="004-4">
         <div class="special-text-wrapper">
           <div class="special-text-cn">
             ‘如果說實建築是上聯，那虛建築就是下聯。虛空間和實空間在這案子是對等的。窩工房處理實建築，ArchiBlur處理虛建築。於是我們兩個團隊於兩地(台灣和馬來西亞)各別發展自己的那一塊，整個設計案就像是個設計上的對話，接力和角力。’<br><br><br>
@@ -437,28 +444,36 @@
   renderGallery(images);
 
   // Lightbox 功能 - 所有大图
-  function enableLightbox() {
-    const lightbox = document.getElementById("lightbox");
-    const lightboxImg = lightbox.querySelector("img");
+function enableLightbox() {
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = lightbox.querySelector("img");
+  const closeBtn = document.getElementById("lightbox-close");
 
-    // 选择所有大图
-    const allBigImages = document.querySelectorAll(
-      "#project-first-image img, .project-image, .special-block img, .gallery-main"
-    );
+  // 选取所有大图图片
+const allImgs = document.querySelectorAll(".project-first-img, .project-image, .gallery-main");
 
-    allBigImages.forEach(img => {
-      img.style.cursor = "pointer";
-      img.addEventListener("click", () => {
-        lightboxImg.src = img.src;
-        lightbox.style.display = "flex";
-      });
-    });
+allImgs.forEach(img => {
+  img.style.cursor = "pointer";  // 可选：鼠标变手指
+  img.addEventListener("click", () => {
+    lightboxImg.src = img.src;
+    lightbox.style.display = "flex";
+  });
+});
 
-    // 点击背景关闭
-    lightbox.addEventListener("click", (e) => {
-      if (e.target === lightbox) lightbox.style.display = "none";
-    });
-  }
+  // 点击背景关闭
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) lightbox.style.display = "none";
+  });
+
+  // 点击右上角 X 关闭
+  closeBtn.addEventListener("click", () => {
+    lightbox.style.display = "none";
+  });
+}
+
+
+
+
   enableLightbox();
 
 function adjustProjectImage() {
