@@ -1,24 +1,760 @@
-<!DOCTYPE html>
-<html lang="zh-Hans">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project</title>
-  <link rel="stylesheet" href="/header/header.css">
-  <link rel="stylesheet" href="/project/project.css">
-  <link rel="icon" type="image/x-icon" href="/header/favicon.ico">
-</head>
-<body>
-  <header id="header-placeholder"></header>
+  <!DOCTYPE html>
+  <html lang="zh-Hans">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="../../../../header/favicon.ico">
+    <title>Kluang Heritage Railway Linear Park</title>
 
-<main id="project-container">
-  <div id="project-first-image"></div>
-  <div id="project-meta"></div>
-  <div id="project-text"></div>
-  <div id="project-images"></div>
-</main>
+    <!-- header.css 和 header.js -->
+    <link rel="stylesheet" href="../../../../header/header.css">
 
-  <script src="/header/header.js"></script>
-  <script src="/project/project.js"></script>
-</body>
-</html>
+    <!-- 复用 project.css -->
+    <link rel="stylesheet" href="../../../../project/project.css">
+
+    <!-- special 项目的覆盖样式 -->
+    <style>
+  #meta-text-wrapper {
+    display: flex;
+    gap: 25px;                  /* 左右间距 */
+    align-items: flex-start;    /* 顶部对齐 */
+    margin: 15px auto;
+    max-width: 965px;           /* 和图片同宽 */
+  }
+
+  #project-meta {
+    width: 305px;
+    display: grid;
+    grid-template-columns: 125px 1fr; /* 左侧固定 85px，右侧自适应 */
+    gap: 8px 0;                      /* 行间距 */
+    font-size: 14px;
+    color: #525252; 
+    line-height: 1.4;
+    flex-shrink: 0;  /* 阻止压缩 */
+  }
+
+  #project-meta h2 {
+    grid-column: 1 / -1;  /* 标题独占整行 */
+    margin-top: 0;
+    margin-bottom: 0px;
+    font-size: 16px;
+    color: #2e2e2e;
+  }
+
+  #project-meta .label {
+    font-weight: bold;
+    color: #525252;
+  }
+
+  #project-meta .value {
+    padding-left: 0; /* 保证和 label 分开 */
+  }
+
+  /* 右侧 description */
+  #project-text {
+    font-size: 14px;
+    flex: 1;
+    color: #333;
+    line-height: 1.6;
+    white-space: pre-line; /* 保留换行 */
+    margin-top: 28px; /* 根据需要调整距离 */
+  }
+
+  /* =========================
+    slider
+  ========================= */
+  #project-first-slider {
+    max-width: 965px;
+    width: 100%;
+    height: 575px; /* 保持原封面尺寸 */
+    margin: 0 auto 0px auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slider-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .slider-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  .slider-img.active {
+    opacity: 1;
+    z-index: 2;
+  }
+
+  .slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 40px;
+    color: #acacac81;
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+    z-index: 3;
+  }
+
+  .slider-arrow.left {
+    left: 10px;
+  }
+
+  .slider-arrow.right {
+    right: 10px;
+  }
+
+  #project-first-slider:hover .slider-arrow {
+    opacity: 1;
+  }
+
+  /* =========================
+   Gallery 主图 & 缩略图
+========================= */
+
+
+/* gallery 容器 */
+#project-gallery {
+  max-width: 965px;
+  margin: 30px auto; /* 可调整与上方内容间距 */
+}
+
+/* gallery 主图包裹层（新增） */
+#project-gallery .gallery-main-wrapper {
+  position: relative;
+  max-width: 965px;
+  margin: 0 auto;
+}
+
+/* 主图 */
+#project-gallery .gallery-main {
+  width: 100%;
+  max-width: 965px;
+  height: 625px;         /* 固定高度 */
+  object-fit: cover;     /* 居中裁剪 */
+  object-position: center;
+  margin-bottom: 0px;
+}
+
+/* 缩略图容器：最多两行，每行 8 张 */
+#project-gallery .gallery-thumbs {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 8px;
+  max-width: 965px;
+  margin: 0 auto;
+  margin-top: 0px;
+  margin-bottom: -25px;
+}
+
+/* 缩略图 */
+#project-gallery .gallery-thumb {
+  width: 100%;
+  height: 80px;         /* 固定高度 */
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.7;
+}
+
+/* Gallery arrows */
+#project-gallery .gallery-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 40px;
+  color: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  user-select: none;
+  padding: 10px;
+  z-index: 5;
+}
+
+#project-gallery .gallery-arrow.left {
+  left: 10px;
+}
+
+#project-gallery .gallery-arrow.right {
+  right: 10px;
+}
+
+
+/* hover 效果 */
+#project-gallery .gallery-thumb:hover {
+  opacity: 1;
+}
+
+/* active 效果 */
+#project-gallery .gallery-thumb.active {
+  opacity: 1;
+}
+
+/* middle-description */
+#project-gallery .middle-description {
+  max-width: 965px;
+  margin: 0 auto 25px auto;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  white-space: pre-line;
+}
+
+
+
+  /* Lightbox 樣式 */
+  #lightbox {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.9);
+    align-items: center;
+    justify-content: center;
+  }
+  #lightbox img.lightbox-img {
+    max-width: 90%;
+    max-height: 90%;
+    box-shadow: 0 0 20px #000;
+  }
+  #lightbox .lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    font-size: 40px;
+    color: #fff;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* =========================
+   Image + Text 左右排版
+========================= */
+.image-text-row {
+  max-width: 965px;
+  margin: -50px auto;          /* 控制每一组之间的距离 */
+  display: flex;
+  gap: 5px;                  /* 图片与文字的间距 */
+  align-items: flex-start;
+}
+
+/* 左侧图片 */
+.image-text-row .image-col {
+  flex: 0 0 43%;              /* 图片占比 */
+}
+
+.image-text-row .image-col img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 右侧文字 */
+.image-text-row .text-col {
+  flex: 1;
+}
+
+.image-text-row .middle-description {
+      text-align: left;
+      margin-left: 25px;
+      color: #555;
+      word-break: break-word;
+      margin-top: 35px;
+      margin-bottom: 35px;
+}
+
+/* =========================
+ Portrait Gallery Slider
+========================= */
+#portrait-gallery {
+  max-width: 965px;
+  margin: 120px auto;
+}
+
+/* 主图 */
+.portrait-main {
+  position: relative;
+  width: 100%;
+  height: 600px;              /* 关键：portrait 高度 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  overflow: hidden;
+  margin-top: -75px;
+}
+
+.portrait-main img {
+  height: 100%;
+  width: auto;                /* 维持竖向比例 */
+  object-fit: contain;
+}
+
+/* 箭头 */
+.portrait-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 40px;
+  color: rgba(0,0,0,0.35);
+  cursor: pointer;
+  user-select: none;
+  padding: 10px;
+}
+
+.portrait-arrow.left { left: 10px; }
+.portrait-arrow.right { right: 10px; }
+
+/* thumbnails */
+.portrait-thumbs {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 8px;
+  margin-top: 25px;
+}
+
+#portrait-gallery .portrait-thumb {
+  width: 100%;
+  height: 75px;                /* 比 80px 略高，呼应竖图 */
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.7;
+}
+
+#portrait-gallery .portrait-thumb:hover,
+#portrait-gallery .portrait-thumb.active {
+  opacity: 1;
+}
+
+      /* 小屏幕时上下堆叠 */
+      @media (max-width: 768px) {
+        #meta-text-wrapper {
+          flex-direction: column;
+          gap: 16px;
+        }
+
+        .special-text-wrapper {
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .special-text-en {
+          text-align: left;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header id="header-placeholder"></header>
+
+    <main id="project-container" class="special-main">
+
+      <!-- 001–005 Slider -->
+  <div id="project-first-slider">
+    <div class="slider-wrapper">
+      <img src="001.jpg" class="slider-img active" alt="Slide 1">
+      <img src="002.jpg" class="slider-img" alt="Slide 2">
+      <img src="003.jpg" class="slider-img" alt="Slide 3">
+      <img src="004.jpg" class="slider-img" alt="Slide 4">
+      <img src="005.jpg" class="slider-img" alt="Slide 5">
+      
+      <!-- 左右箭头 -->
+      <span class="slider-arrow left">&#10094;</span>
+      <span class="slider-arrow right">&#10095;</span>
+    </div>
+  </div>
+
+      <!-- meta + 主描述 -->
+      <div id="meta-text-wrapper">
+        <div id="project-meta">
+          <h2>Klang River Festival 2025</h2>
+          <div class="label">Year</div><div class="value">2025</div>
+          <div class="label">Type</div><div class="value">Placemaking</div>
+          <div class="label">Team</div><div class="value">Tey Tat Sing <br> Wong Wei Ping <br> Goh Zhou Jayne <br> Wong Jie Shan <br> Chairil Danish Bin Fazzrudin <br> Scarlet Koon Si Qi (KongsiKL) <br> Guma Sylvester Makajil (KongsiKL) </div>
+          <div class="label">Location</div><div class="value">Klang River</div>
+          <div class="label">Collaboration</div><div class="value">KongsiKL</div>
+        </div>
+
+        <div id="project-text" style="margin-top:0px;">
+        Klang River Festival (KRF) is an annual open festival, presented by KongsiKL, aiming to bring local communities and stakeholders together to share knowledge and facilitate discourse on heritage, culture and identity of rivers.
+
+Recognising the transient and ever-changing nature of the locales along the Klang River and its tributaries, the festival highlights the river's importance as a source for transportation, fresh water, food, agriculture, and religious rituals through three pillars - People, Habitat, and Culture.
+
+Serving as an open platform, KRF unites individuals, NGOs, government agencies, and private sectors to pursue sustainable socio-ecological benefits, creating equilibrium between the needs, desires, and priorities of various stakeholders in an urban intervention. This ensures that no single group dominates the decision-making process, fostering fair, inclusive, and sustainable urban development.
+
+More than just a festival, Klang River Festival calls on people to reminisce, revisit and rekindle their sense of belonging and nostalgia with the Klang River all year round, through activations, activities, events, workshops and more. By reclaiming spatial agency along the riverside, the locals are empowered as spatial operators, fostering a sense of belonging and responsibility for the river.
+
+The long term goal of Klang River Festival  is to create a Klang River network, one that unites the communities centered around the riverside. With a 10-year road map set out, KRF hopes to bring the communities closer together, with the river as its guiding path, creating a new Klang River network.
+  
+        </div>
+      </div>
+
+      <!-- 006–013 Gallery -->
+<div id="project-gallery" class="gallery-wrapper">
+
+  <!-- 主图 + 箭头 -->
+  <div class="gallery-main-wrapper">
+    <span class="gallery-arrow left">&#10094;</span>
+    <img id="gallery-main" class="gallery-main" src="006.jpg" alt="Gallery Main">
+    <span class="gallery-arrow right">&#10095;</span>
+  </div>
+
+  <!-- 缩略图 -->
+  <div class="gallery-thumbs">
+    <img src="006.jpg" class="gallery-thumb active" data-index="0">
+    <img src="007.jpg" class="gallery-thumb" data-index="1">
+    <img src="008.jpg" class="gallery-thumb" data-index="2">
+    <img src="009.jpg" class="gallery-thumb" data-index="3">
+    <img src="010.jpg" class="gallery-thumb" data-index="4">
+    <img src="011.jpg" class="gallery-thumb" data-index="5">
+    <img src="012.jpg" class="gallery-thumb" data-index="6">
+    <img src="013.jpg" class="gallery-thumb" data-index="7">
+  </div>
+
+</div>
+
+<!-- Gallery 下方文字 -->
+<div class="middle-description">
+  When we first approached the riverside, the tranquil and serene riverscape gave a sense of calm amidst the bustling urban environment. Despite being next to two major roads, Old Klang Road and New Pantai Expressway, the riverside felt unusually calm. 
+  
+  The locals have long understood the nature of the river and its power, when the area was constantly under threat of floods. Through interventions and infrastructure upgrades, floodings have become few and far between.
+  
+  As we walk along the riverside, one constant thought comes to mind: “What can we do here to make it more pleasing for everyone?” The idea of a linear river park springs to mind. 
+
+In our research of the current 
+
+<strong>Act!vating</strong>
+
+<span style="color:#888888; font-style: italic;">
+  *the 2021 floods were a rare occurrence when rainfall were abnormally high
+</span>
+Taking the different layers of the site as it is, the past and present are uncovered and recovered, exposing and regenerating the existence of human intervention.
+
+Through uncovering the layers and palimpsests.
+</div>
+
+    <div id="project-images">
+      <img class="project-image" style="margin-top: 100px;" src="014.png" alt="014 — map">
+      <div class="middle-description" style="margin-top: -25px; margin-bottom: 50px;">
+  Walking along the riverside, we envisioned the river as a shared space for all. Its edges and structures adapt to changing programs, allowing spatial operators to shape and activate the river’s margins. Inspired by Bernard Tschumi’s follies at Parc de la Villette, the River Acrobats function as organisational points along the river—repetitive yet distinct, guiding visitors and anchoring a sense of place without fixed programs.
+
+Reimagined as guardians of the riverside, each acrobat carries memories of past river-based activities and trades, from rubber smokehouses and fishing to jetties, dobi, and childhood play. Constructed from materials collected on site, they reconstruct fragments of the river’s history. Through their ability to morph and hold space, the River Acrobats transform the riverside into a living archive of memory and meaning.
+</div>
+    </div>
+
+<div class="image-text-row">
+  <div class="image-col">
+    <img class="project-image" src="015.jpg" alt="015 — rubber">
+    
+  </div>
+
+
+
+  <div class="text-col">
+    <div class="middle-description" style="margin-top: 50px;">
+      <strong>[Rubber Smokehouse]</strong>
+      Rubber used to be the main export for Malaya, and many rubber plantations and smokehouses were located along the riverside at the outskirts of the city, utilising the river as the transport route. One such rubber smokehouse was located along Old Klang Road, before being demolished in 2018. 
+
+The smokehouse was a significant part of the rubber industry. Workers hung the rubber sheets high on a bamboo pole and fumigated it with fire inside the smokehouse. In between, the rubber sheets are turned to ensure it is evenly smoked and golden, and it is ready to be sold to processors to make other rubber products.
+
+The acrobat carries the memories of the past, shouldering the rubber sheets within itself, gently swaying in the wind. 
+
+
+    </div>
+  </div>
+</div>
+
+<div class="image-text-row">
+  <div class="image-col">
+    <img class="project-image" src="017.jpg" alt="017 — jetty">
+  </div>
+
+  <div class="text-col">
+    <div class="middle-description" style="margin-top: 75px;">
+      <strong>[The Jetty]</strong>
+      As the highway of the past, rivers were the main trading route for inland towns, creating a river network that was important for the livelihoods of the towns. Jetties were important trading hubs, with markets and shops set up around the jetty. One famous example is Central Market, which was located near Masjid Jamek before moving to its current location. 
+
+Many of these jetties are gone in urban townships, and with it our connection to the riverside. We want to reestablish the connection with our rivers, extending our arms into the river, connecting once again with our nature.
+
+The acrobat sits atop a concrete ledge, extending towards the river. Various items such as tools and baskets remind us of the trades of days past. 
+
+</div>
+  </div>
+</div>
+
+<div class="image-text-row">
+  <div class="image-col">
+    <img class="project-image" src="018.jpg" alt="018 — anglers">
+  </div>
+
+  <div class="text-col">
+    <div class="middle-description" style="margin-top: 115px;">
+      <strong>[Angler’s Deck]</strong>
+     Fishing is a daily hobby of the locals, with many of the local residents fishing under the highway. We joined the anglers on their fishing, seeing the river and nature as a resource for our consumption. Yet we wondered as we looked down into the river at the fishes, what do the fishes see and think?
+
+Turning our point of view, we reimagined our place by the river to one underneath our river, with the fishes swimming above us. It is the fishes that look at us, thinking “why don’t you join me in the water?” 
+
+</div>
+  </div>
+</div>
+
+<div class="image-text-row">
+  <div class="image-col">
+    <img class="project-image" src="016.jpg" alt="016 — children">
+  </div>
+
+  <div class="text-col">
+    <div class="middle-description" style="margin-top: 85px;">
+      <strong>[Fortress of Play]</strong>
+      One day after a site walk, we saw the children from PPR Seri Anggerik and Taman Hock Ann playing by the busy road. The lack of open space meant that there was no safe space for the children to play and spend time in. The riverside provides a good opportunity for play spaces amongst nature.
+
+Like a blanket fort, the acrobat transforms into a fortress of play, sheltering the children, and creating a safe space for them to be children. The children are also able to express themselves with the blank canvases, not only through play, but also through communal creation.
+
+</div>
+  </div>
+</div>
+
+<div class="image-text-row">
+  <div class="image-col">
+    <img class="project-image" src="019.jpg" alt="019 — dobi">
+  </div>
+
+  <div class="text-col">
+    <div class="middle-description" style="margin-top: 65px;">
+      <strong>[Dobi]</strong>
+      Another long forgotten trade by the river are the dhobi wallahs (washers). The dhobis soaked and washed along the river, slapped the laundry against washstones, and hung them on lines to dry. Once a lucrative trade, many are lost to time, with only a handful still operating in wooden structures by the river. The rivers too have become too polluted to be used for washing.
+
+Evoking the colourful and varied washing that happened by the rivers, the acrobat extends itself to different corners along the river, even across the bank. It collects the clothes of the neighbours, displaying the washing proudly. It shows within itself a lost trade, frozen in time.
+
+</div>
+  </div>
+</div>
+
+<!-- =========================
+ Portrait Gallery Slider
+========================= -->
+<div id="portrait-gallery">
+
+  <!-- 主图区域 -->
+  <div class="portrait-main">
+    <span class="portrait-arrow left">&#10094;</span>
+    <img id="portrait-main-img" src="020.jpg" alt="Portrait 020">
+    <span class="portrait-arrow right">&#10095;</span>
+  </div>
+
+  <!-- 缩略图 -->
+  <div class="portrait-thumbs">
+    <!-- 020–035 -->
+    <img src="020.jpg" class="portrait-thumb active" data-index="0">
+    <img src="021.jpg" class="portrait-thumb" data-index="1">
+    <img src="022.jpg" class="portrait-thumb" data-index="2">
+    <img src="023.jpg" class="portrait-thumb" data-index="3">
+    <img src="024.jpg" class="portrait-thumb" data-index="4">
+    <img src="025.jpg" class="portrait-thumb" data-index="5">
+    <img src="026.jpg" class="portrait-thumb" data-index="6">
+    <img src="027.jpg" class="portrait-thumb" data-index="7">
+    <img src="028.jpg" class="portrait-thumb" data-index="8">
+    <img src="029.jpg" class="portrait-thumb" data-index="9">
+    <img src="030.jpg" class="portrait-thumb" data-index="10">
+    <img src="031.jpg" class="portrait-thumb" data-index="11">
+    <img src="032.jpg" class="portrait-thumb" data-index="12">
+    <img src="033.jpg" class="portrait-thumb" data-index="13">
+    <img src="034.jpg" class="portrait-thumb" data-index="14">
+    <img src="035.jpg" class="portrait-thumb" data-index="15">
+  </div>
+
+</div>
+
+
+    </main>
+
+    <script src="../../../../header/header.js">  </script>
+
+      <script>
+  const sliderImgs = document.querySelectorAll("#project-first-slider .slider-img");
+  const leftArrow = document.querySelector("#project-first-slider .slider-arrow.left");
+  const rightArrow = document.querySelector("#project-first-slider .slider-arrow.right");
+
+  let current = 0;
+  let interval = 4000; // 4.5 秒
+  let sliderTimer;
+
+  // 显示指定索引
+  function showSlide(index) {
+    sliderImgs.forEach((img, i) => {
+      img.classList.toggle("active", i === index);
+    });
+    current = index;
+  }
+
+  // 下一张
+  function nextSlide() {
+    let next = (current + 1) % sliderImgs.length;
+    showSlide(next);
+  }
+
+  // 上一张
+  function prevSlide() {
+    let prev = (current - 1 + sliderImgs.length) % sliderImgs.length;
+    showSlide(prev);
+  }
+
+  // 自动播放函数（先清除再启动，防止重复计时）
+  function startSlider() {
+    stopSlider(); // 防止多重计时器
+    sliderTimer = setInterval(nextSlide, interval);
+  }
+
+  // 停止自动播放
+  function stopSlider() {
+    clearInterval(sliderTimer);
+    sliderTimer = null;
+  }
+
+  // 初始化
+  startSlider();
+
+  // 鼠标悬停暂停，移开继续
+  const sliderContainer = document.querySelector("#project-first-slider");
+  sliderContainer.addEventListener("mouseenter", stopSlider);
+  sliderContainer.addEventListener("mouseleave", startSlider);
+
+  // 箭头点击切换
+  leftArrow.addEventListener("click", () => {
+    prevSlide();
+    startSlider(); // 点击后重新启动计时器
+  });
+
+  rightArrow.addEventListener("click", () => {
+    nextSlide();
+    startSlider(); // 点击后重新启动计时器
+  });
+
+
+/* =========================
+   Gallery Logic (006–013)
+========================= */
+
+const galleryImages = [
+  "006.jpg","007.jpg","008.jpg","009.jpg",
+  "010.jpg","011.jpg","012.jpg","013.jpg"
+];
+
+let galleryIndex = 0;
+
+const galleryMain = document.getElementById("gallery-main");
+const galleryThumbs = document.querySelectorAll(".gallery-thumb");
+const galleryLeft = document.querySelector("#project-gallery .gallery-arrow.left");
+const galleryRight = document.querySelector("#project-gallery .gallery-arrow.right");
+
+function updateGallery(index) {
+  galleryMain.src = galleryImages[index];
+  galleryThumbs.forEach(t => t.classList.remove("active"));
+  galleryThumbs[index].classList.add("active");
+  galleryIndex = index;
+}
+
+// thumbnails
+galleryThumbs.forEach(thumb => {
+  thumb.addEventListener("click", () => {
+    updateGallery(parseInt(thumb.dataset.index));
+  });
+});
+
+// arrows
+galleryLeft.addEventListener("click", () => {
+  let next = (galleryIndex - 1 + galleryImages.length) % galleryImages.length;
+  updateGallery(next);
+});
+
+galleryRight.addEventListener("click", () => {
+  let next = (galleryIndex + 1) % galleryImages.length;
+  updateGallery(next);
+});
+
+/* =========================
+ Portrait Gallery Logic
+========================= */
+const portraitImages = [
+  "020.jpg","021.jpg","022.jpg","023.jpg","024.jpg","025.jpg","026.jpg","027.jpg",
+  "028.jpg","029.jpg","030.jpg","031.jpg","032.jpg","033.jpg","034.jpg","035.jpg"
+];
+
+let portraitIndex = 0;
+
+const portraitMainImg = document.getElementById("portrait-main-img");
+const portraitThumbs = document.querySelectorAll(".portrait-thumb");
+const portraitLeft = document.querySelector(".portrait-arrow.left");
+const portraitRight = document.querySelector(".portrait-arrow.right");
+
+function updatePortrait(index) {
+  portraitMainImg.src = portraitImages[index];
+  portraitThumbs.forEach(t => t.classList.remove("active"));
+  portraitThumbs[index].classList.add("active");
+  portraitIndex = index;
+}
+
+portraitThumbs.forEach(thumb => {
+  thumb.addEventListener("click", () => {
+    updatePortrait(parseInt(thumb.dataset.index));
+  });
+});
+
+portraitLeft.addEventListener("click", () => {
+  let next = (portraitIndex - 1 + portraitImages.length) % portraitImages.length;
+  updatePortrait(next);
+});
+
+portraitRight.addEventListener("click", () => {
+  let next = (portraitIndex + 1) % portraitImages.length;
+  updatePortrait(next);
+});
+
+
+  // ===============================
+  // Lightbox 功能
+  // ===============================
+  function enableLightbox() {
+    if (!document.getElementById("lightbox")) {
+      const lightbox = document.createElement("div");
+      lightbox.id = "lightbox";
+      lightbox.innerHTML = `<span class="lightbox-close">&times;</span><img class="lightbox-img" src="" alt="lightbox">`;
+      document.body.appendChild(lightbox);
+
+      lightbox.addEventListener("click", e => {
+        if (e.target.id === "lightbox" || e.target.classList.contains("lightbox-close")) {
+          lightbox.style.display = "none";
+        }
+      });
+    }
+
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = lightbox.querySelector(".lightbox-img");
+
+    document.querySelectorAll("#project-first-image img, .project-image, .gallery-main").forEach(img => {
+      img.style.cursor = "pointer";
+      img.addEventListener("click", () => {
+        lightboxImg.src = img.src;
+        document.querySelectorAll(".gallery-thumb").forEach(t => t.classList.remove("active"));
+        lightbox.style.display = "flex";
+      });
+    });
+  }
+
+  window.addEventListener("resize", adjustProjectImage);
+    </script>
+  </body>
+  </html>
