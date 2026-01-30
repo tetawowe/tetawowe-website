@@ -212,30 +212,32 @@
 
 
 
-  /* Lightbox 樣式 */
-  #lightbox {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.9);
-    align-items: center;
-    justify-content: center;
-  }
-  #lightbox img.lightbox-img {
-    max-width: 90%;
-    max-height: 90%;
-    box-shadow: 0 0 20px #000;
-  }
-  #lightbox .lightbox-close {
-    position: absolute;
-    top: 20px;
-    right: 40px;
-    font-size: 40px;
-    color: #fff;
-    cursor: pointer;
-    user-select: none;
-  }
+    /* Lightbox 样式 */
+    #lightbox {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      align-items: center;
+      justify-content: center;
+    }
+    #lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+#lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  font-size: 40px;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+}
+
 
   /* =========================
    Image + Text 左右排版
@@ -343,6 +345,15 @@
   width: 100%;
   display: block;
   margin: 0px auto; /* 居中并留点间隔 */
+}
+
+/* Lightbox 可点击图片鼠标变成手指 */
+.slider-img,
+.project-image,
+.project-image1,
+.gallery-main,
+.portrait-main img {
+  cursor: pointer;
 }
 
     /* 小屏幕时上下堆叠 */
@@ -743,6 +754,11 @@ Evoking the colourful and varied washing that happened by the rivers, the acroba
 
 </div>
 
+  <div id="lightbox">
+    <span id="lightbox-close">&times;</span>
+  <img src="" alt="Lightbox Image">
+</div>
+
 
     </main>
 
@@ -889,35 +905,47 @@ portraitRight.addEventListener("click", () => {
 });
 
 
-  // ===============================
-  // Lightbox 功能
-  // ===============================
-  function enableLightbox() {
-    if (!document.getElementById("lightbox")) {
-      const lightbox = document.createElement("div");
-      lightbox.id = "lightbox";
-      lightbox.innerHTML = `<span class="lightbox-close">&times;</span><img class="lightbox-img" src="" alt="lightbox">`;
-      document.body.appendChild(lightbox);
+  // Lightbox 功能 - 所有大图
+function enableLightbox() {
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = lightbox.querySelector("img");
+  const closeBtn = document.getElementById("lightbox-close");
 
-      lightbox.addEventListener("click", e => {
-        if (e.target.id === "lightbox" || e.target.classList.contains("lightbox-close")) {
-          lightbox.style.display = "none";
-        }
-      });
-    }
-
-    const lightbox = document.getElementById("lightbox");
-    const lightboxImg = lightbox.querySelector(".lightbox-img");
-
-    document.querySelectorAll("#project-first-image img, .project-image, .gallery-main").forEach(img => {
-      img.style.cursor = "pointer";
-      img.addEventListener("click", () => {
-        lightboxImg.src = img.src;
-        document.querySelectorAll(".gallery-thumb").forEach(t => t.classList.remove("active"));
-        lightbox.style.display = "flex";
-      });
+  // 所有普通大图
+  const allImgs = document.querySelectorAll(".slider-img, .project-image, .project-image1, .gallery-main");
+  
+  allImgs.forEach(img => {
+    img.addEventListener("click", () => {
+      lightboxImg.src = img.src;
+      lightbox.style.display = "flex";
     });
-  }
+  });
+
+  // Portrait gallery 绑定容器
+  const portraitMain = document.querySelector(".portrait-main");
+  portraitMain.addEventListener("click", (e) => {
+    // 如果点击到箭头就不要触发
+    if (e.target.classList.contains("portrait-arrow")) return;
+
+    const img = portraitMain.querySelector("img");
+    lightboxImg.src = img.src;
+    lightbox.style.display = "flex";
+  });
+
+  // 点击背景关闭
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) lightbox.style.display = "none";
+  });
+
+  // 点击右上角 X 关闭
+  closeBtn.addEventListener("click", () => {
+    lightbox.style.display = "none";
+  });
+}
+
+
+
+  enableLightbox();
 
   window.addEventListener("resize", adjustProjectImage);
     </script>
