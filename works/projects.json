@@ -1544,7 +1544,9 @@
       "title": "Klang River Festival 2025",
       "year": "2025",
       "folder": "../works/works-by-year/2025/klang-river-festival-2025",
-      "images": [],
+      "images": [
+        "001.jpg"
+      ],
       "text": "text.txt",
       "type": "Placemaking",
       "team": "Tey Tat Sing, Wong Wei Ping, Wong Jie Shan, Goh Zhou Jayne, Chairil Danish, Scarlet Koon Si Qi (KRF), Guma (KRF)",
