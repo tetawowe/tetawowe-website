@@ -123,7 +123,6 @@
    Gallery 主图 & 缩略图
 ========================= */
 
-
 /* gallery 容器 */
 #project-gallery {
   max-width: 965px;
@@ -339,22 +338,188 @@
   opacity: 1;
 }
 
-      /* 小屏幕时上下堆叠 */
-      @media (max-width: 768px) {
-        #meta-text-wrapper {
-          flex-direction: column;
-          gap: 16px;
-        }
+.project-image1 {
+  max-width: 965px;
+  width: 100%;
+  display: block;
+  margin: 0px auto; /* 居中并留点间隔 */
+}
 
-        .special-text-wrapper {
-          flex-direction: column;
-          gap: 8px;
-        }
+    /* 小屏幕时上下堆叠 */
+        @media (max-width: 768px) {
+  #meta-text-wrapper {
+    flex-direction: column;
+  }
 
-        .special-text-en {
-          text-align: left;
-        }
-      }
+  #project-meta {
+    flex: none;
+    width: 100%;
+  }
+
+  #project-first-slider {
+  max-width: 965px;
+  width: 100%;
+  height: 285px;             /* 固定高度 */
+  object-fit: cover;         /* 超出部分裁剪 */
+  object-position: center;   /* 裁剪时居中 */
+  display: block;
+  margin: 0 auto 0px auto;
+}
+
+#project-meta {
+  width: 350px;
+  display: grid;
+  grid-template-columns: 125px 1fr; /* 左侧固定 85px，右侧自适应 */
+  gap: 8px 0;                      /* 行间距 */
+  font-size: 14px;
+  color: #525252; 
+  line-height: 1.1;
+  margin-left: 15px;
+  margin-top: -5px;
+}
+
+#project-meta h2 {
+  grid-column: 1 / -1;  /* 标题独占整行 */
+  margin-top: 0;
+  margin-bottom: 0px;
+  font-size: 16px;
+  color: #2e2e2e;
+}
+
+#project-text {
+  font-size: 14px;
+  flex: 1;
+  color: #333;
+  line-height: 1.6;
+  white-space: pre-line;
+  margin: -20px 15px 35px 15px; /* 左右留白15px，下方间距75px，上方为0 */
+}
+
+.project-image1 {
+  max-width: 965px;
+  width: 100%;
+  display: block;
+  margin-bottom: -50px;
+}
+
+
+.gallery-main {
+  width: 100%;
+  max-width: 965px;
+  height: 300px;         /* 固定高度 */
+  object-fit: cover;     /* 居中裁剪 */
+  object-position: center;
+}
+
+#project-gallery .gallery-main {
+  width: 100%;
+  max-width: 965px;
+  height: 300px;         /* 固定高度 */
+  object-fit: cover;     /* 居中裁剪 */
+  object-position: center;
+  margin-bottom: 0px;
+}
+
+/* 缩略图 */
+#project-gallery .gallery-thumb {
+  width: 100%;
+  height: 50px;         /* 固定高度 */
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.7;
+}
+
+/* 縮略圖容器：最多兩行，每行 7 張 */
+.gallery-thumbs {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  max-width: 965px;
+  margin: 0 auto;
+  margin-top: -8px;
+  margin-bottom: 50px;
+}
+
+/* 縮略圖 */
+.gallery-thumb {
+  width: 100%;
+  height: 20px;         /* 固定高度 */
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.7;
+}
+  .special-text-wrapper {
+    flex-direction: column; /* 上下堆叠 */
+    gap: 12px;              /* 可以调整上下间距 */
+  }
+
+  .special-text-cn,
+  .special-text-en {
+    margin: 0;               /* 去掉左右 margin */
+    max-width: 95%;         /* 占满宽度 */
+    margin: 35px 15px 0px 15px;
+  }
+
+  .portrait-main {
+  position: relative;
+  width: 100%;
+  height: 500px;              /* 关键：portrait 高度 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  overflow: hidden;
+  margin-top: -50px;
+}
+
+#portrait-gallery .portrait-thumb {
+  width: 100%;
+  height: 55px;                /* 比 80px 略高，呼应竖图 */
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.7;
+}
+
+/* 小屏幕：上下堆叠图片 + 文字 */
+  .image-text-row {
+    flex-direction: column;       /* 改成上下堆叠 */
+    align-items: center;          /* 图片水平居中 */
+    gap: 0px;                    /* 图片与文字间距可调整 */
+    margin: 20px auto;            /* 控制整体上下间距 */
+  }
+
+  /* 左侧图片占满宽度或保持比例 */
+  .image-text-row .image-col {
+    flex: 0 0 auto;               /* 不限制宽度 */
+    width: 70%;                  /* 或者 80%-90% 看你的设计 */
+  }
+
+  .image-text-row .image-col img {
+    width: 100%;                  /* 图片自适应容器宽度 */
+    height: auto;
+  }
+
+  /* 右侧文字全宽显示，并去掉左边 margin */
+  .image-text-row .text-col {
+    flex: 1;
+    width: 100%;
+    margin-top: -90px;
+  }
+
+  .image-text-row .middle-description {
+    margin-left: 0;               /* 去掉原来的左间距 */
+    text-align: left;             /* 保持文字左对齐 */
+  }
+
+    }
+
+
     </style>
   </head>
   <body>
@@ -447,8 +612,8 @@ Through uncovering the layers and palimpsests.
 </div>
 
     <div id="project-images">
-      <img class="project-image" style="margin-top: 100px;" src="014.png" alt="014 — map">
-      <div class="middle-description" style="margin-top: -25px; margin-bottom: 50px;">
+      <img class="project-image1" style="margin-top: 100px;" src="014.png" alt="014 — map">
+      <div class="middle-description" style="margin-bottom: 50px;">
   Walking along the riverside, we envisioned the river as a shared space for all. Its edges and structures adapt to changing programs, allowing spatial operators to shape and activate the river’s margins. Inspired by Bernard Tschumi’s follies at Parc de la Villette, the River Acrobats function as organisational points along the river—repetitive yet distinct, guiding visitors and anchoring a sense of place without fixed programs.
 
 Reimagined as guardians of the riverside, each acrobat carries memories of past river-based activities and trades, from rubber smokehouses and fishing to jetties, dobi, and childhood play. Constructed from materials collected on site, they reconstruct fragments of the river’s history. Through their ability to morph and hold space, the River Acrobats transform the riverside into a living archive of memory and meaning.
@@ -566,12 +731,12 @@ Evoking the colourful and varied washing that happened by the rivers, the acroba
     <img src="025.jpg" class="portrait-thumb" data-index="5">
     <img src="026.jpg" class="portrait-thumb" data-index="6">
     <img src="027.jpg" class="portrait-thumb" data-index="7">
-    <img src="028.JPG" class="portrait-thumb" data-index="8">
+    <img src="028.jpg" class="portrait-thumb" data-index="8">
     <img src="029.jpg" class="portrait-thumb" data-index="9">
-    <img src="030.JPG" class="portrait-thumb" data-index="10">
-    <img src="031.JPG" class="portrait-thumb" data-index="11">
-    <img src="032.JPG" class="portrait-thumb" data-index="12">
-    <img src="033.JPG" class="portrait-thumb" data-index="13">
+    <img src="030.jpg" class="portrait-thumb" data-index="10">
+    <img src="031.jpg" class="portrait-thumb" data-index="11">
+    <img src="032.jpg" class="portrait-thumb" data-index="12">
+    <img src="033.jpg" class="portrait-thumb" data-index="13">
     <img src="034.jpg" class="portrait-thumb" data-index="14">
     <img src="035.jpg" class="portrait-thumb" data-index="15">
   </div>
@@ -690,7 +855,7 @@ galleryRight.addEventListener("click", () => {
 ========================= */
 const portraitImages = [
   "020.jpg","021.jpg","022.jpg","023.jpg","024.jpg","025.jpg","026.jpg","027.jpg",
-  "028.JPG","029.jpg","030.JPG","031.JPG","032.JPG","033.JPG","034.jpg","035.jpg"
+  "028.jpg","029.jpg","030.jpg","031.jpg","032.jpg","033.jpg","034.jpg","035.jpg"
 ];
 
 let portraitIndex = 0;
