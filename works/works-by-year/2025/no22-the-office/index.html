@@ -294,7 +294,7 @@ Movement through the space is never direct; instead, it is shaped by pauses, tur
   <!-- 主图区域 -->
   <div class="portrait-main">
     <span class="portrait-arrow left">&#10094;</span>
-    <img id="portrait-main-img" src="007.jpg" alt="Portrait 020">
+    <img id="portrait-main-img" src="007.JPG" alt="Portrait 020">
     <span class="portrait-arrow right">&#10095;</span>
   </div>
 
@@ -418,8 +418,6 @@ allImgs.forEach(img => {
 
 function adjustProjectImage() {
   const images = document.querySelectorAll(".project-image");
-  if (!images.length) return;
-    // 手机直接跳过
   if (window.innerWidth <= 768) return;
 
   images.forEach(img => {
