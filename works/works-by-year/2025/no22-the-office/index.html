@@ -1,24 +1,443 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project</title>
-  <link rel="stylesheet" href="/header/header.css">
-  <link rel="stylesheet" href="/project/project.css">
-  <link rel="icon" type="image/x-icon" href="/header/favicon.ico">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="../../../../header/favicon.ico">
+  <title>No.22 The Office</title>
+
+  <!-- header.css 和 header.js -->
+  <link rel="stylesheet" href="../../../../header/header.css">
+
+  <!-- 复用 project.css -->
+  <link rel="stylesheet" href="../../../../project/project.css">
+
+  <!-- special 项目的覆盖样式 -->
+  <style>
+    /* meta + description 容器：左右并排，顶端对齐 */
+    #meta-text-wrapper {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;  /* 顶端对齐 */
+      margin: 24px auto;
+      max-width: 965px;
+      margin-top: 15px;   /* 强制顶端对齐 */
+    }
+
+    #project-meta {
+      flex: 0 0 200px;  /* 固定左栏宽度 */
+    }
+
+    #project-meta h2 {
+      margin: 0 0 0 0;
+    }
+
+    #project-text {
+      flex: 1;
+      margin-top: 0;   /* 强制顶端对齐 */
+      font-size: 14px;
+      line-height: 1.6;
+      margin-top: -21px; /* 数字可以自己调，比如 -4px, -8px */
+    }
+/* =========================
+ Portrait Gallery Slider
+========================= */
+#portrait-gallery {
+  max-width: 965px;
+  margin: 120px auto;
+}
+
+/* 主图 */
+.portrait-main {
+  position: relative;
+  width: 100%;
+  height: 900px;              /* 关键：portrait 高度 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  overflow: hidden;
+  margin-top: -75px;
+}
+
+.portrait-main img {
+  height: 100%;
+  width: auto;                /* 维持竖向比例 */
+  object-fit: contain;
+}
+
+/* 箭头 */
+.portrait-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 40px;
+  color: rgba(0,0,0,0.35);
+  cursor: pointer;
+  user-select: none;
+  padding: 10px;
+}
+
+.portrait-arrow.left { left: 10px; }
+.portrait-arrow.right { right: 10px; }
+
+/* thumbnails */
+.portrait-thumbs {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 8px;
+  margin-top: 25px;
+}
+
+#portrait-gallery .portrait-thumb {
+  width: 100%;
+  height: 75px;                /* 比 80px 略高，呼应竖图 */
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.7;
+}
+
+#portrait-gallery .portrait-thumb:hover,
+#portrait-gallery .portrait-thumb.active {
+  opacity: 1;
+}
+
+
+    /* Lightbox 样式 */
+    #lightbox {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      align-items: center;
+      justify-content: center;
+    }
+    #lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+#lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  font-size: 40px;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Lightbox 可点击图片鼠标变成手指 */
+.project-first-image,
+.project-image,
+.portrait-main img {
+  cursor: pointer;
+}
+
+/* middle-description */
+#project-gallery .middle-description {
+  max-width: 965px;
+  margin: 0 auto 25px auto;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  white-space: pre-line;
+}
+
+    /* 小屏幕时上下堆叠 */
+        @media (max-width: 768px) {
+  #meta-text-wrapper {
+    flex-direction: column;
+  }
+
+  #project-meta {
+    flex: none;
+    width: 100%;
+  }
+
+  #project-first-image img {
+  max-width: 965px;
+  width: 100%;
+  height: 285px;             /* 固定高度 */
+  object-fit: cover;         /* 超出部分裁剪 */
+  object-position: center;   /* 裁剪时居中 */
+  display: block;
+  margin: 0 auto 0px auto;
+}
+
+#project-meta {
+  width: 350px;
+  display: grid;
+  grid-template-columns: 125px 1fr; /* 左侧固定 85px，右侧自适应 */
+  gap: 8px 0;                      /* 行间距 */
+  font-size: 14px;
+  color: #525252; 
+  line-height: 1.1;
+  margin-left: 15px;
+  margin-top: -5px;
+}
+
+#project-meta h2 {
+  grid-column: 1 / -1;  /* 标题独占整行 */
+  margin-top: 0;
+  margin-bottom: 0px;
+  font-size: 16px;
+  color: #2e2e2e;
+}
+
+#project-text {
+  font-size: 14px;
+  flex: 1;
+  color: #333;
+  line-height: 1.6;
+  white-space: pre-line;
+  margin: -20px 15px 0px 15px; /* 左右留白15px，下方间距75px，上方为0 */
+}
+
+.project-image {
+  max-width: 965px;
+  width: 100%;
+  display: block;
+  margin: 0px auto; /* 居中并留点间隔 */
+}
+
+.middle-description {
+  max-width: 965px;
+  margin: 0px auto; /* 水平居中 + 上下间距 */
+  line-height: 1.6;
+  font-size: 14px;
+  padding: 0 20px;   /* 保证小屏幕也有左右留白 */
+  white-space: pre-line; /* 保持换行 */
+  margin-bottom: 50px;
+  margin-top: 50px;
+}
+
+
+  .portrait-main {
+  position: relative;
+  width: 100%;
+  height: 550px;              /* 关键：portrait 高度 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  overflow: hidden;
+  margin-top: -50px;
+}
+
+#portrait-gallery .portrait-thumb {
+  width: 100%;
+  height: 55px;                /* 比 80px 略高，呼应竖图 */
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.7;
+}
+    }
+    
+  </style>
 </head>
 <body>
   <header id="header-placeholder"></header>
 
-<main id="project-container">
-  <div id="project-first-image"></div>
-  <div id="project-meta"></div>
-  <div id="project-text"></div>
-  <div id="project-images"></div>
-</main>
+  <main id="project-container" class="special-main">
 
-  <script src="/header/header.js"></script>
-  <script src="/project/project.js"></script>
+    <!-- 001 封面 -->
+    <div id="project-first-image">
+      <img src="001.jpg" class="project-first-img" alt="Office — Cover">
+    </div>
+
+    <!-- meta + 主描述 -->
+    <div id="meta-text-wrapper">
+      <div id="project-meta">
+        <h2>No.22 The Office</h2>
+        <div class="label">Year</div><div class="value">2025</div>
+        <div class="label">Type</div><div class="value">Office</div>
+        <div class="label">Team</div><div class="value">Tetawowe</div>
+        <div class="label">Location</div><div class="value">Kuala Lumpur</div>
+        <div class="label">Photographer</div><div class="value">Lim Zhi Ru</div>
+      </div>
+
+      <div id="project-text">
+        <strong>This is where we work, where we design, and where we grow together.</strong><br>
+Closely connected to our former office through a series of discreet corridors, this space is built with an extensive use of reclaimed items, shaping the essential places for daily work.
+It nurtures both present and future designers, while carrying every step Tetawowe has taken since its founding, and the collective effort of everyone who has been part of this journey.
+      </div>
+    </div>
+
+    <!-- 002–003 普通图片 -->
+    <div id="project-images">
+      <img class="project-image" src="002.jpg" alt="002 — Office">
+      <img class="project-image" src="003.jpg" alt="003 — Office">
+      <img class="project-image" src="004.jpg" alt="004 — Office">
+      <img class="project-image" src="005.jpg" alt="005 — Office">
+      <img class="project-image" src="006.jpg" alt="006 — Office">
+    </div>
+
+    <div class="middle-description">
+  Between the old and the new, the office unfolds gradually.
+Movement through the space is never direct; instead, it is shaped by pauses, turns, and moments of encounter. Materials carry traces of previous lives, quietly reminding us that design is not only about making, but also about remembering, adapting, and continuing.
+</div>
+
+
+
+<!-- =========================
+ Portrait Gallery Slider
+========================= -->
+<div id="portrait-gallery">
+
+  <!-- 主图区域 -->
+  <div class="portrait-main">
+    <span class="portrait-arrow left">&#10094;</span>
+    <img id="portrait-main-img" src="007.jpg" alt="Portrait 020">
+    <span class="portrait-arrow right">&#10095;</span>
+  </div>
+
+  <!-- 缩略图 -->
+  <div class="portrait-thumbs">
+    <!-- 020–035 -->
+    <img src="007.jpg" class="portrait-thumb active" data-index="0">
+    <img src="008.jpg" class="portrait-thumb" data-index="1">
+    <img src="009.jpg" class="portrait-thumb" data-index="2">
+    <img src="010.jpg" class="portrait-thumb" data-index="3">
+    <img src="011.jpg" class="portrait-thumb" data-index="4">
+    <img src="012.jpg" class="portrait-thumb" data-index="5">
+    <img src="013.jpg" class="portrait-thumb" data-index="6">
+    <img src="014.jpg" class="portrait-thumb" data-index="7">
+    <img src="015.jpg" class="portrait-thumb" data-index="8">
+    <img src="016.jpg" class="portrait-thumb" data-index="9">
+    <img src="017.jpg" class="portrait-thumb" data-index="10">
+    <img src="018.jpg" class="portrait-thumb" data-index="11">
+    <img src="019.jpg" class="portrait-thumb" data-index="12">
+    <img src="020.jpg" class="portrait-thumb" data-index="13">
+    <img src="021.jpg" class="portrait-thumb" data-index="14">
+    <img src="022.jpg" class="portrait-thumb" data-index="15">
+    <img src="023.jpg" class="portrait-thumb" data-index="16">
+    <img src="024.jpg" class="portrait-thumb" data-index="17">
+    <img src="025.jpg" class="portrait-thumb" data-index="18">
+    <img src="026.jpg" class="portrait-thumb" data-index="19">
+    <img src="027.jpg" class="portrait-thumb" data-index="20">
+  </div>
+
+  <div id="lightbox">
+    <span id="lightbox-close">&times;</span>
+  <img src="" alt="Lightbox Image">
+</div>
+
+  </main>
+
+  <script src="../../../../header/header.js">  </script>
+
+    <script>
+/* =========================
+ Portrait Gallery Logic
+========================= */
+const portraitImages = [
+  "007.jpg","008.jpg","009.jpg","010.jpg","011.jpg","012.jpg","013.jpg","014.jpg",
+  "015.jpg","016.jpg","017.jpg","018.jpg","019.jpg","020.jpg","021.jpg","022.jpg","023.jpg","024.jpg","025.jpg","027.jpg"
+];
+
+let portraitIndex = 0;
+
+const portraitMainImg = document.getElementById("portrait-main-img");
+const portraitThumbs = document.querySelectorAll(".portrait-thumb");
+const portraitLeft = document.querySelector(".portrait-arrow.left");
+const portraitRight = document.querySelector(".portrait-arrow.right");
+
+function updatePortrait(index) {
+  portraitMainImg.src = portraitImages[index];
+  portraitThumbs.forEach(t => t.classList.remove("active"));
+  portraitThumbs[index].classList.add("active");
+  portraitIndex = index;
+}
+
+portraitThumbs.forEach(thumb => {
+  thumb.addEventListener("click", () => {
+    updatePortrait(parseInt(thumb.dataset.index));
+  });
+});
+
+portraitLeft.addEventListener("click", () => {
+  let next = (portraitIndex - 1 + portraitImages.length) % portraitImages.length;
+  updatePortrait(next);
+});
+
+portraitRight.addEventListener("click", () => {
+  let next = (portraitIndex + 1) % portraitImages.length;
+  updatePortrait(next);
+});
+
+  // Lightbox 功能 - 所有大图
+function enableLightbox() {
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = lightbox.querySelector("img");
+  const closeBtn = document.getElementById("lightbox-close");
+
+  // 选取所有大图图片
+const allImgs = document.querySelectorAll(".project-first-img, .project-image, .gallery-main， portrait-main img");
+
+allImgs.forEach(img => {
+  img.style.cursor = "pointer";  // 可选：鼠标变手指
+  img.addEventListener("click", () => {
+    lightboxImg.src = img.src;
+    lightbox.style.display = "flex";
+  });
+});
+
+  // Portrait gallery 绑定容器
+  const portraitMain = document.querySelector(".portrait-main");
+  portraitMain.addEventListener("click", (e) => {
+    // 如果点击到箭头就不要触发
+    if (e.target.classList.contains("portrait-arrow")) return;
+
+    const img = portraitMain.querySelector("img");
+    lightboxImg.src = img.src;
+    lightbox.style.display = "flex";
+  });
+
+  // 点击背景关闭
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) lightbox.style.display = "none";
+  });
+
+  // 点击右上角 X 关闭
+  closeBtn.addEventListener("click", () => {
+    lightbox.style.display = "none";
+  });
+}
+
+
+
+
+  enableLightbox();
+
+function adjustProjectImage() {
+  const images = document.querySelectorAll(".project-image");
+  if (!images.length) return;
+
+  images.forEach(img => {
+    // 图片距离页面顶部的距离
+    const topContentHeight = img.getBoundingClientRect().top + window.scrollY;
+
+    if (topContentHeight < 900) {
+      // 如果不足 900px，就强制让图片从 950px 开始
+      img.style.marginTop = (825 - topContentHeight) + "px";
+    } else {
+      // 如果超过 900px，就保持与上方内容 50px 间隔
+      img.style.marginTop = "50px";
+    }
+  });
+}
+
+// 页面加载时执行一次
+window.addEventListener("load", adjustProjectImage);
+// 窗口大小变动时也重算
+window.addEventListener("resize", adjustProjectImage);
+  </script>
 </body>
 </html>
