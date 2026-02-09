@@ -1626,7 +1626,7 @@
       "title": "No.22 The Office",
       "year": "2025",
       "folder": "../works/works-by-year/2025/no22-the-office",
-      "images": [],
+      "images": ["001.jpg"],
       "text": "text.txt",
       "type": "Office",
       "team": "Wong Wei Ping, Tey Tat Sing, Ken Wan, Lim Zhuan Yang, Soh Xuan En, Ken Wan, Teh Yong Peng",
@@ -1634,7 +1634,7 @@
       "description": "",
       "middle-description": "",
       "layout": "",
-      "skip": "yes",
+      "skip": "",
       "local-artisan": "",
       "photographer": "",
       "collaboration": ""
