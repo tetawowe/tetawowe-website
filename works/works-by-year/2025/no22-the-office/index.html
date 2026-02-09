@@ -419,6 +419,8 @@ allImgs.forEach(img => {
 function adjustProjectImage() {
   const images = document.querySelectorAll(".project-image");
   if (!images.length) return;
+    // 手机直接跳过
+  if (window.innerWidth <= 768) return;
 
   images.forEach(img => {
     // 图片距离页面顶部的距离
@@ -426,7 +428,7 @@ function adjustProjectImage() {
 
     if (topContentHeight < 900) {
       // 如果不足 900px，就强制让图片从 950px 开始
-      img.style.marginTop = (825 - topContentHeight) + "px";
+      img.style.marginTop = (950 - topContentHeight) + "px";
     } else {
       // 如果超过 900px，就保持与上方内容 50px 间隔
       img.style.marginTop = "50px";
