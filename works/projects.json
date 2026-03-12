@@ -1544,9 +1544,7 @@
       "title": "Klang River Festival 2025",
       "year": "2025",
       "folder": "../works/works-by-year/2025/klang-river-festival-2025",
-      "images": [
-        "001.jpg"
-      ],
+      "images": [],
       "text": "text.txt",
       "type": "Placemaking",
       "team": "Tey Tat Sing, Wong Wei Ping, Wong Jie Shan, Goh Zhou Jayne, Chairil Danish, Scarlet Koon Si Qi (KRF), Guma (KRF)",
@@ -1585,7 +1583,7 @@
       "description": "Since the Kluang Railway Station began operations in 1913, the railway heritage trail connecting cities across Johor has taken root here for at least 113 years. Running north–south, it once split Kluang in half and formed the city’s central lifeline—or perhaps it used to.\n\nIn 2025, the railway underwent an upgrade: supported by new viaduct concrete structure, the tracks were lifted entirely off the ground, elevating the trains into the sky while leaving behind an empty strip of land slowly overtaken by wild grass. From today's perspective, the train is no longer the primary mode of transportation. Its relationship with the city remains deeply embedded in Kluang’s identity, yet the connection between the two has gradually faded.\n\nFaced with this unexpected and hard-won void beneath the viaduct, we are compelled to ask: how should we reimagine and respond to this newly liberated piece of urban ground?",
       "middle-description": "",
       "layout": "special",
-      "skip": "yes",
+      "skip": "",
       "local-artisan": "",
       "photographer": "",
       "collaboration": ""
@@ -1633,7 +1631,7 @@
       "location": "Jalan Sepakat",
       "description": "",
       "middle-description": "",
-      "layout": "",
+      "layout": "special",
       "skip": "",
       "local-artisan": "",
       "photographer": "",
@@ -1731,5 +1729,48 @@
       "photographer": "",
       "collaboration": ""
     }
-  ]
+  ],
+
+   "2026": [
+    {
+      "id": "hill-top-house",
+      "title": "Hill Top House",
+      "year": "2026",
+      "folder": "../works/works-by-year/2026/hill-top-house",
+      "images": [
+        "001.JPG",
+        "002.JPG",
+        "003.JPG",
+        "004.JPG",
+        "005.JPG",
+        "006.JPG",
+        "007.JPG",
+        "008.JPG",
+        "009.jpg",
+        "010.JPG",
+        "011.JPG",
+        "012.JPG",
+        "013.JPG",
+        "014.JPG",
+        "015.JPG",
+        "016.jpg",
+        "017.JPG",
+        "018.JPG",
+        "019.JPG",
+        "020.JPG",
+        "021.jpg"
+      ],
+      "text": "text.txt",
+      "type": "Private Residence",
+      "team": "Wong Wei Ping, Lai Sin Yi",
+      "location": "",
+      "description": "",
+      "middle-description": "",
+      "layout": "",
+      "skip": "",
+      "local-artisan": "",
+      "photographer": "",
+      "collaboration": ""
+    }
+   ]
 }
