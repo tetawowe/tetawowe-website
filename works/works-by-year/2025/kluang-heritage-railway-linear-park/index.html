@@ -14,100 +14,60 @@
 
   <!-- special 项目的覆盖样式 -->
   <style>
-    /* meta + description 容器：左右并排，顶端对齐 */
-    #meta-text-wrapper {
-      display: flex;
-      gap: 25px;
-      align-items: flex-start;  /* 顶端对齐 */
-      margin: 24px auto;
-      max-width: 965px;
-      margin-top: 15px;   /* 强制顶端对齐 */
-    }
-
-    #project-meta {
-      flex: 0 0 230px;  /* 固定左栏宽度 */
-    }
-
-    #project-meta h2 {
-      margin: 0 0 0 0;
-    }
-
-    #project-meta .value {
-  margin-left: 30px;
+/* 箭头 */
+.portrait-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 40px;
+  color: rgba(0,0,0,0.55);
+  cursor: pointer;
+  user-select: none;
+  padding: 5px;
+  z-index: 5;
+  transition: opacity 0.2s ease;
 }
 
-    #project-text {
-      flex: 1;
-      margin-top: 0;   /* 强制顶端对齐 */
-      font-size: 14px;
-      line-height: 1.6;
-      margin-top: -21px; /* 数字可以自己调，比如 -4px, -8px */
-    }
+.portrait-arrow:hover {
+  opacity: 1;
+}
 
-    /* special-block 样式 */
-    .special-block {
-      max-width: 965px;
-      margin: 24px auto;
-    }
+.portrait-arrow.left { left: 0px;}
+.portrait-arrow.right { right: 0px;}
 
-    .special-block img {
-      width: 100%;
-      height: auto;
-      display: block;
-      object-fit: cover;
-    }
+    /* gallery 整體區塊 */
+.gallery-wrapper {
+  max-width: 965px;
+  margin: 20px auto;
+  margin-top: 35px;
+  text-align: center;
+  position: relative;   /* 关键：让箭头相对它定位 */
+}
 
-    /* 004-1 到 004-4 的中英并排说明 */
-    .special-text-wrapper {
-      display: flex;
-      gap: 24px;
-      justify-content: space-between;
-      align-items: flex-start;   /* 顶部对齐 */
-      margin-top: 12px;
-      font-size: 14px;
-      line-height: 1.6;
-    }
+/* 主圖 */
+.gallery-main {
+  width: 100%;
+  max-width: 965px;
+  height: 625px;         /* 固定高度 */
+  object-fit: contain;
+  object-position: center;
+  margin-bottom: 15px;
+}
 
-    .special-text-cn {
-      flex: 1;
-      text-align: left;
-      word-break: break-word;
-      max-width: 355px;
-      width: 100%;
-      margin-top: 35px;
-      margin-bottom: 35px;
-    }
+.gallery-main.cover {
+  object-fit: cover;
+}
 
-    .special-text-en {
-      flex: 1;
-      text-align: left;
-      margin-left: 25px;
-      color: #555;
-      word-break: break-word;
-      margin-top: 35px;
-      margin-bottom: 35px;
-    }
 
-    .gallery-wrapper {
-      margin: 24px auto;
-      max-width: 965px;
-      width: 100%;
-    }
-    .gallery-main {
-      width: 100%;
-      height: 625px;
-      display: block;
-      margin-bottom: 16px;
-    }
 /* 縮略圖容器：最多兩行，每行 7 張 */
 .gallery-thumbs {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 8px;
   max-width: 965px;
   margin: 0 auto;
   margin-top: -10px;
-  margin-bottom: -35px;
+  margin-bottom: 100px;
 }
 
 /* 縮略圖 */
@@ -118,8 +78,18 @@
   object-position: center;
   cursor: pointer;
   transition: transform 0.2s ease, opacity 0.2s ease;
-  opacity: 0.7;
+    opacity: 0.7;
 }
+
+
+.gallery-small .gallery-thumbs {
+  grid-template-columns: repeat(8, 1fr);  /* 改成 6 列 */
+}
+
+.gallery-small .gallery-thumb {
+  height: 65px;   /* 可选：调整缩略图高度 */
+}
+
 
 /* hover 效果 */
 .gallery-thumb:hover {
@@ -131,21 +101,140 @@
   opacity: 1;
 }
 
-    /* Lightbox 样式 */
-    #lightbox {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.9);
-      align-items: center;
-      justify-content: center;
+
+/* meta + description 容器：左右并排，顶端对齐 */
+#meta-text-wrapper {
+  display: flex;
+  gap: 25px;
+  align-items: flex-start;  /* 顶端对齐 */
+  margin: 24px auto;
+  max-width: 965px;
+  margin-top: 15px;   /* 强制顶端对齐 */
+}
+
+#meta-text-wrapper1 {
+  display: flex;
+  gap: 50px;
+  align-items: flex-start;
+  margin: 24px auto;
+  max-width: 965px;     /* 建议放大，否则图片会被挤 */
+  margin-top: 50px;
+}
+
+#project-text2 {
+  flex: 0 0 38%;    /* 左边占一半 */
+  font-size: 14px;  /* 按你原本风格 */
+  line-height: 1.6;
+}
+
+
+#col {
+  flex: 0 0 12%;    /* 左边占一半 */
+}
+
+.square-image {
+  flex: 0 0 45%;
+}
+
+.square-image img {
+  width: 100%;
+  height: 300px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.project-image {
+  max-width: 965px;
+  width: 100%;
+  display: block;
+  margin: 20px auto; /* 居中并留点间隔 */
+}
+
+.project-image1 {
+  max-width: 965px;
+  width: 100%;
+  display: block;
+  margin: 10px auto; /* 居中并留点间隔 */
+}
+
+    #project-meta {
+  width: 280px;
+  display: grid;
+  grid-template-columns: 125px 1fr; /* 左侧固定 85px，右侧自适应 */
+  gap: 8px 0;                      /* 行间距 */
+  font-size: 14px;
+  color: #525252; 
+  line-height: 1.4;
+}
+
+    #project-meta h2 {
+      margin: 0 0 0 0;
     }
-    #lightbox img {
-      max-width: 90%;
-      max-height: 90%;
+
+    #project-meta .value {
+  margin-left: 0px;
+}
+
+    #project-text {
+      flex: 1;
+      margin-top: 0;   /* 强制顶端对齐 */
+      font-size: 14px;
+      line-height: 1.6;
+      margin-top: 25px; /* 数字可以自己调，比如 -4px, -8px */
     }
+
+    #project-text1 {
+      flex: 1;
+      margin-top: 0;   /* 强制顶端对齐 */
+      font-size: 14px;
+      line-height: 1.6;
+      margin-top: -40px; /* 数字可以自己调，比如 -4px, -8px */
+      margin-bottom: 0px;
+    }
+
+    #project-text3 {
+      flex: 1;
+      margin-top: 0;   /* 强制顶端对齐 */
+      font-size: 11px;
+      line-height: 1.3;
+      color: #494949;
+      margin-bottom: -15px;
+    }
+
+    #project-text4 {
+      flex: 1;
+      margin-top: 0;   /* 强制顶端对齐 */
+      font-size: 14px;
+      line-height: 1.6;
+      margin-top: -15px; /* 数字可以自己调，比如 -4px, -8px */
+      margin-bottom: 10px;
+    }
+
+  #project-text5 {
+    flex: 1;
+      margin-top: 0;   /* 强制顶端对齐 */
+    font-size: 16px;
+    line-break: 1.6;
+    margin-top: -15px; /* 数字可以自己调，比如 -4px, -8px */
+  }
+
+
+/* Lightbox 样式 */
+#lightbox {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.9);
+  align-items: center;
+  justify-content: center;
+}
+
+#lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+}
 
 #lightbox-close {
   position: absolute;
@@ -157,22 +246,97 @@
   user-select: none;
 }
 
+/* ===== 控制按钮 ===== */
+
+.element-controls {
+  text-align: center;
+  margin: 60px 0 40px;
+}
+
+.element-controls button {
+  border: none;
+  background: none;
+  font-size: 10px;
+  margin: 0 11px;
+  padding: 6px 0;
+  cursor: pointer;
+  letter-spacing: 0px;
+  transition: 0.3s;
+  color: #7b7b7b;
+}
+
+.element-controls button.active {
+  border: 1px solid #212121;
+  color: #212121;
+  font-weight: 500;
+  padding: 6px 12px;   /* 增加左右内边距 */
+}
+
+/* ===== 内容区域 ===== */
+
+.element-container {
+  max-width: 965px;
+  margin: 0 auto 100px;
+}
+
+/* 所有 section 默认隐藏 */
+
+.element-content {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+/* 激活显示 */
+
+.element-content.active {
+  display: block;
+  opacity: 1;
+}
+
+/* 排版结构 */
+
+.element-content h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.element-text {
+  font-size: 14px;
+  line-height: 1.4;
+  margin-bottom: 40px;
+  max-width: 965px;
+}
+
+.element-image {
+  width: 965px;
+  height: 600px;
+  overflow: hidden;
+}
+
+.element-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.section-line {
+  width: 965px;          /* 固定宽度 */
+  margin-top: -50px;
+  margin-bottom: 100px;
+  border: 0;             /* 移除默认粗线 */
+  border-top: 1px solid #ccc; /* 自定义线颜色 */
+}
+
     /* 小屏幕时上下堆叠 */
     @media (max-width: 768px) {
       #meta-text-wrapper {
         flex-direction: column;
         gap: 16px;
       }
-
-      .special-text-wrapper {
-        flex-direction: column;
-        gap: 8px;
-      }
-
-      .special-text-en {
-        text-align: left;
-      }
     }
+
   </style>
 </head>
 <body>
@@ -196,11 +360,11 @@
         <div class="label">Collaboration</div><div class="value">Think City <br> SD2</div>
       </div>
 
-      <div id="project-text" style="margin-top:25px;">
-        Since the Kluang Railway Station began operations in 1913, the railway heritage trail connecting cities across Johor has taken root here for at least 113 years. Running north–south, it once split Kluang in half and formed the city’s central lifeline - or perhaps it used to.<br>
-In 2025, the railway underwent an upgrade: supported by new viaduct concrete structure, the tracks were lifted entirely off the ground, elevating the trains into the sky while leaving behind an empty strip of land slowly overtaken by wild grass. From today's perspective, the train is no longer the primary mode of transportation. Its relationship with the city remains deeply embedded in Kluang’s identity, yet the connection between the two has gradually faded. <br>
-Faced with this unexpected and hard-won void beneath the viaduct, we are compelled to ask: how should we reimagine and respond to this newly liberated piece of urban ground? <br>
-None of these changes happened overnight. To seize this opportunity, the <strong>Kluang Heritage Railway Linear Park</strong> project was first proposed as early as 2020. After five years of hardworking, Phase 01 of the Kluang Heritage Railway Linear Park officially opened, welcoming the public alongside the new KTM ETS Train.
+      <div id="project-text" style="margin-top:5px;">
+        A <strong>Linear Park</strong> in coexistence with the <Strong>Town</Strong> <Strong>Railway</Strong>, and <Strong>History.</Strong><br>
+Since 1913, the railway has been playing a vital role in the city’s transportation network. The city emerged and flourished along its linear alignment, growing in parallel with the railway itself. Yet from another perspective, the railway also divided the city into two.<br>
+Today, as the former railway is upgraded into an elevated viaduct, a new ground plane is released beneath it. This newly liberated space is envisioned to once again assume a critical role — stitching the town back together.<br>
+In response, a park within the new plane is conceived as a dialogue with the railway’s history and a space that coexists with urban life, weaving cultural memory and everyday rhythms into a more closely connected whole.<br>
       </div>
     </div>
 
@@ -210,26 +374,201 @@ None of these changes happened overnight. To seize this opportunity, the <strong
     </div>
 
     <div id="meta-text-wrapper">
-    <div id="project-text" style="margin-top:25px;">
-      Transforming the space beneath viaducts into usable public areas is by no means a novel idea, but in Malaysia,Kluang is set to become a precedent. Kluang is not a city lacking parks or public spaces; rather, the key challenge lies in activating the area beneath the viaduct, connecting it meaningfully to the railway and surrounding communities, and infusing it with new possibilities. Spanning a total of 2.5 kilometers, the Kluang Heritage Railway Linear Park stretches across the entire city. The overall Kluang Heritage Railway Linear Park development will encompass elements of railway heritage, community public spaces, park amenities, sports facilities, and flexible activity areas. The project seeks to reactivate the former railway corridor, establish strong connections with the surrounding neighborhoods, revitalize community spaces, and fully utilize the previously overlooked areas beneath the viaduct.<br>
-      Kluang Heritage Railway Linear Park Phase 01 begins at the former Kluang Railway Station site, covering approximately 470 meters from the new Kluang Railway Station to Jalan Mersing. Focusing on integrating the former railway grounds and railway heritage with new community-oriented public spaces. Responding to the challenging terrain beneath the viaduct, the design establishes appropriate activity zones, leisure walkways, and various park amenities. The park features five accessible entry points, creating strong connections and interactions with the surrounding roads and neighborhoods while also providing parking facilities. Additionally, two future access points have been reserved (currently unopened) allowing seamless integration with the upcoming phases of the Railway Park development.
+    <div id="project-text">
+      What happens when the railway is lifted from the ground onto a viaduct? 
+      What new possibilities can emerge within the space beneath the viaduct? 
+</div>
     </div>
-    </div>
-    </div>
-    
-    <!-- 003 普通图片 -->
-    <div id="project-images">
-      <img class="project-image" src="003.jpg" alt="003 — Kluang">
-    </div>
+
 
     <!-- Gallery 1 -->
-<div id="gallery-1"></div>
+<div id="gallery-1">
+</div>
 
-    <div id="project-images">
-      <img class="project-image" src="012.jpg" alt="012 — Kluang">
+    <div id="meta-text-wrapper">
+    <div id="project-text1">
+      The 2.9 km park masterplan encompasses the former railway alignment, a new elevated railway station (ETS Station), and a series of spaces extending beyond the track corridor. Responding to the surrounding urban context, the railway corridor is reimagined as a continuous 2.9 km looped pedestrian path, alongside a park space that recalls the former railway and the history of surrounding context.<br><br>
+
+      The masterplan integrates activity spaces that support and promote everyday urban life, as well as safe and dedicated sports and recreation areas for students, directly connected to nearby schools. <br><br>
+
+
+    </div>
     </div>
 
+    <div id="project-images">
+      <img class="project-image" src="009.jpg" alt="009 — Kluang">
+    </div>
 
+<div id="meta-text-wrapper1">
+  <!-- 左：文字 -->
+  <div id="project-text2">
+    The railway park is planned in four development phases due to its complexity and viability.<br><br>
+    Phase 1 Laman Rel Mahkota, which emphasizes railway heritage and everyday town life, has been completed and is now open to the public.<br><br>
+    Subsequent phases are planned as part of future development with reference to its surrounding site context. 
+    All four phases is to be connected with a prevailing foot path mapped along the trace of century-old railtrack.
+  </div>
+
+  <div id="col">
+  </div>
+
+  <!-- 右：图片 -->
+  <div class="square-image">
+    <img src="010.jpg" alt="010 — Kluang">
+    <div id="project-text3">
+    Plan of Kluang town 1936<br>
+    Source : National Archives of Malaysia, Johor Branch<br>
+    Accession number: PL263
+  </div>
+  </div>
+</div>
+</div>
+
+
+<div id="meta-text-wrapper">
+    <div id="project-text5">
+      <strong>Render Image </strong>
+    </div>
+    </div>
+
+<!-- Galleryy 2 -->
+<div id="gallery-2">
+</div>
+
+<div id="meta-text-wrapper">
+    <div id="project-text1">
+      Kluang Heritage Railway Linear Park Phase 01 begins at the former Kluang Railway Station site, covering approximately 470 meters from the new Kluang Railway Station to Jalan Mersing. Focusing on integrating the former railway grounds and railway heritage with new community-oriented public spaces. Responding to the challenging terrain beneath the viaduct, the design establishes appropriate event platforms, leisure walkways, and various park amenities. The park features five accessible entry points, creating strong connections and interactions with the surrounding roads and neighborhood while also providing parking facilities. Additionally, two future access points have been reserved (currently unopened) allowing seamless integration with the upcoming phases of the Railway Park development.
+    </div>
+    </div>
+
+<!-- Galleryy 3 -->
+<div id="gallery-3">
+</div>
+
+<!-- 居中线 -->
+<hr class="section-line">
+
+<div class="element-controls">
+  <button data-target="element1" class="active">Historical Railway Track</button>
+  <button data-target="element2">Railway Sleeper</button>
+  <button data-target="element3">Event Platform</button>
+  <button data-target="element4">Congregation Point</button>
+  <button data-target="element5">Railway Sleeper Bench</button>
+  <button data-target="element6">Amphitheatre</button>
+  <button data-target="element7">Staircase Access</button>
+  <button data-target="element8">Road Maker</button>
+  <button data-target="element9">Railway Reclaimed Item</button>
+</div>
+
+<div class="element-container">
+
+  <section id="element1" class="element-content active">
+    <h2>Historical Railway Track</h2>
+    <div class="element-layout">
+      <div class="element-text">
+        Historical railway track Historical railway track Historical railway track Historical railway track Historical railway track Historical railway track
+      </div>
+      <div class="element-image">
+        <img src="023.jpg">
+      </div>
+    </div>
+  </section>
+
+  <section id="element2" class="element-content">
+    <h2>Railway Sleeper</h2>
+    <div class="element-layout">
+      <div class="element-text">
+        Sleepers — an iconic element of railway heritage — are richly integrated throughout the park.<br>
+        Concrete sleepers are transformed into event platforms, steps, amphitheatre and benches, while timber sleepers are reused as for trace of old rail tracks and road marker
+      </div>
+      <div class="element-image">
+        <img src="023.jpg">
+      </div>
+    </div>
+  </section>
+
+  <section id="element3" class="element-content">
+    <h2>Event Platform</h2>
+    <div class="element-layout">
+      <div class="element-text">
+        Event platform underneath viaduct constructed by railway concrete sleeper.
+      </div>
+      <div class="element-image">
+        <img src="024.jpg">
+      </div>
+    </div>
+  </section>
+
+  <section id="element4" class="element-content">
+    <h2>Congregation Point</h2>
+    <div class="element-layout">
+      <div class="element-text">
+        Located at the junction point of the park with concrete sleeper lay in circle pattern to symbolize railway turntable
+      </div>
+      <div class="element-image">
+        <img src="025.jpg">
+      </div>
+    </div>
+  </section>
+
+  <section id="element5" class="element-content">
+    <h2>Railway Sleeper Bench</h2>
+    <div class="element-layout">
+      <div class="element-text">
+        Concrete sleepers extend from the ground up to bench height, providing seating at various locations throughout the park and allowing users to engage with this railway historic element up close.
+      </div>
+      <div class="element-image">
+        <img src="026.jpg">
+      </div>
+    </div>
+  </section>
+
+  <section id="element6" class="element-content">
+    <h2>Amphitheatre</h2>
+    <div class="element-layout">
+      <div class="element-text">
+        Concrete sleepers are arranged on the existing slope to form seating, creating an amphitheater for public use and introducing a new way of experiencing the park.
+      </div>
+      <div class="element-image">
+        <img src="027.jpg">
+      </div>
+    </div>
+  </section>
+
+  <section id="element7" class="element-content">
+    <h2>Staircase Access</h2>
+    <div class="element-layout">
+      <div class="element-text">
+        Concrete sleepers can also be integrated into steeper slopes to form steps or staircases, connecting different levels within the park and providing access to entrances.
+      </div>
+      <div class="element-image">
+        <img src="028.jpg">
+      </div>
+    </div>
+  </section>
+
+  <section id="element8" class="element-content">
+    <h2>Road Maker</h2>
+    <div class="element-layout">
+      <div class="element-text">
+        Timber sleepers are resized to appropriate dimensions and installed at varying intervals at each entrance, maintaining access for park service vehicles, while also forming wheelchair - accessible entry points and serving as individual removable road markers.
+      </div>
+      <div class="element-image">
+        <img src="029.jpg">
+      </div>
+    </div>
+  </section>
+
+  <section id="element9" class="element-content">
+    <h2>Railway Reclaimed Item</h2>
+    <div class="element-layout">
+      <div class="element-text">
+        Interpretive and directional signage is constructed from reclaimed railway materials, extending the spirit and memory of the railway.
+      </div>
+      <div class="element-image">
+        <img src="030.jpg">
+      </div>
+    </div>
+  </section>
 
   <div id="lightbox">
     <span id="lightbox-close">&times;</span>
@@ -242,48 +581,93 @@ None of these changes happened overnight. To seize this opportunity, the <strong
 
     <script>
   // 图片分组
-  const gallery1 = ["004.jpg","005.jpg","006.jpg","007.jpg","008.jpg","009.jpg","010.jpg","011.jpg"];
+  const gallery1 = ["003.jpg","004.jpg","005.jpg","006.jpg","007.jpg","008.jpg"];
+  const gallery2 = ["011.jpg","012.jpg","008a.jpg","008b.jpg","008c.jpg","008d.jpg"];
+  const gallery3 = ["014.jpg","015.jpg","016.jpg","017.jpg","018.jpg","019.jpg","020.jpg","021.jpg"];
 
-  // 渲染 gallery 函数
-  function renderGallery(imgList, containerId) {
-    if (!imgList || imgList.length === 0) return;
 
-    const galleryWrapper = document.createElement("div");
-    galleryWrapper.className = "gallery-wrapper";
+  function renderGallery(imgList, containerId, mode = "contain", customClass = "") {
+  if (!imgList || imgList.length === 0) return;
 
-    // 大图
-    const mainImg = document.createElement("img");
-    mainImg.className = "gallery-main";
-    mainImg.src = imgList[0];
-    galleryWrapper.appendChild(mainImg);
+  const galleryWrapper = document.createElement("div");
+  galleryWrapper.className = "gallery-wrapper";
 
-    // 缩略图
-    const thumbs = document.createElement("div");
-    thumbs.className = "gallery-thumbs";
+  if (customClass) {
+    galleryWrapper.classList.add(customClass);
+  }
 
-    imgList.forEach((src, index) => {
-      const thumb = document.createElement("img");
-      thumb.src = src;
-      thumb.className = "gallery-thumb";
-      if (index === 0) thumb.classList.add("active");
+  let currentIndex = 0;
 
-      thumb.addEventListener("click", () => {
-        mainImg.src = src;
-        thumbs.querySelectorAll(".gallery-thumb").forEach(t => t.classList.remove("active"));
-        thumb.classList.add("active");
-      });
+  const mainImg = document.createElement("img");
+  mainImg.className = "gallery-main";
 
-      thumbs.appendChild(thumb);
+  if (mode === "cover") {
+    mainImg.classList.add("cover");
+  }
+
+  mainImg.src = imgList[currentIndex];
+  galleryWrapper.appendChild(mainImg);
+
+
+  // === 左箭头 ===
+  const leftArrow = document.createElement("div");
+  leftArrow.className = "portrait-arrow left";
+  leftArrow.innerHTML = "&#10094;"; // ‹
+  galleryWrapper.appendChild(leftArrow);
+
+  // === 右箭头 ===
+  const rightArrow = document.createElement("div");
+  rightArrow.className = "portrait-arrow right";
+  rightArrow.innerHTML = "&#10095;"; // ›
+  galleryWrapper.appendChild(rightArrow);
+
+  // 切换函数
+  function updateImage(index) {
+    currentIndex = index;
+    mainImg.src = imgList[currentIndex];
+
+    thumbs.querySelectorAll(".gallery-thumb")
+      .forEach(t => t.classList.remove("active"));
+    thumbs.children[currentIndex].classList.add("active");
+  }
+
+  leftArrow.addEventListener("click", () => {
+    currentIndex = (currentIndex - 1 + imgList.length) % imgList.length;
+    updateImage(currentIndex);
+  });
+
+  rightArrow.addEventListener("click", () => {
+    currentIndex = (currentIndex + 1) % imgList.length;
+    updateImage(currentIndex);
+  });
+
+  // 缩略图
+  const thumbs = document.createElement("div");
+  thumbs.className = "gallery-thumbs";
+
+  imgList.forEach((src, index) => {
+    const thumb = document.createElement("img");
+    thumb.src = src;
+    thumb.className = "gallery-thumb";
+    if (index === 0) thumb.classList.add("active");
+
+    thumb.addEventListener("click", () => {
+      updateImage(index);
     });
 
-    galleryWrapper.appendChild(thumbs);
+    thumbs.appendChild(thumb);
+  });
 
-    // 插入到对应容器
-    document.getElementById(containerId).appendChild(galleryWrapper);
-  }
+  galleryWrapper.appendChild(thumbs);
+
+  document.getElementById(containerId).appendChild(galleryWrapper);
+}
+
 
   // 渲染三个 gallery
   renderGallery(gallery1, "gallery-1");
+  renderGallery(gallery2, "gallery-2", "cover");
+  renderGallery(gallery3, "gallery-3", "cover", "gallery-small");
 
   // 调整普通项目图片间距
   function adjustProjectImage() {
@@ -301,10 +685,22 @@ None of these changes happened overnight. To seize this opportunity, the <strong
     });
   }
 
-  window.addEventListener("load", adjustProjectImage);
-  window.addEventListener("resize", adjustProjectImage);
+  const buttons = document.querySelectorAll(".element-controls button");
+const sections = document.querySelectorAll(".element-content");
 
+buttons.forEach(button => {
+  button.addEventListener("click", () => {
 
+    buttons.forEach(btn => btn.classList.remove("active"));
+    sections.forEach(sec => sec.classList.remove("active"));
+
+    button.classList.add("active");
+
+    const target = document.getElementById(button.dataset.target);
+    target.classList.add("active");
+
+  });
+});
 
   // Lightbox 功能 - 所有大图
   function enableLightbox() {
@@ -313,8 +709,7 @@ None of these changes happened overnight. To seize this opportunity, the <strong
 
     // 选择所有大图
     const allBigImages = document.querySelectorAll(
-      "#project-first-image img, .project-image, .special-block img, .gallery-main"
-    );
+      "#project-first-image img, .project-image, .project-image1, .special-block img, .gallery-main","element-image");
 
     allBigImages.forEach(img => {
       img.style.cursor = "pointer";
