@@ -46,7 +46,7 @@ body {
 #project-meta {
   width: 240px;
   display: grid;
-  grid-template-columns: 125px 1fr; /* 左侧固定 85px，右侧自适应 */
+  grid-template-columns: 110px 1fr; /* 左侧固定 85px，右侧自适应 */
   gap: 8px 0;                      /* 行间距 */
   font-size: 14px;
   color: #525252; 

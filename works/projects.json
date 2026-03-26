@@ -1521,7 +1521,7 @@
       "skip": "",
       "local-artisan": "",
       "photographer": "",
-      "collaboration": ""
+      "collaboration": "Wong Yee Shiong Architect, Landart Design, Primareka (JPP), Projek Permata Jaya (PPJ)"
     },
     {
       "id": "giggles-pj",
@@ -1646,7 +1646,27 @@
       "title": "Pangkor Voyage Retreat II",
       "year": "2025",
       "folder": "../works/works-by-year/2025/pangkor-voyage-retreat-ii",
-      "images": [],
+      "images": [
+                "001.jpg",
+        "002.jpg",
+        "003.jpg",
+        "004.jpg",
+        "005.jpg",
+        "006.jpg",
+        "007.jpg",
+        "008.jpg",
+        "009.jpg",
+        "010.jpg",
+        "011.jpg",
+        "012.jpg",
+        "013.jpg",
+        "014.jpg",
+        "015.jpg",
+        "016.jpg",
+        "017.jpg",
+        "018.jpg",
+        "019.jpg"
+      ],
       "text": "text.txt",
       "type": "Development, Hospitality",
       "team": "Tey Tat Sing, Lai Sin Yi, Lim Zhuan Yang",
@@ -1654,7 +1674,7 @@
       "description": "",
       "middle-description": "",
       "layout": "",
-      "skip": "yes",
+      "skip": "",
       "local-artisan": "",
       "photographer": "",
       "collaboration": ""
@@ -1768,6 +1788,26 @@
       "type": "Private Residence",
       "team": "Wong Wei Ping, Lai Sin Yi",
       "location": "",
+      "description": "",
+      "middle-description": "",
+      "layout": "",
+      "skip": "",
+      "local-artisan": "",
+      "photographer": "",
+      "collaboration": ""
+    },
+    {
+      "id": "3q-pavillion",
+      "title": "3Q Pavillion",
+      "year": "2026",
+      "folder": "../works/works-by-year/2026/3q-pavillion",
+      "images": [
+        "001.jpg"
+      ],
+      "text": "text.txt",
+      "type": "Development, Retail / Event Space, Placemaking, Institution, Park / Architecture Installation",
+      "team": "Wong Wei Ping, Lai Sin Yi",
+      "location": "Rawang",
       "description": "",
       "middle-description": "",
       "layout": "",

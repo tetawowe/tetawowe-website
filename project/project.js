@@ -169,6 +169,10 @@ function renderMetaAndText(project, text) {
     ? project.team.split(",").map(s => s.trim()).join("<br>")
     : "";
 
+    const collaboration = project.collaboration
+  ? project.collaboration.split(",").map(s => s.trim()).join("<br>")
+  : "";
+
   metaDiv.innerHTML = `
     <h2>${project.title}</h2>
 
@@ -178,7 +182,7 @@ function renderMetaAndText(project, text) {
     ${renderMetaRow("Location", project.location)}
     ${renderMetaRow("Local Artisan", project["local-artisan"])}
     ${renderMetaRow("Photographer", project.photographer)}
-    ${renderMetaRow("Collaboration", project.collaboration)}
+    ${renderMetaRow("Collaboration", collaboration)}
   `;
 
   textDiv.innerText = text;
