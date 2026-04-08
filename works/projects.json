@@ -1062,6 +1062,31 @@
       "local-artisan": "",
       "photographer": "",
       "collaboration": ""
+    },
+    {
+      "id": "smoker-pot",
+      "title": "Smoker Pot",
+      "year": "2019",
+      "folder": "../works/works-by-year/2019/smoker-pot",
+      "images": [
+        "001.jpg",
+        "002.jpg",
+        "003.jpg",
+        "004.jpg",
+        "005.jpg",
+        "006.jpg"
+      ],
+      "text": "text.txt",
+      "type": "Park / Architecture Installation, Placemaking",
+      "team": "Tey Tat Sing, Alex Tan, Andrew Leng",
+      "location": "Prima Avenue, Cyberjaya",
+      "description": "",
+      "middle-description": "",
+      "layout": "",
+      "skip": "",
+      "local-artisan": "",
+      "photographer": "",
+      "collaboration": ""
     }
   ],
   "2020": [
@@ -1317,15 +1342,24 @@
       "title": "Hang Tuah Park",
       "year": "",
       "folder": "../works/works-by-year/2024/hang-tuah-park",
-      "images": [],
+      "images": [
+        "001.jpg",
+        "002.jpg",
+        "003.jpg",
+        "004.jpg",
+        "005.jpg",
+        "006.jpg",
+        "007.jpg",
+        "008.jpg"
+      ],
       "text": "text.txt",
-      "type": "Park / Architecture Installation",
+      "type": "Park / Architecture Installation, Placemaking",
       "team": "Tey Tat Sing, Wong Wei Ping, Lee Ni, Shum Li Sze",
-      "location": "PPR Hang Tuah, Kuala Lumpur",
+      "location": "PA Flat Hang Tuah, Kuala Lumpur",
       "description": "",
       "middle-description": "",
       "layout": "",
-      "skip": "yes",
+      "skip": "",
       "local-artisan": "",
       "photographer": "",
       "collaboration": ""
@@ -1735,7 +1769,7 @@
       "description": "",
       "middle-description": "",
       "layout": "",
-      "skip": "yes",
+      "skip": "",
       "local-artisan": "",
       "photographer": "",
       "collaboration": ""
