@@ -80,6 +80,10 @@
       "name": "Ken Wan",
       "desc": "Former Colleague"
     },
+        {
+      "name": "Lai Sin Yi",
+      "desc": "Former Colleague"
+    },
     {
       "name": "Lee Ni",
       "desc": "Former Colleague"
@@ -140,6 +144,10 @@
   "former_internship": [
     {
       "name": "Afiq",
+      "desc": "Former Internship"
+    },
+    {
+      "name": "Alyssa Chen Li-Hsia",
       "desc": "Former Internship"
     },
     {
