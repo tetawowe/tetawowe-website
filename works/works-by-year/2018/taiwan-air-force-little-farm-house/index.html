@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="../../../../header/favicon.ico">
+  <title>Taiwan Air Force</title>
+
+  <link rel="stylesheet" href="../../../../header/header.css">
+  <link rel="stylesheet" href="../../../../project/project.css">
+
+  <style>
+    #meta-text-wrapper {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      margin: 24px auto;
+      max-width: 965px;
+      margin-top: 15px;
+    }
+
+    #project-meta {
+      flex: 0 0 290px;
+    }
+
+    #project-meta h2 {
+      margin: 0;
+    }
+
+    #project-text {
+      flex: 1;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-top: 0;
+      min-height: 1px;
+    }
+
+    #lightbox {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      align-items: center;
+      justify-content: center;
+    }
+
+    #lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+    #lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      font-size: 40px;
+      color: #fff;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .project-first-img,
+    .project-image {
+      cursor: pointer;
+    }
+
+    .project-split-hover {
+      position: relative;
+      width: 85%;
+      max-width: 820px;
+      margin: 0 auto 64px auto;
+    }
+
+    .project-split-hover img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .project-split-base,
+    .project-split-overlay {
+      transition: opacity 0.25s ease;
+    }
+
+    .project-split-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+      opacity: 0;
+      overflow: visible;
+    }
+
+    .project-split-segment {
+      position: relative;
+      height: 100%;
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      cursor: pointer;
+    }
+
+    .project-split-segment img {
+      width: auto;
+      height: 100%;
+      flex: 0 0 auto;
+      transition: opacity 0.25s ease;
+    }
+
+    .project-split-label {
+      position: absolute;
+      top: calc(100% - 30px);
+      left: 0;
+      height: 42px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+      font-size: 10px;
+      line-height: 1.05;
+      background: rgba(0, 0, 0, 0.28);
+      width: 100%;
+      box-sizing: border-box;
+      padding: 4px 3px;
+    }
+
+    .project-split-segment.is-active .project-split-label {
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .project-split-hover.is-locked .project-split-base {
+      opacity: 0;
+    }
+
+    .project-split-hover.is-locked .project-split-overlay {
+      opacity: 1;
+    }
+
+    .project-split-hover.is-locked .project-split-segment img {
+      opacity: 0.5;
+    }
+
+    .project-split-hover.is-locked .project-split-segment.is-active img {
+      opacity: 1;
+    }
+
+    .project-split-label-en {
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .project-split-label-zh {
+      font-weight: 400;
+    }
+
+    .project-detail-panel {
+      max-width: 965px;
+      margin: 0 auto 44px auto;
+    }
+
+    .project-detail-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin: 0 auto 14px auto;
+    }
+
+    .project-detail-text {
+      max-width: 965px;
+      width: 100%;
+      margin: 0 auto;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #333;
+      text-align: left;
+      white-space: pre-line;
+    }
+
+    .project-gallery-slider {
+      max-width: 965px;
+      margin: 82px auto 80px auto;
+    }
+
+    .gallery-slider-main {
+      position: relative;
+      width: 100%;
+      height: 640px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .gallery-slider-main img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      cursor: pointer;
+    }
+
+    .gallery-slider-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 40px;
+      color: rgba(0, 0, 0, 0.35);
+      cursor: pointer;
+      user-select: none;
+      padding: 10px;
+      z-index: 1;
+    }
+
+    .gallery-slider-arrow.left {
+      left: 10px;
+    }
+
+    .gallery-slider-arrow.right {
+      right: 10px;
+    }
+
+    .gallery-slider-thumbs {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 8px;
+      margin-top: 25px;
+    }
+
+    .gallery-slider-thumb {
+      width: 100%;
+      height: 75px;
+      object-fit: cover;
+      object-position: center;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+      opacity: 0.7;
+    }
+
+    .gallery-slider-thumb:hover,
+    .gallery-slider-thumb.active {
+      opacity: 1;
+    }
+
+    .gallery-slider-caption {
+      max-width: 965px;
+      margin: 22px auto 0 auto;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #333;
+      text-align: left;
+      white-space: pre-line;
+    }
+
+    .project-split-hover:hover .project-split-base {
+      opacity: 0;
+    }
+
+    .project-split-hover:hover .project-split-overlay {
+      opacity: 1;
+    }
+
+    .project-text-heading {
+      display: inline-block;
+      font-size: 16px;
+      line-height: 1.35;
+      font-weight: 700;
+      margin-bottom: 0px;
+    }
+
+    .project-description-block {
+      max-width: 965px;
+      margin: 48px auto 22px auto;
+      display: grid;
+      grid-template-columns: 0.77fr 1.23fr;
+      column-gap: 42px;
+      align-items: start;
+    }
+
+    .project-description-block p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #333;
+      white-space: pre-line;
+    }
+
+    @media (max-width: 768px) {
+      #meta-text-wrapper {
+        flex-direction: column;
+      }
+
+      #project-first-image img {
+        max-width: 965px;
+        width: 100%;
+        height: 285px;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+        margin: 0 auto;
+      }
+
+      #project-meta {
+        width: 350px;
+        display: grid;
+        grid-template-columns: 125px 1fr;
+        gap: 8px 0;
+        font-size: 14px;
+        color: #525252;
+        line-height: 1.1;
+        margin-left: 15px;
+        margin-top: -5px;
+      }
+
+      #project-meta h2 {
+        grid-column: 1 / -1;
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 16px;
+        color: #2e2e2e;
+      }
+
+      #project-text {
+        font-size: 14px;
+        color: #333;
+        line-height: 1.6;
+        white-space: pre-line;
+        margin: 0px 15px 0 15px;
+      }
+
+      .project-image {
+        max-width: 965px;
+        width: 100%;
+        display: block;
+        margin: 0 auto 20px auto;
+      }
+
+      .project-description-block {
+        padding: 0 15px;
+        margin: 0 auto 16px auto;
+        display: block;
+      }
+
+      .project-description-block p + p {
+        margin-top: 24px;
+      }
+
+      .project-split-overlay {
+        display: none;
+      }
+
+      .project-detail-panel {
+        padding: 0 15px;
+        margin-bottom: 36px;
+      }
+
+      .project-split-hover {
+        width: 100%;
+        max-width: 965px;
+        margin-bottom: 16px;
+      }
+
+      .project-detail-text {
+        max-width: none;
+      }
+
+      .project-gallery-slider {
+        margin: 48px auto 56px auto;
+        padding: 0 15px;
+      }
+
+      .gallery-slider-main {
+        height: 320px;
+      }
+
+      .gallery-slider-thumb {
+        height: 55px;
+      }
+
+      .gallery-slider-caption {
+        margin-top: 18px;
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header id="header-placeholder"></header>
+
+  <main id="project-container" class="special-main">
+    <div id="project-first-image">
+      <img src="001.jpg" class="project-first-img" alt="Taiwan Air Force - Cover">
+    </div>
+
+    <div id="meta-text-wrapper">
+      <div id="project-meta">
+        <h2>Little Farm House</h2>
+        <div class="label">Year</div><div class="value">2018</div>
+        <div class="label">Type</div><div class="value">Development <br> Park / Architecture Installation</div>
+        <div class="label">Team</div><div class="value">Tey Tat Sing <br> Wong Wei Ping <br> Alex Tan <br> Andrew Leng <br> Lim Huei Miin <br> Ele Mun <br> Suzzane Kan</div>
+        <div class="label">Location</div><div class="value">Taipei</div>
+        <div class="label">Collabration</div><div class="value">ArchiBlur Lab</div>
+      </div>
+
+      <div id="project-text"><span class="project-text-heading">园丁小屋</span>
+
+一間屬於園丁的居所，包含苗圃、農具、茶居與種子庫四個功能各異的空間。當這四個空間組合在一起時，便如同一座完整的小房子，為園丁提供一個與種植相關的庇護所；而當它們拆卸分開時，各自獨立的空間同樣完善地承載了種植所需的各項設施。園丁小屋更像是坐落於土地之上、為協助種植活動而暫時存在的「工具」，可依需求拆卸分離或重新組合，也可隨著種植活動的轉移而移動，體現出建築與土地環境和諧共存的可能性。
+
+A dwelling for gardeners, it comprises four spaces with distinct functions: a nursery, a tool shed, a tea room, and a seed bank. When these four spaces are combined, they form a complete little house that provides gardeners with a shelter centered around cultivation. When taken apart, each individual space still fully supports the facilities needed for planting activities. More than a fixed building, the little farm house is like a “tool” temporarily situated on the land to assist cultivation. It can be dismantled, separated, or reassembled according to different needs, and can also be relocated as planting activities shift, embodying the possibility of architecture coexisting harmoniously with the land and its environment.</div>
+    </div>
+
+    <div id="project-images">
+      <img class="project-image" src="002.jpg" alt="Taiwan Air Force - 002">
+      <img class="project-image" src="003.jpg" alt="Taiwan Air Force - 003">
+    </div>
+
+    <div class="project-description-block">
+      <p>在這場關於建築與土地和諧共存的探索中，我們所想像的園丁小屋，是一個可以四處移動、不受地理位置限制的種植基地。它由輕便的鐵框架與通透的鐵網牆體構成，便於移動與維修。當園丁小屋落腳後，只需將四個空間展開，便能形成一個完整的種植場域，並在周圍土地上進行全面耕作。當任務完成後，它又可重新組合在一起，前往下一個地點，不僅不會對土地留下傷害，反而以耕作與種植去「縫補」城市化所帶來的「缺口」。</p>
+      <p>In this exploration of how architecture can coexist harmoniously with the land, we envision the gardener’s hut as a mobile cultivation base that is not bound by any fixed location. It is composed of a lightweight steel frame and permeable steel mesh walls, making it easy to move and maintain. Once the gardener’s hut settles on a site, the four spaces can simply be unfolded to form a complete planting environment, allowing cultivation to take place fully across the surrounding land. When the task is complete, the spaces can be recombined and moved on to the next location, leaving no damage to the land. Instead, through farming and planting, it seeks to “stitch up” the “gaps” created by urbanization.</p>
+    </div>
+
+    <div class="project-split-hover" aria-label="Taiwan Air Force - 004">
+      <img class="project-split-base" src="004.jpg" alt="Taiwan Air Force - 004">
+      <div class="project-split-overlay" aria-hidden="true">
+        <div class="project-split-segment" data-detail-image="010.jpg" data-detail-text="第四個空間是園丁的苗圃（也是閣樓／後院），這裡是培育幼苗的空間，閣樓的下層用來培育幼苗，成熟後的苗子則可以轉移到上層更穩定的空間，園丁也可以在閣樓上層睡個午覺。&#10;&#10;The fourth space is the farmer's nursery, which also functions as a mezzanine and backyard. It is a place for cultivating young seedlings: the lower level of the mezzanine is used for raising them, while more mature seedlings can be moved to the upper level where the environment is more stable. The farmer can also take a nap on the upper mezzanine level.">
+          <img src="005a.jpg" alt="">
+          <div class="project-split-label">
+            <div class="project-split-label-en">Nursery</div>
+            <div class="project-split-label-zh">苗圃</div>
+          </div>
+        </div>
+        <div class="project-split-segment" data-detail-image="009.jpg" data-detail-text="第三個空間是園丁的工具房（也是儲藏室），用來存放耕作種植所用的工具，小型工具可以存放在牆體鐵網的托盤上，大型工具則可以直接掛在鐵網上，這裡也是製作堆肥活動可以發生的空間。&#10;&#10;The third space is the farmer's tool room, which also serves as a storage room. It is used to store tools for farming and planting: small tools can be placed on trays attached to the metal mesh wall, while larger tools can be hung directly on the mesh. It is also a space where compost-making activities can take place.">
+          <img src="005b.jpg" alt="">
+          <div class="project-split-label">
+            <div class="project-split-label-en">Tools</div>
+            <div class="project-split-label-zh">農具</div>
+          </div>
+        </div>
+        <div class="project-split-segment" data-detail-image="008.jpg" data-detail-text="第二個空間是園丁的茶居（也是客廳），用簡易的茶具去營造休恬的空間氛圍，是和大夥來杯下午茶的空間，也是周遭鄰居（包括小動物）可以來串門的地方。&#10;&#10;The second space is the farmer's tea pod, which also functions as a living room. Simple tea utensils create a calm and restful atmosphere, making it a place to share afternoon tea with friends and a corner where nearby neighbors, including small animals, can drop by.">
+          <img src="005c.jpg" alt="">
+          <div class="project-split-label">
+            <div class="project-split-label-en">Tea Pod</div>
+            <div class="project-split-label-zh">茶居</div>
+          </div>
+        </div>
+        <div class="project-split-segment is-active" data-detail-image="007.jpg" data-detail-text="第一個空間是園丁的種子庫（也是前廳），這也是種植的第一步驟。這裡用於儲存各種種子，顆粒狀或體積較小的種子可以裝在透明的壓克力盒子內，掛在牆體的鐵網上；體積較大或有堅硬外殼的種子則以袋子裝盛，懸掛在上方。&#10;&#10;The first space is the farmer's seed pod, which also serves as the foyer. It marks the first step of cultivation. Various seeds are stored here: granular or smaller seeds can be placed in transparent acrylic boxes and hung on the metal mesh wall, while larger seeds or those with hard outer shells are kept in bags and suspended above.">
+          <img src="005d.jpg" alt="">
+          <div class="project-split-label">
+            <div class="project-split-label-en">Seed Pod</div>
+            <div class="project-split-label-zh">種子庫</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-detail-panel">
+      <img id="project-detail-image" class="project-detail-image" src="007.jpg" alt="Taiwan Air Force - Detail">
+      <div id="project-detail-text" class="project-detail-text">第一個空間是園丁的種子庫（也是前廳），這也是種植的第一步驟。這裡用於儲存各種種子，顆粒狀或體積較小的種子可以裝在透明的壓克力盒子內，掛在牆體的鐵網上；體積較大或有堅硬外殼的種子則以袋子裝盛，懸掛在上方。
+
+The first space is the farmer's seed pod, which also serves as the foyer. It marks the first step of cultivation. Various seeds are stored here: granular or smaller seeds can be placed in transparent acrylic boxes and hung on the metal mesh wall, while larger seeds or those with hard outer shells are kept in bags and suspended above.</div>
+    </div>
+    <div id="project-gallery-slider" class="project-gallery-slider" data-gallery-group="gallery-1">
+      <div class="gallery-slider-main">
+        <span class="gallery-slider-arrow left">&#10094;</span>
+        <img class="gallery-slider-main-img" src="011.jpg" alt="Taiwan Air Force - Gallery 011" data-lightbox-group="gallery-1">
+        <span class="gallery-slider-arrow right">&#10095;</span>
+      </div>
+
+      <div class="gallery-slider-thumbs">
+        <img src="011.jpg" class="gallery-slider-thumb active" data-index="0" alt="Thumbnail 011">
+        <img src="012.jpg" class="gallery-slider-thumb" data-index="1" alt="Thumbnail 012">
+        <img src="013.jpg" class="gallery-slider-thumb" data-index="2" alt="Thumbnail 013">
+        <img src="014.jpg" class="gallery-slider-thumb" data-index="3" alt="Thumbnail 014">
+        <img src="015.jpg" class="gallery-slider-thumb" data-index="4" alt="Thumbnail 015">
+        <img src="016.jpg" class="gallery-slider-thumb" data-index="5" alt="Thumbnail 016">
+        <img src="017.jpg" class="gallery-slider-thumb" data-index="6" alt="Thumbnail 017">
+        <img src="018.jpg" class="gallery-slider-thumb" data-index="7" alt="Thumbnail 018">
+        <img src="019.jpg" class="gallery-slider-thumb" data-index="8" alt="Thumbnail 019">
+        <img src="020.jpg" class="gallery-slider-thumb" data-index="9" alt="Thumbnail 020">
+        <img src="021.jpg" class="gallery-slider-thumb" data-index="10" alt="Thumbnail 021">
+      </div>
+
+      <div class="gallery-slider-caption">把空總原有的停車位柏油路按格子切開，打開其中一部分的區塊，把原有的土壤露出來變成耕作的土地，讓空總成為園丁小屋的第一個基地。
+
+The original asphalt parking bays of the Air Force site were cut open according to their grid, with selected sections removed to reveal the soil beneath and turn it into cultivable ground, allowing the site to become the first base for the Little Farm House.</div>
+    </div>
+
+    <div class="project-gallery-slider" data-gallery-group="gallery-2">
+      <div class="gallery-slider-main">
+        <span class="gallery-slider-arrow left">&#10094;</span>
+        <img class="gallery-slider-main-img" src="022.jpg" alt="Taiwan Air Force - Gallery 022" data-lightbox-group="gallery-2">
+        <span class="gallery-slider-arrow right">&#10095;</span>
+      </div>
+
+      <div class="gallery-slider-thumbs">
+        <img src="022.jpg" class="gallery-slider-thumb active" data-index="0" alt="Thumbnail 022">
+        <img src="023.jpg" class="gallery-slider-thumb" data-index="1" alt="Thumbnail 023">
+        <img src="024.jpg" class="gallery-slider-thumb" data-index="2" alt="Thumbnail 024">
+        <img src="025.jpg" class="gallery-slider-thumb" data-index="3" alt="Thumbnail 025">
+        <img src="026.jpg" class="gallery-slider-thumb" data-index="4" alt="Thumbnail 026">
+        <img src="027.jpg" class="gallery-slider-thumb" data-index="5" alt="Thumbnail 027">
+        <img src="028.jpg" class="gallery-slider-thumb" data-index="6" alt="Thumbnail 028">
+        <img src="029.jpg" class="gallery-slider-thumb" data-index="7" alt="Thumbnail 029">
+      </div>
+    </div>
+
+    <div id="lightbox">
+      <span id="lightbox-close">&times;</span>
+      <img src="" alt="Lightbox Image">
+    </div>
+  </main>
+
+  <script src="../../../../header/header.js"></script>
+  <script>
+    function enableLightbox() {
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImg = lightbox.querySelector("img");
+      const closeBtn = document.getElementById("lightbox-close");
+      const allImgs = document.querySelectorAll("#project-first-image .project-first-img, #project-images > .project-image");
+      const galleryMainImgs = document.querySelectorAll(".gallery-slider-main-img");
+      const lightboxGroups = {
+        "gallery-1": ["011.jpg", "012.jpg", "013.jpg", "014.jpg", "015.jpg", "016.jpg", "017.jpg", "018.jpg", "019.jpg", "020.jpg", "021.jpg"],
+        "gallery-2": ["022.jpg", "023.jpg", "024.jpg", "025.jpg", "026.jpg", "027.jpg", "028.jpg", "029.jpg"]
+      };
+      let lightboxIndex = -1;
+      let activeLightboxGroup = null;
+
+      function normalizeLightboxSrc(src) {
+        return src.split("/").pop();
+      }
+
+      function openLightbox(src, enableSliderNavigation = false) {
+        const normalizedSrc = normalizeLightboxSrc(src);
+        activeLightboxGroup = enableSliderNavigation;
+        lightboxIndex = enableSliderNavigation ? lightboxGroups[enableSliderNavigation].indexOf(normalizedSrc) : -1;
+        lightboxImg.src = src;
+        lightbox.style.display = "flex";
+      }
+
+      function closeLightbox() {
+        lightbox.style.display = "none";
+        lightboxIndex = -1;
+        activeLightboxGroup = null;
+      }
+
+      function stepLightbox(direction) {
+        if (lightbox.style.display !== "flex" || lightboxIndex === -1 || !activeLightboxGroup) return;
+        const activeImages = lightboxGroups[activeLightboxGroup];
+        lightboxIndex = (lightboxIndex + direction + activeImages.length) % activeImages.length;
+        lightboxImg.src = activeImages[lightboxIndex];
+      }
+
+      allImgs.forEach((img) => {
+        img.addEventListener("click", () => {
+          openLightbox(img.getAttribute("src"), false);
+        });
+      });
+
+      galleryMainImgs.forEach((galleryMainImg) => {
+        galleryMainImg.addEventListener("click", () => {
+          openLightbox(galleryMainImg.getAttribute("src"), galleryMainImg.dataset.lightboxGroup);
+        });
+      });
+
+      lightbox.addEventListener("click", (e) => {
+        if (e.target === lightbox) {
+          closeLightbox();
+        }
+      });
+
+      closeBtn.addEventListener("click", () => {
+        closeLightbox();
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (lightbox.style.display !== "flex") return;
+
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          stepLightbox(-1);
+        }
+
+        if (event.key === "ArrowRight") {
+          event.preventDefault();
+          stepLightbox(1);
+        }
+      });
+    }
+
+    function enableProjectSplitDetails() {
+      const splitHover = document.querySelector(".project-split-hover");
+      const detailPanel = document.querySelector(".project-detail-panel");
+      const segments = document.querySelectorAll(".project-split-segment");
+      const detailImage = document.getElementById("project-detail-image");
+      const detailText = document.getElementById("project-detail-text");
+      const defaultSegment = document.querySelector(".project-split-segment[data-detail-image='007.jpg']");
+      const autoplayOrder = ["007.jpg", "008.jpg", "009.jpg", "010.jpg"]
+        .map((image) => document.querySelector(`.project-split-segment[data-detail-image='${image}']`))
+        .filter(Boolean);
+      let autoplayIndex = 0;
+      let autoplayTimer = null;
+
+      if (!splitHover || !detailPanel || !segments.length || !detailImage || !detailText || !defaultSegment || !autoplayOrder.length) return;
+
+      function activateSegment(segment, lockSelection = false) {
+        segments.forEach((item) => item.classList.remove("is-active"));
+        segment.classList.add("is-active");
+        detailImage.src = segment.dataset.detailImage;
+        detailText.innerHTML = segment.dataset.detailText;
+
+        if (lockSelection) {
+          splitHover.classList.add("is-locked");
+        }
+      }
+
+      function stopAutoplay() {
+        if (autoplayTimer) {
+          clearInterval(autoplayTimer);
+          autoplayTimer = null;
+        }
+      }
+
+      function runAutoplayStep() {
+        const currentSegment = autoplayOrder[autoplayIndex];
+        if (!currentSegment) return;
+        activateSegment(currentSegment, false);
+        autoplayIndex = (autoplayIndex + 1) % autoplayOrder.length;
+      }
+
+      function startAutoplay() {
+        stopAutoplay();
+        splitHover.classList.remove("is-locked");
+        runAutoplayStep();
+        autoplayTimer = setInterval(runAutoplayStep, 5000);
+      }
+
+      function resetSplitDetails() {
+        const defaultIndex = autoplayOrder.indexOf(defaultSegment);
+        autoplayIndex = defaultIndex === -1 ? 0 : defaultIndex;
+        startAutoplay();
+      }
+
+      segments.forEach((segment) => {
+        segment.addEventListener("click", (event) => {
+          event.stopPropagation();
+          stopAutoplay();
+          activateSegment(segment, true);
+        });
+      });
+
+      detailPanel.addEventListener("click", (event) => {
+        event.stopPropagation();
+      });
+
+      splitHover.addEventListener("click", (event) => {
+        event.stopPropagation();
+      });
+
+      document.addEventListener("click", (event) => {
+        if (!splitHover.contains(event.target) && !detailPanel.contains(event.target)) {
+          resetSplitDetails();
+        }
+      });
+
+      resetSplitDetails();
+    }
+
+    function enableGallerySlider() {
+      const galleryConfigs = {
+        "gallery-1": ["011.jpg", "012.jpg", "013.jpg", "014.jpg", "015.jpg", "016.jpg", "017.jpg", "018.jpg", "019.jpg", "020.jpg", "021.jpg"],
+        "gallery-2": ["022.jpg", "023.jpg", "024.jpg", "025.jpg", "026.jpg", "027.jpg", "028.jpg", "029.jpg"]
+      };
+
+      const galleryContainers = document.querySelectorAll(".project-gallery-slider[data-gallery-group]");
+
+      galleryContainers.forEach((container) => {
+        const group = container.dataset.galleryGroup;
+        const galleryImages = galleryConfigs[group];
+        const galleryMainImg = container.querySelector(".gallery-slider-main-img");
+        const galleryThumbs = container.querySelectorAll(".gallery-slider-thumb");
+        const galleryLeft = container.querySelector(".gallery-slider-arrow.left");
+        const galleryRight = container.querySelector(".gallery-slider-arrow.right");
+
+        if (!galleryImages || !galleryMainImg || !galleryThumbs.length || !galleryLeft || !galleryRight) return;
+
+        let galleryIndex = 0;
+
+        function updateGallery(index) {
+          galleryMainImg.src = galleryImages[index];
+          galleryThumbs.forEach((thumb) => thumb.classList.remove("active"));
+          galleryThumbs[index].classList.add("active");
+          galleryIndex = index;
+        }
+
+        galleryThumbs.forEach((thumb) => {
+          thumb.addEventListener("click", () => {
+            updateGallery(parseInt(thumb.dataset.index, 10));
+          });
+        });
+
+        galleryLeft.addEventListener("click", () => {
+          const next = (galleryIndex - 1 + galleryImages.length) % galleryImages.length;
+          updateGallery(next);
+        });
+
+        galleryRight.addEventListener("click", () => {
+          const next = (galleryIndex + 1) % galleryImages.length;
+          updateGallery(next);
+        });
+      });
+    }
+
+    function adjustProjectImage() {
+      const images = document.querySelectorAll(".project-image");
+      if (window.innerWidth <= 768) return;
+
+      images.forEach((img) => {
+        const topContentHeight = img.getBoundingClientRect().top + window.scrollY;
+
+        if (topContentHeight < 900) {
+          img.style.marginTop = (950 - topContentHeight) + "px";
+        } else {
+          img.style.marginTop = "50px";
+        }
+      });
+    }
+
+    enableLightbox();
+    enableProjectSplitDetails();
+    enableGallerySlider();
+    window.addEventListener("load", adjustProjectImage);
+    window.addEventListener("resize", adjustProjectImage);
+  </script>
+</body>
+</html>

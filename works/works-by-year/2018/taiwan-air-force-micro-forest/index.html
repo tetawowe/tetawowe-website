@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="../../../../header/favicon.ico">
+  <title>Taiwan Air Force</title>
+
+  <link rel="stylesheet" href="../../../../header/header.css">
+  <link rel="stylesheet" href="../../../../project/project.css">
+
+  <style>
+    #meta-text-wrapper {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      margin: 24px auto;
+      max-width: 965px;
+      margin-top: 15px;
+    }
+
+    #project-meta {
+      flex: 0 0 290px;
+    }
+
+    #project-meta h2 {
+      margin: 0;
+    }
+
+    #project-text {
+      flex: 1;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-top: 0;
+      min-height: 1px;
+    }
+
+    #lightbox {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      align-items: center;
+      justify-content: center;
+    }
+
+    #lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+    #lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      font-size: 40px;
+      color: #fff;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .project-first-img,
+    .project-image {
+      cursor: pointer;
+    }
+
+    #project-images {
+      max-width: 965px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+    }
+
+    #project-images .project-image {
+      margin: 0 auto;
+    }
+
+    #project-images .project-image:last-child {
+      margin-bottom: 100px;
+    }
+
+    .project-text-heading {
+      display: inline-block;
+      font-size: 16px;
+      line-height: 1.35;
+      font-weight: 700;
+      margin-bottom: 0px;
+    }
+
+    .project-description-block {
+      max-width: 965px;
+      margin: 48px auto 60px auto;
+      display: grid;
+      grid-template-columns: 0.88fr 1.12fr;
+      column-gap: 42px;
+      align-items: start;
+    }
+
+    .project-description-block p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #333;
+      white-space: pre-line;
+    }
+
+    .image-text-sections {
+      max-width: 965px;
+      margin: 0 auto 70px auto;
+    }
+
+    .image-text-row {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      column-gap: 42px;
+      align-items: start;
+      margin-top: 72px;
+    }
+
+    .image-text-image {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+    }
+
+    .image-text-row img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: pointer;
+      margin-top: 0 !important;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .hover-base,
+    .hover-alt {
+      width: 100%;
+      height: 100%;
+      display: block;
+      transition: opacity 0.25s ease;
+    }
+
+    .hover-alt {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+    }
+
+    .image-text-image:hover .hover-alt {
+      opacity: 1;
+    }
+
+    .image-text-image:hover .hover-base {
+      opacity: 0;
+    }
+
+    .image-text-copy {
+      font-size: 14px;
+      line-height: 1.58;
+      color: #333;
+      white-space: pre-line;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .image-text-copy strong {
+      font-weight: 700;
+    }
+
+    .image-text-main {
+      flex: 1;
+    }
+
+    .image-text-main br + br {
+      line-height: 0.72;
+    }
+
+    .view-more-link {
+      align-self: flex-end;
+      margin-top: 18px;
+      color: #333;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    @media (max-width: 768px) {
+      #meta-text-wrapper {
+        flex-direction: column;
+      }
+
+      #project-first-image img {
+        max-width: 965px;
+        width: 100%;
+        height: 285px;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+        margin: 0 auto;
+      }
+
+      #project-meta {
+        width: 350px;
+        display: grid;
+        grid-template-columns: 125px 1fr;
+        gap: 8px 0;
+        font-size: 14px;
+        color: #525252;
+        line-height: 1.1;
+        margin-left: 15px;
+        margin-top: -5px;
+      }
+
+      #project-meta h2 {
+        grid-column: 1 / -1;
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 16px;
+        color: #2e2e2e;
+      }
+
+      #project-text {
+        font-size: 14px;
+        color: #333;
+        line-height: 1.6;
+        white-space: pre-line;
+        margin: 0px 15px 0 15px;
+      }
+
+      .project-image {
+        max-width: 965px;
+        width: 100%;
+        display: block;
+        margin: 0 auto 20px auto;
+      }
+
+      #project-images {
+        gap: 20px;
+      }
+
+      .project-description-block {
+        padding: 0 15px;
+        margin: 0 auto 45px auto;
+        display: block;
+      }
+
+      .project-description-block p + p {
+        margin-top: 24px;
+      }
+
+      .image-text-row {
+        display: block;
+        margin-top: 52px;
+      }
+
+      .image-text-copy {
+        margin-top: 20px;
+        padding: 0 15px;
+      }
+
+      .hover-alt {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header id="header-placeholder"></header>
+
+  <main id="project-container" class="special-main">
+    <div id="project-first-image">
+      <img src="001.jpg" class="project-first-img" alt="Taiwan Air Force - Cover">
+    </div>
+
+    <div id="meta-text-wrapper">
+      <div id="project-meta">
+        <h2>Micro Forest</h2>
+        <div class="label">Year</div><div class="value">2018</div>
+        <div class="label">Type</div><div class="value">Development <br> Park / Architecture Installation</div>
+        <div class="label">Team</div><div class="value">Tey Tat Sing <br> Wong Wei Ping <br> Alex Tan <br> Andrew Leng <br> Lim Huei Miin <br> Ele Mun <br> Suzzane Kan</div>
+        <div class="label">Location</div><div class="value">Taipei</div>
+        <div class="label">Collabration</div><div class="value">ArchiBlur Lab</div>
+      </div>
+
+      <div id="project-text"><span class="project-text-heading">微森林</span>
+
+想像空總一大片的柏油路被樹木和濕地取代，適合魚、蟲、鳥類、小動物等生物的進駐。在這座微森林，只要將原有的建築群稍作增刪，梳理和串聯，配合酌量的負育空間介面，我們即可發展出和自然生態平衡共生的建築載體，作為聚落。這負育空間介面將扮演各種輔助的角色，包括提升縱橫動線、管線架構、半公共空間、農耕作業、再生能源站、觀察採集站、半戶外教學、表演舞台、臨時觀眾席等可以衍生無限作用無限想像的附屬性空間。負育空間介面是非永久性的 (non-permanent)，某些部份可以根據需要伸縮、組裝、移動，和動植物共享一片土地。
+
+Imagine the vast asphalt grounds of the Air Force Headquarters being replaced by trees and wetlands, creating a habitat suitable for fish, insects, birds, and small animals. Within this micro forest, the existing building clusters need only slight additions and subtractions, together with reorganization and connection, to become architectural carriers that coexist in balance with the natural ecosystem and form a settlement. This negative-growth spatial interface plays many supporting roles, including enhancing horizontal and vertical circulation, utility networks, semi-public spaces, farming activities, renewable energy stations, observation and collection posts, semi-outdoor teaching areas, performance stages, and temporary spectator seating, as well as countless other auxiliary spaces open to infinite functions and imagination. The negative-growth spatial interface is non-permanent; some parts can expand, contract, be assembled, or be moved according to need, allowing humans, plants, and animals to share the same piece of land.</div>
+    </div>
+
+    <div id="project-images">
+      <img class="project-image" src="002.jpg" alt="Bird Stay - 002">
+      <img class="project-image" src="003.jpg" alt="Bird Stay - 003">
+      <img class="project-image" src="004.jpg" alt="Bird Stay - 004">
+      <img class="project-image" src="005.jpg" alt="Bird Stay - 005">
+      <img class="project-image" src="006.jpg" alt="Bird Stay - 006">
+      <img class="project-image" src="007.jpg" alt="Bird Stay - 007">
+    </div>
+
+    <div id="lightbox">
+      <span id="lightbox-close">&times;</span>
+      <img src="" alt="Lightbox Image">
+    </div>
+  </main>
+
+  <script src="../../../../header/header.js"></script>
+  <script>
+    function enableLightbox() {
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImg = lightbox.querySelector("img");
+      const closeBtn = document.getElementById("lightbox-close");
+      const allImgs = document.querySelectorAll(".project-first-img, .project-image");
+
+      allImgs.forEach((img) => {
+        img.addEventListener("click", () => {
+          lightboxImg.src = img.src;
+          lightbox.style.display = "flex";
+        });
+      });
+
+      lightbox.addEventListener("click", (e) => {
+        if (e.target === lightbox) {
+          lightbox.style.display = "none";
+        }
+      });
+
+      closeBtn.addEventListener("click", () => {
+        lightbox.style.display = "none";
+      });
+    }
+
+    enableLightbox();
+  </script>
+</body>
+</html>

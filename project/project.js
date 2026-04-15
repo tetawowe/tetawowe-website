@@ -93,29 +93,48 @@ fetch("/works/projects.json")
       }
 
       if (sortedImages.length > 6) {
+        const galleryImages = sortedImages.slice(6).map(src => `${folderPath}/${src}`);
         const galleryWrapper = document.createElement("div");
+        const galleryGroup = "project-gallery";
+
         galleryWrapper.className = "gallery-wrapper";
+        galleryWrapper.dataset.galleryGroup = galleryGroup;
+
+        const galleryMain = document.createElement("div");
+        galleryMain.className = "gallery-main";
+
+        const leftArrow = document.createElement("span");
+        leftArrow.className = "gallery-arrow left";
+        leftArrow.innerHTML = "&#10094;";
 
         const mainImg = document.createElement("img");
-        mainImg.className = "gallery-main";
-        mainImg.src = `${folderPath}/${sortedImages[6]}`;
-        galleryWrapper.appendChild(mainImg);
+        mainImg.className = "gallery-main-img";
+        mainImg.src = galleryImages[0];
+        mainImg.alt = project.title;
+        mainImg.dataset.lightboxGroup = galleryGroup;
+
+        const rightArrow = document.createElement("span");
+        rightArrow.className = "gallery-arrow right";
+        rightArrow.innerHTML = "&#10095;";
+
+        galleryMain.appendChild(leftArrow);
+        galleryMain.appendChild(mainImg);
+        galleryMain.appendChild(rightArrow);
+        galleryWrapper.appendChild(galleryMain);
 
         const thumbs = document.createElement("div");
         thumbs.className = "gallery-thumbs";
 
-        sortedImages.slice(6).forEach((src, index) => {
+        galleryImages.forEach((src, index) => {
           const thumb = document.createElement("img");
-          thumb.src = `${folderPath}/${src}`;
-          thumb.alt = project.title;
+          thumb.src = src;
+          thumb.alt = `${project.title} thumbnail ${index + 1}`;
           thumb.className = "gallery-thumb";
-          thumb.addEventListener("click", () => {
-            mainImg.src = `${folderPath}/${src}`;
-            document.querySelectorAll(".gallery-thumb").forEach(t => t.classList.remove("active"));
+          thumb.dataset.index = index;
+          if (index === 0) {
             thumb.classList.add("active");
-          });
+          }
           thumbs.appendChild(thumb);
-          if (index === 0) thumb.classList.add("active");
         });
 
         galleryWrapper.appendChild(thumbs);
@@ -124,6 +143,7 @@ fetch("/works/projects.json")
 
       waitForImagesToLoad(document).then(() => {
         adjustProjectImage();
+        enableGallerySlider();
         enableLightbox();
       });
     } else {
@@ -216,6 +236,56 @@ function waitForImagesToLoad(container) {
 }
 
 // ===============================
+// Gallery Slider 功能
+// ===============================
+function enableGallerySlider() {
+  const galleryContainers = document.querySelectorAll(".gallery-wrapper[data-gallery-group]");
+
+  galleryContainers.forEach(container => {
+    const galleryImages = Array.from(container.querySelectorAll(".gallery-thumb")).map(thumb => thumb.src);
+    const mainImg = container.querySelector(".gallery-main-img");
+    const thumbs = Array.from(container.querySelectorAll(".gallery-thumb"));
+    const leftArrow = container.querySelector(".gallery-arrow.left");
+    const rightArrow = container.querySelector(".gallery-arrow.right");
+
+    if (!galleryImages.length || !mainImg || !thumbs.length || !leftArrow || !rightArrow) {
+      return;
+    }
+
+    let galleryIndex = Math.max(galleryImages.indexOf(mainImg.src), 0);
+
+    function updateGallery(index) {
+      mainImg.src = galleryImages[index];
+      thumbs.forEach(thumb => thumb.classList.remove("active"));
+      thumbs[index].classList.add("active");
+      galleryIndex = index;
+    }
+
+    thumbs.forEach(thumb => {
+      thumb.addEventListener("click", () => {
+        const nextIndex = parseInt(thumb.dataset.index, 10);
+        if (Number.isNaN(nextIndex)) {
+          return;
+        }
+        updateGallery(nextIndex);
+      });
+    });
+
+    leftArrow.addEventListener("click", () => {
+      const nextIndex = (galleryIndex - 1 + galleryImages.length) % galleryImages.length;
+      updateGallery(nextIndex);
+    });
+
+    rightArrow.addEventListener("click", () => {
+      const nextIndex = (galleryIndex + 1) % galleryImages.length;
+      updateGallery(nextIndex);
+    });
+
+    updateGallery(galleryIndex);
+  });
+}
+
+// ===============================
 // Lightbox 功能
 // ===============================
 function enableLightbox() {
@@ -224,25 +294,88 @@ function enableLightbox() {
     lightbox.id = "lightbox";
     lightbox.innerHTML = `<span class="lightbox-close">&times;</span><img class="lightbox-img" src="" alt="lightbox">`;
     document.body.appendChild(lightbox);
-
-    lightbox.addEventListener("click", e => {
-      if (e.target.id === "lightbox" || e.target.classList.contains("lightbox-close")) {
-        lightbox.style.display = "none";
-      }
-    });
   }
 
   const lightbox = document.getElementById("lightbox");
   const lightboxImg = lightbox.querySelector(".lightbox-img");
+  const lightboxGroups = {};
+  let lightboxIndex = -1;
+  let activeLightboxGroup = null;
 
-  document.querySelectorAll("#project-first-image img, .project-image, .gallery-main").forEach(img => {
+  document.querySelectorAll(".gallery-wrapper[data-gallery-group]").forEach(container => {
+    lightboxGroups[container.dataset.galleryGroup] = Array.from(container.querySelectorAll(".gallery-thumb")).map(thumb => thumb.src);
+  });
+
+  function normalizeLightboxSrc(src) {
+    try {
+      return new URL(src, window.location.href).href;
+    } catch (error) {
+      return src;
+    }
+  }
+
+  function openLightbox(src, group = null) {
+    const normalizedSrc = normalizeLightboxSrc(src);
+    activeLightboxGroup = group;
+    lightboxIndex = group && lightboxGroups[group]
+      ? lightboxGroups[group].findIndex(imageSrc => normalizeLightboxSrc(imageSrc) === normalizedSrc)
+      : -1;
+    lightboxImg.src = src;
+    lightbox.style.display = "flex";
+  }
+
+  function closeLightbox() {
+    lightbox.style.display = "none";
+    lightboxIndex = -1;
+    activeLightboxGroup = null;
+  }
+
+  function stepLightbox(direction) {
+    if (lightbox.style.display !== "flex" || lightboxIndex === -1 || !activeLightboxGroup || !lightboxGroups[activeLightboxGroup]) {
+      return;
+    }
+
+    const activeImages = lightboxGroups[activeLightboxGroup];
+    lightboxIndex = (lightboxIndex + direction + activeImages.length) % activeImages.length;
+    lightboxImg.src = activeImages[lightboxIndex];
+  }
+
+  document.querySelectorAll("#project-first-image img, .project-image, .gallery-main-img").forEach(img => {
     img.style.cursor = "pointer";
     img.addEventListener("click", () => {
-      lightboxImg.src = img.src;
-      document.querySelectorAll(".gallery-thumb").forEach(t => t.classList.remove("active"));
-      lightbox.style.display = "flex";
+      openLightbox(img.src, img.dataset.lightboxGroup || null);
     });
   });
+
+  lightbox.addEventListener("click", e => {
+    if (e.target.id === "lightbox" || e.target.classList.contains("lightbox-close")) {
+      closeLightbox();
+    }
+  });
+
+  if (!document.body.dataset.projectLightboxBound) {
+    document.addEventListener("keydown", event => {
+      if (lightbox.style.display !== "flex") {
+        return;
+      }
+
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        stepLightbox(-1);
+      }
+
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        stepLightbox(1);
+      }
+
+      if (event.key === "Escape") {
+        closeLightbox();
+      }
+    });
+
+    document.body.dataset.projectLightboxBound = "true";
+  }
 }
 
 window.addEventListener("resize", adjustProjectImage);
