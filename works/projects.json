@@ -798,6 +798,35 @@
       "collaboration": ""
     },
     {
+      "id": "coook",
+      "title": "COOOK",
+      "year": "2017",
+      "folder": "../works/works-by-year/2017/coook",
+      "images": [
+        "001.jpg",
+        "002.jpg",
+        "003.jpg",
+        "004.jpeg",
+        "005.jpeg",
+        "006.jpg",
+        "007.jpg",
+        "008.jpg",
+        "009.jpg",
+        "010.jpg"
+      ],
+      "text": "text.txt",
+      "type": "Food & Beverage",
+      "team": "Tey Tat Sing",
+      "location": "Pasar Seni",
+      "description": "",
+      "middle-description": "",
+      "layout": "",
+      "skip": "",
+      "local-artisan": "",
+      "photographer": "COOOK",
+      "collaboration": ""
+    },
+    {
       "id": "t-junction-office",
       "title": "T-Junction Office",
       "year": "2016-2017",
@@ -890,6 +919,37 @@
       "location": "Petaling Jaya",
       "description": "In general the proposal is an insertion of steel modules to feature a futuristic character. Repeatable steel module frame are designed to fulfill a flexible construction (in-situ / prefab). These steel modules form PC rooms and spectators corridor on the mezzanine level. The nature of the skeleton-like module makes space for service ducting; provides possibility to create futuristic and industrial features by exposing services like LAN cable, electrical cable and aircond.",
       "middle-description": "Catwalks are the mezzanine floor main linkage. Light steel catwalk structure wrapping existing columns and wall providing camouflage for unwanted visual disturbance. Part of the steel module and catwalk will be enveloped with selected finishing.\n\nMain lounge and staff rooms at the entrance hall will be using masonry construction together with steel structure (cantilevered lounge room).",
+      "layout": "",
+      "skip": "",
+      "local-artisan": "",
+      "photographer": "",
+      "collaboration": ""
+    },
+    {
+      "id": "a-living-room-sidewalk",
+      "title": "A Living Room @Sidewalk",
+      "year": "2018",
+      "folder": "../works/works-by-year/2018/a-living-room-sidewalk",
+      "images": [
+        "001.jpg",
+        "002.jpg",
+        "003.jpg",
+        "004.jpg",
+        "005.jpg",
+        "006.jpg",
+        "007.jpg",
+        "008.jpg",
+        "009.jpg",
+        "010.jpg",
+        "011.jpg",
+        "012.jpg"
+      ],
+      "text": "text.txt",
+      "type": "Park / Architecture Installation, Placemaking",
+      "team": "",
+      "location": "Pasar Seni",
+      "description": "",
+      "middle-description": "",
       "layout": "",
       "skip": "",
       "local-artisan": "",
@@ -1015,11 +1075,12 @@
       "skip": "",
       "local-artisan": "",
       "photographer": "",
-      "collaboration": "ArchiBlur Lab"
+      "collaboration": "ArchiBlur Lab",
+      "collaboration-link": "https://www.instagram.com/archiblur_lab/"
     },
     {
       "id": "taiwan-air-force-micro-forest",
-      "title": "Taiwan Air Force - Micro Forest",
+      "title": "Taiwan Air Force @Micro Forest",
       "year": "2018",
       "folder": "../works/works-by-year/2018/taiwan-air-force-micro-forest",
       "images": [
@@ -1042,11 +1103,12 @@
       "skip": "",
       "local-artisan": "",
       "photographer": "",
-      "collaboration": "ArchiBlur Lab"
+      "collaboration": "ArchiBlur Lab",
+      "collaboration-link": "https://www.instagram.com/archiblur_lab/"
     },
     {
       "id": "taiwan-air-force-little-farm-house",
-      "title": "Taiwan Air Force - Little Farm House",
+      "title": "Taiwan Air Force @Little Farm House",
       "year": "2018",
       "folder": "../works/works-by-year/2018/taiwan-air-force-little-farm-house",
       "images": ["001.jpg"],
@@ -1060,11 +1122,12 @@
       "skip": "",
       "local-artisan": "",
       "photographer": "",
-      "collaboration": "ArchiBlur Lab"
+      "collaboration": "ArchiBlur Lab",
+      "collaboration-link": "https://www.instagram.com/archiblur_lab/"
     },
     {
       "id": "taiwan-air-force-bird-stay",
-      "title": "Taiwan Air Force - Bird Stay",
+      "title": "Taiwan Air Force @Bird Stay",
       "year": "2018",
       "folder": "../works/works-by-year/2018/taiwan-air-force-bird-stay",
       "images": ["001.jpg"],
@@ -1078,7 +1141,8 @@
       "skip": "",
       "local-artisan": "",
       "photographer": "",
-      "collaboration": "ArchiBlur Lab"
+      "collaboration": "ArchiBlur Lab",
+      "collaboration-link": "https://www.instagram.com/archiblur_lab/"
     },
     {
       "id": "the-sunbather-the-sphere",
@@ -1310,7 +1374,8 @@
       "skip": "",
       "local-artisan": "",
       "photographer": "Kluang Days",
-      "collaboration": "Kluang Days, Kami Kita"
+      "collaboration": "Kluang Days, Kami Kita",
+      "collaboration-link": "https://www.instagram.com/kluangdays/, https://www.instagram.com/kami_kita_/"
     },
     {
       "id": "purple-cane-herren-street",
@@ -1456,7 +1521,8 @@
       "skip": "",
       "local-artisan": "",
       "photographer": "",
-      "collaboration": "Tong Sim Group"
+      "collaboration": "Tong Sim Group",
+      "collaboration-link": "https://www.tongsim.com.my/"
     },
     {
       "id": "hang-tuah-park",
@@ -1655,6 +1721,7 @@
       "layout": "",
       "skip": "",
       "local-artisan": "Gnihome Clay Plaster",
+      "local-artisan-link": "https://www.instagram.com/gnihomeclayplaster/",
       "photographer": "Lim Zhi Ru",
       "collaboration": ""
     },
@@ -1676,14 +1743,25 @@
       "skip": "",
       "local-artisan": "",
       "photographer": "",
-      "collaboration": "Wong Yee Shiong Architect, Landart Design, Primareka (JPP), Projek Permata Jaya (PPJ)"
+      "collaboration": "Wong Yee Shiong Architect, Landart Design, Primareka (JPP), Projek Permata Jaya (PPJ)",
+      "collaboration-link": "https://www.instagram.com/wysa_design/, , , "
     },
     {
       "id": "giggles-pj",
       "title": "Giggle PJ",
       "year": "2024-2025",
       "folder": "../works/works-by-year/2025/giggles-pj",
-      "images": [],
+      "images": [
+        "001.jpg",
+        "002.jpg",
+        "003.jpg",
+        "004.jpg",
+        "005.jpg",
+        "006.jpg",
+        "007.jpg",
+        "008.jpg",
+        "009.jpg"
+      ],
       "text": "text.txt",
       "type": "Food & Beverage",
       "team": "Wong Wei Ping, Angellyn Cheong Kai Yin, Soh Xuan En",
@@ -1691,9 +1769,9 @@
       "description": "",
       "middle-description": "",
       "layout": "",
-      "skip": "yes",
+      "skip": "",
       "local-artisan": "",
-      "photographer": "",
+      "photographer": "Eat Drink KL",
       "collaboration": ""
     },
     {
@@ -1831,6 +1909,7 @@
       "layout": "",
       "skip": "",
       "local-artisan": "Mun Ming Co",
+      "local-artisan-link": "https://www.instagram.com/munmingco/",
       "photographer": "RaRa Coffee, Roger Tkk",
       "collaboration": ""
     },

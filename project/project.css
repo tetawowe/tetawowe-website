@@ -297,4 +297,14 @@ body {
 
 }
 
+#project-meta .value a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+#project-meta .value a:hover {
+  opacity: 0.75;
+}
+
 

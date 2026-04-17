@@ -181,17 +181,53 @@ function renderMetaAndText(project, text) {
     `;
   }
 
-  const types = project.type
-    ? project.type.split(",").map(s => s.trim()).join("<br>")
-    : "";
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
 
-  const team = project.team
-    ? project.team.split(",").map(s => s.trim()).join("<br>")
-    : "";
+  function formatList(value) {
+    return value
+      ? value.split(",").map(s => escapeHtml(s.trim())).join("<br>")
+      : "";
+  }
 
-    const collaboration = project.collaboration
-  ? project.collaboration.split(",").map(s => s.trim()).join("<br>")
-  : "";
+  function formatLinkedList(namesValue, linksValue) {
+    if (!namesValue) return "";
+
+    const names = namesValue.split(",").map(s => s.trim()).filter(Boolean);
+    const links = (linksValue || "").split(",").map(s => s.trim());
+
+    return names.map((name, index) => {
+      const safeName = escapeHtml(name);
+      const link = links[index];
+
+      if (!link) return safeName;
+
+      const safeLink = escapeHtml(link);
+      return `<a href="${safeLink}" target="_blank" rel="noopener noreferrer">${safeName}</a>`;
+    }).join("<br>");
+  }
+
+  const types = formatList(project.type);
+
+  const team = formatList(project.team);
+  const localArtisan = formatLinkedList(
+    project["local-artisan"],
+    project["local-artisan-link"]
+  );
+  const photographer = formatLinkedList(
+    project.photographer,
+    project["photographer-link"]
+  );
+  const collaboration = formatLinkedList(
+    project.collaboration,
+    project["collaboration-link"]
+  );
 
   metaDiv.innerHTML = `
     <h2>${project.title}</h2>
@@ -200,8 +236,8 @@ function renderMetaAndText(project, text) {
     ${renderMetaRow("Type", types)}
     ${renderMetaRow("Team", team)}
     ${renderMetaRow("Location", project.location)}
-    ${renderMetaRow("Local Artisan", project["local-artisan"])}
-    ${renderMetaRow("Photographer", project.photographer)}
+    ${renderMetaRow("Local Artisan", localArtisan)}
+    ${renderMetaRow("Photographer", photographer)}
     ${renderMetaRow("Collaboration", collaboration)}
   `;
 
