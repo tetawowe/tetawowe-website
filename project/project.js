@@ -379,6 +379,9 @@ function enableLightbox() {
   const lightboxGroups = {};
   let lightboxIndex = -1;
   let activeLightboxGroup = null;
+  let lightboxTouchStartX = 0;
+  let lightboxTouchEndX = 0;
+  let lightboxHistoryOpen = false;
 
   document.querySelectorAll(".gallery-wrapper[data-gallery-group]").forEach(container => {
     lightboxGroups[container.dataset.galleryGroup] = Array.from(container.querySelectorAll(".gallery-thumb")).map(thumb => thumb.src);
@@ -400,12 +403,25 @@ function enableLightbox() {
       : -1;
     lightboxImg.src = src;
     lightbox.style.display = "flex";
+
+    if (!lightboxHistoryOpen) {
+      history.pushState({ projectLightbox: true }, "", window.location.href);
+      lightboxHistoryOpen = true;
+    }
   }
 
-  function closeLightbox() {
+  function closeLightbox(fromPopState = false) {
     lightbox.style.display = "none";
     lightboxIndex = -1;
     activeLightboxGroup = null;
+
+    if (lightboxHistoryOpen && !fromPopState) {
+      lightboxHistoryOpen = false;
+      history.back();
+      return;
+    }
+
+    lightboxHistoryOpen = false;
   }
 
   function stepLightbox(direction) {
@@ -431,6 +447,43 @@ function enableLightbox() {
     }
   });
 
+  lightboxImg.addEventListener("touchstart", event => {
+    if (!event.touches.length) {
+      return;
+    }
+
+    lightboxTouchStartX = event.touches[0].clientX;
+    lightboxTouchEndX = lightboxTouchStartX;
+  }, { passive: true });
+
+  lightboxImg.addEventListener("touchmove", event => {
+    if (!event.touches.length) {
+      return;
+    }
+
+    lightboxTouchEndX = event.touches[0].clientX;
+  }, { passive: true });
+
+  lightboxImg.addEventListener("touchend", () => {
+    const deltaX = lightboxTouchEndX - lightboxTouchStartX;
+    const swipeThreshold = 50;
+
+    if (Math.abs(deltaX) < swipeThreshold) {
+      lightboxTouchStartX = 0;
+      lightboxTouchEndX = 0;
+      return;
+    }
+
+    if (deltaX < 0) {
+      stepLightbox(1);
+    } else {
+      stepLightbox(-1);
+    }
+
+    lightboxTouchStartX = 0;
+    lightboxTouchEndX = 0;
+  });
+
   if (!document.body.dataset.projectLightboxBound) {
     document.addEventListener("keydown", event => {
       if (lightbox.style.display !== "flex") {
@@ -450,6 +503,18 @@ function enableLightbox() {
       if (event.key === "Escape") {
         closeLightbox();
       }
+    });
+
+    window.addEventListener("popstate", event => {
+      if (lightbox.style.display !== "flex") {
+        return;
+      }
+
+      if (event.state && event.state.projectLightbox) {
+        return;
+      }
+
+      closeLightbox(true);
     });
 
     document.body.dataset.projectLightboxBound = "true";

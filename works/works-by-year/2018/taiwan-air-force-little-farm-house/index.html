@@ -406,7 +406,7 @@
         <div class="label">Type</div><div class="value">Development <br> Park / Architecture Installation</div>
         <div class="label">Team</div><div class="value">Tey Tat Sing <br> Wong Wei Ping <br> Alex Tan <br> Andrew Leng <br> Lim Huei Miin <br> Ele Mun <br> Suzzane Kan</div>
         <div class="label">Location</div><div class="value">Taipei</div>
-        <div class="label">Collabration</div><div class="value">ArchiBlur Lab</div>
+        <div class="label">Collaboration</div><div class="value"><a href="https://www.instagram.com/archiblur_lab/" target="_blank" rel="noopener noreferrer">Archiblur Lab</a></div>
       </div>
 
       <div id="project-text"><span class="project-text-heading">园丁小屋</span>
@@ -531,6 +531,9 @@ The original asphalt parking bays of the Air Force site were cut open according 
       };
       let lightboxIndex = -1;
       let activeLightboxGroup = null;
+      let lightboxTouchStartX = 0;
+      let lightboxTouchEndX = 0;
+      let lightboxHistoryOpen = false;
 
       function normalizeLightboxSrc(src) {
         return src.split("/").pop();
@@ -542,12 +545,25 @@ The original asphalt parking bays of the Air Force site were cut open according 
         lightboxIndex = enableSliderNavigation ? lightboxGroups[enableSliderNavigation].indexOf(normalizedSrc) : -1;
         lightboxImg.src = src;
         lightbox.style.display = "flex";
+
+        if (!lightboxHistoryOpen) {
+          history.pushState({ projectLightbox: true }, "", window.location.href);
+          lightboxHistoryOpen = true;
+        }
       }
 
-      function closeLightbox() {
+      function closeLightbox(fromPopState = false) {
         lightbox.style.display = "none";
         lightboxIndex = -1;
         activeLightboxGroup = null;
+
+        if (lightboxHistoryOpen && !fromPopState) {
+          lightboxHistoryOpen = false;
+          history.back();
+          return;
+        }
+
+        lightboxHistoryOpen = false;
       }
 
       function stepLightbox(direction) {
@@ -579,19 +595,66 @@ The original asphalt parking bays of the Air Force site were cut open according 
         closeLightbox();
       });
 
-      document.addEventListener("keydown", (event) => {
-        if (lightbox.style.display !== "flex") return;
+      lightboxImg.addEventListener("touchstart", (event) => {
+        if (!event.touches.length) return;
 
-        if (event.key === "ArrowLeft") {
-          event.preventDefault();
+        lightboxTouchStartX = event.touches[0].clientX;
+        lightboxTouchEndX = lightboxTouchStartX;
+      }, { passive: true });
+
+      lightboxImg.addEventListener("touchmove", (event) => {
+        if (!event.touches.length) return;
+
+        lightboxTouchEndX = event.touches[0].clientX;
+      }, { passive: true });
+
+      lightboxImg.addEventListener("touchend", () => {
+        const deltaX = lightboxTouchEndX - lightboxTouchStartX;
+        const swipeThreshold = 50;
+
+        if (Math.abs(deltaX) < swipeThreshold) {
+          lightboxTouchStartX = 0;
+          lightboxTouchEndX = 0;
+          return;
+        }
+
+        if (deltaX < 0) {
+          stepLightbox(1);
+        } else {
           stepLightbox(-1);
         }
 
-        if (event.key === "ArrowRight") {
-          event.preventDefault();
-          stepLightbox(1);
-        }
+        lightboxTouchStartX = 0;
+        lightboxTouchEndX = 0;
       });
+
+      if (!document.body.dataset.projectLightboxBound) {
+        document.addEventListener("keydown", (event) => {
+          if (lightbox.style.display !== "flex") return;
+
+          if (event.key === "ArrowLeft") {
+            event.preventDefault();
+            stepLightbox(-1);
+          }
+
+          if (event.key === "ArrowRight") {
+            event.preventDefault();
+            stepLightbox(1);
+          }
+
+          if (event.key === "Escape") {
+            closeLightbox();
+          }
+        });
+
+        window.addEventListener("popstate", (event) => {
+          if (lightbox.style.display !== "flex") return;
+          if (event.state && event.state.projectLightbox) return;
+          closeLightbox(true);
+        });
+
+        document.body.dataset.projectLightboxBound = "true";
+      }
     }
 
     function enableProjectSplitDetails() {
@@ -683,14 +746,17 @@ The original asphalt parking bays of the Air Force site were cut open according 
       galleryContainers.forEach((container) => {
         const group = container.dataset.galleryGroup;
         const galleryImages = galleryConfigs[group];
+        const galleryMain = container.querySelector(".gallery-slider-main");
         const galleryMainImg = container.querySelector(".gallery-slider-main-img");
         const galleryThumbs = container.querySelectorAll(".gallery-slider-thumb");
         const galleryLeft = container.querySelector(".gallery-slider-arrow.left");
         const galleryRight = container.querySelector(".gallery-slider-arrow.right");
 
-        if (!galleryImages || !galleryMainImg || !galleryThumbs.length || !galleryLeft || !galleryRight) return;
+        if (!galleryImages || !galleryMain || !galleryMainImg || !galleryThumbs.length || !galleryLeft || !galleryRight) return;
 
         let galleryIndex = 0;
+        let touchStartX = 0;
+        let touchEndX = 0;
 
         function updateGallery(index) {
           galleryMainImg.src = galleryImages[index];
@@ -714,6 +780,41 @@ The original asphalt parking bays of the Air Force site were cut open according 
           const next = (galleryIndex + 1) % galleryImages.length;
           updateGallery(next);
         });
+
+        galleryMain.addEventListener("touchstart", (event) => {
+          if (!event.touches.length) return;
+
+          touchStartX = event.touches[0].clientX;
+          touchEndX = touchStartX;
+        }, { passive: true });
+
+        galleryMain.addEventListener("touchmove", (event) => {
+          if (!event.touches.length) return;
+
+          touchEndX = event.touches[0].clientX;
+        }, { passive: true });
+
+        galleryMain.addEventListener("touchend", () => {
+          const deltaX = touchEndX - touchStartX;
+          const swipeThreshold = 50;
+
+          if (Math.abs(deltaX) < swipeThreshold) {
+            touchStartX = 0;
+            touchEndX = 0;
+            return;
+          }
+
+          if (deltaX < 0) {
+            updateGallery((galleryIndex + 1) % galleryImages.length);
+          } else {
+            updateGallery((galleryIndex - 1 + galleryImages.length) % galleryImages.length);
+          }
+
+          touchStartX = 0;
+          touchEndX = 0;
+        });
+
+        updateGallery(galleryIndex);
       });
     }
 

@@ -387,7 +387,7 @@
         <div class="label">Type</div><div class="value">Park / Architecture Installation <br> Placemaking</div>
         <div class="label">Team</div><div class="value">Tey Tat Sing <br> Wong Wei Ping <br></div>
         <div class="label">Location</div><div class="value">Seremban</div>
-        <div class="label">Collabration</div><div class="value">Think City</div>
+        <div class="label">Collabration</div><div class="value"><a href="https://thinkcity.com.my/" target="_blank" rel="noopener noreferrer">Think City</a></div>
       </div>
 
       <div id="project-text">
@@ -462,6 +462,8 @@ This is a description for seremban railman.This is a description for seremban ra
       const lightboxGroups = {};
       let lightboxIndex = -1;
       let activeLightboxGroup = null;
+      let lightboxTouchStartX = 0;
+      let lightboxTouchEndX = 0;
 
       document.querySelectorAll(".project-gallery-slider[data-gallery-group]").forEach((container) => {
         const group = container.dataset.galleryGroup;
@@ -514,6 +516,43 @@ This is a description for seremban railman.This is a description for seremban ra
         if (e.target === lightbox) {
           closeLightbox();
         }
+      });
+
+      lightboxImg.addEventListener("touchstart", (event) => {
+        if (!event.touches.length) {
+          return;
+        }
+
+        lightboxTouchStartX = event.touches[0].clientX;
+        lightboxTouchEndX = lightboxTouchStartX;
+      }, { passive: true });
+
+      lightboxImg.addEventListener("touchmove", (event) => {
+        if (!event.touches.length) {
+          return;
+        }
+
+        lightboxTouchEndX = event.touches[0].clientX;
+      }, { passive: true });
+
+      lightboxImg.addEventListener("touchend", () => {
+        const deltaX = lightboxTouchEndX - lightboxTouchStartX;
+        const swipeThreshold = 50;
+
+        if (Math.abs(deltaX) < swipeThreshold) {
+          lightboxTouchStartX = 0;
+          lightboxTouchEndX = 0;
+          return;
+        }
+
+        if (deltaX < 0) {
+          stepLightbox(1);
+        } else {
+          stepLightbox(-1);
+        }
+
+        lightboxTouchStartX = 0;
+        lightboxTouchEndX = 0;
       });
 
       closeBtn.addEventListener("click", () => {
