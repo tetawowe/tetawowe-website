@@ -279,16 +279,19 @@ function enableGallerySlider() {
 
   galleryContainers.forEach(container => {
     const galleryImages = Array.from(container.querySelectorAll(".gallery-thumb")).map(thumb => thumb.src);
+    const galleryMain = container.querySelector(".gallery-main");
     const mainImg = container.querySelector(".gallery-main-img");
     const thumbs = Array.from(container.querySelectorAll(".gallery-thumb"));
     const leftArrow = container.querySelector(".gallery-arrow.left");
     const rightArrow = container.querySelector(".gallery-arrow.right");
 
-    if (!galleryImages.length || !mainImg || !thumbs.length || !leftArrow || !rightArrow) {
+    if (!galleryImages.length || !galleryMain || !mainImg || !thumbs.length || !leftArrow || !rightArrow) {
       return;
     }
 
     let galleryIndex = Math.max(galleryImages.indexOf(mainImg.src), 0);
+    let touchStartX = 0;
+    let touchEndX = 0;
 
     function updateGallery(index) {
       mainImg.src = galleryImages[index];
@@ -315,6 +318,45 @@ function enableGallerySlider() {
     rightArrow.addEventListener("click", () => {
       const nextIndex = (galleryIndex + 1) % galleryImages.length;
       updateGallery(nextIndex);
+    });
+
+    galleryMain.addEventListener("touchstart", event => {
+      if (!event.touches.length) {
+        return;
+      }
+
+      touchStartX = event.touches[0].clientX;
+      touchEndX = touchStartX;
+    }, { passive: true });
+
+    galleryMain.addEventListener("touchmove", event => {
+      if (!event.touches.length) {
+        return;
+      }
+
+      touchEndX = event.touches[0].clientX;
+    }, { passive: true });
+
+    galleryMain.addEventListener("touchend", () => {
+      const deltaX = touchEndX - touchStartX;
+      const swipeThreshold = 50;
+
+      if (Math.abs(deltaX) < swipeThreshold) {
+        touchStartX = 0;
+        touchEndX = 0;
+        return;
+      }
+
+      if (deltaX < 0) {
+        const nextIndex = (galleryIndex + 1) % galleryImages.length;
+        updateGallery(nextIndex);
+      } else {
+        const nextIndex = (galleryIndex - 1 + galleryImages.length) % galleryImages.length;
+        updateGallery(nextIndex);
+      }
+
+      touchStartX = 0;
+      touchEndX = 0;
     });
 
     updateGallery(galleryIndex);

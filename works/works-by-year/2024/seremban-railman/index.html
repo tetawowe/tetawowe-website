@@ -1,24 +1,657 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project</title>
-  <link rel="stylesheet" href="/header/header.css">
-  <link rel="stylesheet" href="/project/project.css">
-  <link rel="icon" type="image/x-icon" href="/header/favicon.ico">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="../../../../header/favicon.ico">
+  <title>Seremban Railman</title>
+
+  <link rel="stylesheet" href="../../../../header/header.css">
+  <link rel="stylesheet" href="../../../../project/project.css">
+
+  <style>
+    #meta-text-wrapper {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      margin: 24px auto;
+      max-width: 965px;
+      margin-top: 15px;
+    }
+
+    #project-meta {
+      flex: 0 0 290px;
+    }
+
+    #project-meta h2 {
+      margin: 0;
+    }
+
+    #project-text {
+      flex: 1;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-top: 0;
+      min-height: 1px;
+    }
+
+    #lightbox {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      align-items: center;
+      justify-content: center;
+    }
+
+    #lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+    #lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      font-size: 40px;
+      color: #fff;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .project-first-img,
+    .project-image {
+      cursor: pointer;
+    }
+
+    .project-image-pair {
+      max-width: 965px;
+      margin: 0 auto;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .project-image-pair .project-image {
+      width: calc(50% - 10px);
+      margin: 0;
+    }
+
+    .project-image-captioned {
+      margin: 0 auto 20px auto;
+      text-align: center;
+    }
+
+    .project-image-captioned .project-image {
+      margin-bottom: 10px;
+    }
+
+    .project-image-captioned figcaption {
+      font-size: 14px;
+      line-height: 1.4;
+      color: #333;
+    }
+
+    .project-text-heading {
+      display: inline-block;
+      font-size: 16px;
+      line-height: 1.35;
+      font-weight: 700;
+      margin-bottom: 0px;
+    }
+
+    .project-description-block {
+      max-width: 965px;
+      margin: 48px auto 60px auto;
+      display: block;
+    }
+
+    .project-description-block p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #333;
+      white-space: pre-line;
+    }
+
+    .project-gallery-slider {
+      max-width: 965px;
+      margin: 82px auto 80px auto;
+    }
+
+    .gallery-slider-main {
+      position: relative;
+      width: 100%;
+      height: 640px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .gallery-slider-main img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      cursor: pointer;
+    }
+
+    .gallery-slider-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 40px;
+      color: rgba(0, 0, 0, 0.35);
+      cursor: pointer;
+      user-select: none;
+      padding: 10px;
+      z-index: 1;
+    }
+
+    .gallery-slider-arrow.left {
+      left: 10px;
+    }
+
+    .gallery-slider-arrow.right {
+      right: 10px;
+    }
+
+    .gallery-slider-thumbs {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 8px;
+      margin-top: 25px;
+    }
+
+    .gallery-slider-thumb {
+      width: 100%;
+      height: 75px;
+      object-fit: cover;
+      object-position: center;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+      opacity: 0.7;
+    }
+
+    .gallery-slider-thumb:hover,
+    .gallery-slider-thumb.active {
+      opacity: 1;
+    }
+
+    .image-text-sections {
+      max-width: 965px;
+      margin: 0 auto 70px auto;
+    }
+
+    .image-text-row {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      column-gap: 42px;
+      align-items: start;
+      margin-top: 72px;
+    }
+
+    .image-text-image {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+    }
+
+    .image-text-row img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: pointer;
+      margin-top: 0 !important;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .hover-base,
+    .hover-alt {
+      width: 100%;
+      height: 100%;
+      display: block;
+      transition: opacity 0.25s ease;
+    }
+
+    .hover-alt {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+    }
+
+    .image-text-image:hover .hover-alt {
+      opacity: 1;
+    }
+
+    .image-text-image:hover .hover-base {
+      opacity: 0;
+    }
+
+    .image-text-copy {
+      font-size: 14px;
+      line-height: 1.58;
+      color: #333;
+      white-space: pre-line;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .image-text-copy strong {
+      font-weight: 700;
+    }
+
+    .image-text-main {
+      flex: 1;
+    }
+
+    .image-text-main br + br {
+      line-height: 0.72;
+    }
+
+    .view-more-link {
+      align-self: flex-end;
+      margin-top: 18px;
+      color: #333;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    @media (max-width: 768px) {
+      #meta-text-wrapper {
+        flex-direction: column;
+      }
+
+      #project-first-image img {
+        max-width: 965px;
+        width: 100%;
+        height: 285px;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+        margin: 0 auto;
+      }
+
+      #project-meta {
+        width: 350px;
+        display: grid;
+        grid-template-columns: 125px 1fr;
+        gap: 8px 0;
+        font-size: 14px;
+        color: #525252;
+        line-height: 1.1;
+        margin-left: 15px;
+        margin-top: -5px;
+      }
+
+      #project-meta h2 {
+        grid-column: 1 / -1;
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 16px;
+        color: #2e2e2e;
+      }
+
+      #project-text {
+        font-size: 14px;
+        color: #333;
+        line-height: 1.6;
+        white-space: pre-line;
+        margin: 0px 15px 0 15px;
+      }
+
+      .project-image {
+        max-width: 965px;
+        width: 100%;
+        display: block;
+        margin: 0 auto 20px auto;
+      }
+
+      .project-image-pair {
+        display: block;
+        padding: 0 15px;
+      }
+
+      .project-image-pair .project-image {
+        width: 100%;
+        margin: 0 auto 20px auto;
+      }
+
+      .project-image-captioned {
+        margin-bottom: 20px;
+      }
+
+      .project-description-block {
+        padding: 0 15px;
+        margin: 0 auto 45px auto;
+        display: block;
+      }
+
+      .project-gallery-slider {
+        padding: 0 15px;
+        margin: 56px auto 50px auto;
+      }
+
+      .gallery-slider-main {
+        height: 360px;
+      }
+
+      .gallery-slider-thumbs {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .gallery-slider-thumb {
+        height: 68px;
+      }
+
+      .project-description-block p + p {
+        margin-top: 24px;
+      }
+
+      .image-text-row {
+        display: block;
+        margin-top: 52px;
+      }
+
+      .image-text-copy {
+        margin-top: 20px;
+        padding: 0 15px;
+      }
+
+      .hover-alt {
+        display: none;
+      }
+    }
+  </style>
 </head>
 <body>
   <header id="header-placeholder"></header>
 
-<main id="project-container">
-  <div id="project-first-image"></div>
-  <div id="project-meta"></div>
-  <div id="project-text"></div>
-  <div id="project-images"></div>
-</main>
+  <main id="project-container" class="special-main">
+    <div id="project-first-image">
+      <img src="001.jpg" class="project-first-img" alt="Taiwan Air Force - Cover">
+    </div>
 
-  <script src="/header/header.js"></script>
-  <script src="/project/project.js"></script>
+    <div id="meta-text-wrapper">
+      <div id="project-meta">
+        <h2>Seremban Railman</h2>
+        <div class="label">Year</div><div class="value">2024</div>
+        <div class="label">Type</div><div class="value">Park / Architecture Installation <br> Placemaking</div>
+        <div class="label">Team</div><div class="value">Tey Tat Sing <br> Wong Wei Ping <br></div>
+        <div class="label">Location</div><div class="value">Seremban</div>
+        <div class="label">Collabration</div><div class="value">Think City</div>
+      </div>
+
+      <div id="project-text">
+This is a description for seremban railman.This is a description for seremban railman.This is a description for seremban railman.This is a description for seremban railman.This is a description for seremban railman.This is a description for seremban railman.This is a description for seremban railman.This is a description for seremban railman.</div>
+    </div>
+
+    <div id="project-images">
+      <img class="project-image" src="002.jpg" alt="Railman - 002">
+      <img class="project-image" src="003.jpg" alt="Railman - 003">
+      <img class="project-image" src="004.jpg" alt="Railman - 004">
+      <img class="project-image" src="005.jpg" alt="Railman - 005">
+      <img class="project-image" src="006.jpg" alt="Railman - 005">
+    </div>
+
+    <div class="project-description-block">
+      <p>This is a description for seremban railmanThis is a description for seremban railmanThis is a description for seremban railmanThis is a description for seremban railmanThis is a description for seremban railmanThis is a description for seremban railmanThis is a description for seremban railmanThis is a description for seremban railmanThis is a description for seremban railmanThis is a description for seremban railman</p>
+    </div>
+
+    <div id="project-images">
+      <figure class="project-image-captioned">
+        <img class="project-image" src="007.jpg" alt="Railman - 007">
+        <figcaption>Railman</figcaption>
+      </figure>
+      <figure class="project-image-captioned">
+        <img class="project-image" src="008.jpg" alt="Railman - 008">
+        <figcaption>Messenger</figcaption>
+      </figure>
+    </div>
+
+    <div id="project-images" class="project-image-pair">
+      <img class="project-image" src="009a.jpg" alt="Railman - 009A">
+      <img class="project-image" src="009b.jpg" alt="Railman - 009B">
+    </div>
+
+    <div class="project-description-block">
+      <p>This is a description for seremban railmanThis is a description for seremban railmanThis is a description for seremban railmanThis is a description for seremban railmanThis is a description for seremban railmanThis is a description for seremban railmanThis is a description for seremban railmanThis is a description for seremban railmanThis is a description for seremban railmanThis is a description for seremban railman</p>
+    </div>
+
+    <div class="project-gallery-slider" data-gallery-group="gallery-1">
+      <div class="gallery-slider-main">
+        <span class="gallery-slider-arrow left">&#10094;</span>
+        <img class="gallery-slider-main-img" src="010.jpg" alt="Railman - Gallery 010" data-lightbox-group="gallery-1">
+        <span class="gallery-slider-arrow right">&#10095;</span>
+      </div>
+
+      <div class="gallery-slider-thumbs">
+        <img src="010.jpg" class="gallery-slider-thumb active" data-index="0" alt="Thumbnail 010">
+        <img src="011.jpg" class="gallery-slider-thumb" data-index="1" alt="Thumbnail 011">
+        <img src="012.jpg" class="gallery-slider-thumb" data-index="2" alt="Thumbnail 012">
+        <img src="013.jpg" class="gallery-slider-thumb" data-index="3" alt="Thumbnail 013">
+        <img src="014.jpg" class="gallery-slider-thumb" data-index="4" alt="Thumbnail 014">
+        <img src="015.jpg" class="gallery-slider-thumb" data-index="5" alt="Thumbnail 015">
+        <img src="016.jpg" class="gallery-slider-thumb" data-index="6" alt="Thumbnail 016">
+        <img src="017.jpg" class="gallery-slider-thumb" data-index="7" alt="Thumbnail 017">
+      </div>
+    </div>
+
+
+
+    <div id="lightbox">
+      <span id="lightbox-close">&times;</span>
+      <img src="" alt="Lightbox Image">
+    </div>
+  </main>
+
+  <script src="../../../../header/header.js"></script>
+  <script>
+    function enableLightbox() {
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImg = lightbox.querySelector("img");
+      const closeBtn = document.getElementById("lightbox-close");
+      const lightboxGroups = {};
+      let lightboxIndex = -1;
+      let activeLightboxGroup = null;
+
+      document.querySelectorAll(".project-gallery-slider[data-gallery-group]").forEach((container) => {
+        const group = container.dataset.galleryGroup;
+        lightboxGroups[group] = Array.from(container.querySelectorAll(".gallery-slider-thumb")).map((thumb) => thumb.src);
+      });
+
+      function normalizeLightboxSrc(src) {
+        try {
+          return new URL(src, window.location.href).href;
+        } catch (error) {
+          return src;
+        }
+      }
+
+      function openLightbox(src, group = null) {
+        const normalizedSrc = normalizeLightboxSrc(src);
+        activeLightboxGroup = group;
+        lightboxIndex = group && lightboxGroups[group]
+          ? lightboxGroups[group].findIndex((imageSrc) => normalizeLightboxSrc(imageSrc) === normalizedSrc)
+          : -1;
+        lightboxImg.src = src;
+        lightbox.style.display = "flex";
+      }
+
+      function closeLightbox() {
+        lightbox.style.display = "none";
+        lightboxIndex = -1;
+        activeLightboxGroup = null;
+      }
+
+      function stepLightbox(direction) {
+        if (lightbox.style.display !== "flex" || lightboxIndex === -1 || !activeLightboxGroup || !lightboxGroups[activeLightboxGroup]) {
+          return;
+        }
+
+        const activeImages = lightboxGroups[activeLightboxGroup];
+        lightboxIndex = (lightboxIndex + direction + activeImages.length) % activeImages.length;
+        lightboxImg.src = activeImages[lightboxIndex];
+      }
+
+      const allImgs = document.querySelectorAll("#project-first-image .project-first-img, #project-images .project-image, .gallery-slider-main-img");
+
+      allImgs.forEach((img) => {
+        img.addEventListener("click", () => {
+          openLightbox(img.src, img.dataset.lightboxGroup || null);
+        });
+      });
+
+      lightbox.addEventListener("click", (e) => {
+        if (e.target === lightbox) {
+          closeLightbox();
+        }
+      });
+
+      closeBtn.addEventListener("click", () => {
+        closeLightbox();
+      });
+
+      if (!document.body.dataset.projectLightboxBound) {
+        document.addEventListener("keydown", (event) => {
+          if (lightbox.style.display !== "flex") {
+            return;
+          }
+
+          if (event.key === "ArrowLeft") {
+            event.preventDefault();
+            stepLightbox(-1);
+          }
+
+          if (event.key === "ArrowRight") {
+            event.preventDefault();
+            stepLightbox(1);
+          }
+
+          if (event.key === "Escape") {
+            closeLightbox();
+          }
+        });
+
+        document.body.dataset.projectLightboxBound = "true";
+      }
+    }
+
+    function enableGallerySlider() {
+      const galleryConfigs = {
+        "gallery-1": ["010.jpg", "011.jpg", "012.jpg", "013.jpg", "014.jpg", "015.jpg", "016.jpg", "017.jpg"]
+      };
+
+      const galleryContainers = document.querySelectorAll(".project-gallery-slider[data-gallery-group]");
+
+      galleryContainers.forEach((container) => {
+        const group = container.dataset.galleryGroup;
+        const galleryImages = galleryConfigs[group];
+        const galleryMain = container.querySelector(".gallery-slider-main");
+        const galleryMainImg = container.querySelector(".gallery-slider-main-img");
+        const galleryThumbs = container.querySelectorAll(".gallery-slider-thumb");
+        const galleryLeft = container.querySelector(".gallery-slider-arrow.left");
+        const galleryRight = container.querySelector(".gallery-slider-arrow.right");
+
+        if (!galleryImages || !galleryMain || !galleryMainImg || !galleryThumbs.length || !galleryLeft || !galleryRight) return;
+
+        let galleryIndex = 0;
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        function updateGallery(index) {
+          galleryMainImg.src = galleryImages[index];
+          galleryMainImg.dataset.lightboxGroup = group;
+          galleryThumbs.forEach((thumb) => thumb.classList.remove("active"));
+          galleryThumbs[index].classList.add("active");
+          galleryIndex = index;
+        }
+
+        galleryThumbs.forEach((thumb) => {
+          thumb.addEventListener("click", () => {
+            updateGallery(parseInt(thumb.dataset.index, 10));
+          });
+        });
+
+        galleryLeft.addEventListener("click", () => {
+          const next = (galleryIndex - 1 + galleryImages.length) % galleryImages.length;
+          updateGallery(next);
+        });
+
+        galleryRight.addEventListener("click", () => {
+          const next = (galleryIndex + 1) % galleryImages.length;
+          updateGallery(next);
+        });
+
+        galleryMain.addEventListener("touchstart", (event) => {
+          if (!event.touches.length) return;
+          touchStartX = event.touches[0].clientX;
+          touchEndX = touchStartX;
+        }, { passive: true });
+
+        galleryMain.addEventListener("touchmove", (event) => {
+          if (!event.touches.length) return;
+          touchEndX = event.touches[0].clientX;
+        }, { passive: true });
+
+        galleryMain.addEventListener("touchend", () => {
+          const deltaX = touchEndX - touchStartX;
+          const swipeThreshold = 50;
+
+          if (Math.abs(deltaX) < swipeThreshold) {
+            touchStartX = 0;
+            touchEndX = 0;
+            return;
+          }
+
+          if (deltaX < 0) {
+            const next = (galleryIndex + 1) % galleryImages.length;
+            updateGallery(next);
+          } else {
+            const next = (galleryIndex - 1 + galleryImages.length) % galleryImages.length;
+            updateGallery(next);
+          }
+
+          touchStartX = 0;
+          touchEndX = 0;
+        });
+
+        updateGallery(galleryIndex);
+      });
+    }
+
+    function adjustProjectImage() {
+      const images = document.querySelectorAll(".project-image");
+      if (window.innerWidth <= 768) return;
+
+      images.forEach((img) => {
+        if (img.getAttribute("src") === "005.jpg") {
+          img.style.marginTop = "110px";
+          return;
+        }
+
+        const topContentHeight = img.getBoundingClientRect().top + window.scrollY;
+
+        if (topContentHeight < 900) {
+          img.style.marginTop = (950 - topContentHeight) + "px";
+        } else {
+          img.style.marginTop = "50px";
+        }
+      });
+    }
+
+    enableLightbox();
+    enableGallerySlider();
+    window.addEventListener("load", adjustProjectImage);
+    window.addEventListener("resize", adjustProjectImage);
+  </script>
 </body>
 </html>
