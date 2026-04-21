@@ -152,6 +152,35 @@
       opacity: 1;
     }
 
+    .project-split-hover.is-mobile-autoplay .project-split-base {
+      display: none;
+    }
+
+    .project-split-hover.is-mobile-autoplay .project-split-overlay {
+      position: relative;
+      opacity: 1;
+      display: flex;
+      width: 100%;
+      overflow: hidden;
+      align-items: flex-start;
+    }
+
+    .project-split-hover.is-mobile-autoplay .project-split-segment img {
+      opacity: 0.5;
+      width: 100%;
+      height: auto;
+    }
+
+    .project-split-hover.is-mobile-autoplay .project-split-segment.is-active img {
+      opacity: 1;
+    }
+
+    .project-split-hover.is-mobile-autoplay .project-split-segment {
+      height: 100%;
+      flex: 0 0 var(--segment-width, 25%);
+      min-width: 0;
+    }
+
     .project-split-label-en {
       font-weight: 600;
       margin-bottom: 2px;
@@ -352,23 +381,41 @@
         margin-top: 24px;
       }
 
-      .project-split-overlay {
-        display: none;
-      }
-
       .project-detail-panel {
         padding: 0 15px;
+        margin-top: 8px;
         margin-bottom: 36px;
       }
 
       .project-split-hover {
         width: 100%;
         max-width: 965px;
-        margin-bottom: 16px;
+        margin-bottom: 36px;
       }
 
       .project-detail-text {
         max-width: none;
+      }
+
+      .project-split-hover.is-mobile-autoplay .project-split-segment {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        height: auto;
+      }
+
+      .project-split-hover.is-mobile-autoplay .project-split-label {
+        position: static;
+        margin-top: 14px;
+        height: 40px;
+        font-size: 9px;
+        line-height: 1.05;
+        padding: 4px 2px;
+      }
+
+      .project-split-hover.is-mobile-autoplay .project-split-label-en {
+        margin-bottom: 2px;
       }
 
       .project-gallery-slider {
@@ -403,7 +450,7 @@
       <div id="project-meta">
         <h2>Little Farm House</h2>
         <div class="label">Year</div><div class="value">2018</div>
-        <div class="label">Type</div><div class="value">Development <br> Park / Architecture Installation</div>
+        <div class="label">Type</div><div class="value">Placemaking</div>
         <div class="label">Team</div><div class="value">Tey Tat Sing <br> Wong Wei Ping <br> Alex Tan <br> Andrew Leng <br> Lim Huei Miin <br> Ele Mun <br> Suzzane Kan</div>
         <div class="label">Location</div><div class="value">Taipei</div>
         <div class="label">Collaboration</div><div class="value"><a href="https://www.instagram.com/archiblur_lab/" target="_blank" rel="noopener noreferrer">Archiblur Lab</a></div>
@@ -669,8 +716,44 @@ The original asphalt parking bays of the Air Force site were cut open according 
         .filter(Boolean);
       let autoplayIndex = 0;
       let autoplayTimer = null;
+      let isMobileMode = false;
 
       if (!splitHover || !detailPanel || !segments.length || !detailImage || !detailText || !defaultSegment || !autoplayOrder.length) return;
+
+      function updateMobileSegmentWidths() {
+        if (!isMobileMode) {
+          segments.forEach((segment) => {
+            segment.style.removeProperty("--segment-width");
+          });
+          return;
+        }
+
+        const aspectRatios = [];
+
+        segments.forEach((segment) => {
+          const image = segment.querySelector("img");
+          const fallbackRatio = 1;
+          const ratio = image && image.naturalWidth && image.naturalHeight
+            ? image.naturalWidth / image.naturalHeight
+            : fallbackRatio;
+
+          aspectRatios.push(ratio);
+        });
+
+        const totalRatio = aspectRatios.reduce((sum, ratio) => sum + ratio, 0);
+        if (!totalRatio) return;
+
+        segments.forEach((segment, index) => {
+          const widthPercent = (aspectRatios[index] / totalRatio) * 100;
+          segment.style.setProperty("--segment-width", `${widthPercent}%`);
+        });
+      }
+
+      function syncSplitMode() {
+        isMobileMode = window.innerWidth <= 768;
+        splitHover.classList.toggle("is-mobile-autoplay", isMobileMode);
+        updateMobileSegmentWidths();
+      }
 
       function activateSegment(segment, lockSelection = false) {
         segments.forEach((item) => item.classList.remove("is-active"));
@@ -699,7 +782,9 @@ The original asphalt parking bays of the Air Force site were cut open according 
 
       function startAutoplay() {
         stopAutoplay();
-        splitHover.classList.remove("is-locked");
+        if (!isMobileMode) {
+          splitHover.classList.remove("is-locked");
+        }
         runAutoplayStep();
         autoplayTimer = setInterval(runAutoplayStep, 5000);
       }
@@ -727,12 +812,27 @@ The original asphalt parking bays of the Air Force site were cut open according 
       });
 
       document.addEventListener("click", (event) => {
+        if (isMobileMode) return;
         if (!splitHover.contains(event.target) && !detailPanel.contains(event.target)) {
           resetSplitDetails();
         }
       });
 
+      segments.forEach((segment) => {
+        const image = segment.querySelector("img");
+        if (!image) return;
+
+        if (image.complete) {
+          updateMobileSegmentWidths();
+          return;
+        }
+
+        image.addEventListener("load", updateMobileSegmentWidths, { once: true });
+      });
+
+      syncSplitMode();
       resetSplitDetails();
+      window.addEventListener("resize", syncSplitMode);
     }
 
     function enableGallerySlider() {
@@ -841,3 +941,4 @@ The original asphalt parking bays of the Air Force site were cut open according 
   </script>
 </body>
 </html>
+

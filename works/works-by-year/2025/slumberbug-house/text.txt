@@ -1,8 +1,8 @@
-title: Slumberbug House 
-project-type: 
+title: Slumberbug House
+project-type: Food & Beverage
 team: 
 location: 
 project-year: 
 skip: yes
 
-description: 
+description:

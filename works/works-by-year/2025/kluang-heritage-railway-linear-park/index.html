@@ -224,18 +224,27 @@
   display: none;
   position: fixed;
   z-index: 9999;
-  left: 0; top: 0;
-  width: 100%; height: 100%;
+  inset: 0;
+  padding: 20px;
+  box-sizing: border-box;
   background: rgba(0,0,0,0.9);
   align-items: center;
   justify-content: center;
 }
 
+#lightbox .lightbox-img,
 #lightbox img {
-  max-width: 90%;
-  max-height: 90%;
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: calc(100vw - 40px);
+  max-height: calc(100vh - 40px);
+  object-fit: contain;
+  margin: auto;
+  flex: 0 1 auto;
 }
 
+#lightbox .lightbox-close,
 #lightbox-close {
   position: absolute;
   top: 20px;
@@ -244,6 +253,7 @@
   color: #fff;
   cursor: pointer;
   user-select: none;
+  z-index: 1;
 }
 
 /* ===== 控制按钮 ===== */
@@ -331,10 +341,141 @@
 
     /* 小屏幕时上下堆叠 */
     @media (max-width: 768px) {
-      #meta-text-wrapper {
+      #project-first-image img {
+        height: 285px;
+      }
+
+      #meta-text-wrapper,
+      #meta-text-wrapper1 {
         flex-direction: column;
         gap: 16px;
+        margin: 16px auto 24px;
+        padding: 0 15px;
+        box-sizing: border-box;
       }
+
+      #meta-text-wrapper1 {
+        margin-top: 28px;
+      }
+
+      #project-meta {
+        width: 100%;
+        grid-template-columns: minmax(96px, 115px) 1fr;
+        line-height: 1.2;
+        margin-left: 0;
+        margin-top: 0;
+      }
+
+      #project-text,
+      #project-text1,
+      #project-text2,
+      #project-text4,
+      #project-text5 {
+        width: 100%;
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      #project-text3 {
+        width: 100%;
+        margin: 8px 0 0;
+        font-size: 11px;
+        line-height: 1.4;
+      }
+
+      #project-text5 {
+        margin-bottom: -6px;
+      }
+
+      #col {
+        display: none;
+      }
+
+      .project-image,
+      .project-image1 {
+        width: 100%;
+        margin: 0 auto 20px;
+      }
+
+      .gallery-wrapper {
+        margin: 42px auto 56px;
+        padding: 0 15px;
+        box-sizing: border-box;
+      }
+
+      .gallery-main {
+        height: 320px;
+        margin-bottom: 18px;
+      }
+
+      .gallery-thumb {
+        height: 55px;
+      }
+
+      .gallery-small .gallery-thumbs {
+        grid-template-columns: repeat(6, 1fr);
+      }
+
+      .gallery-small .gallery-thumb {
+        height: 55px;
+      }
+
+      .portrait-arrow {
+        font-size: 34px;
+        padding: 8px;
+      }
+
+      .square-image {
+        width: 100%;
+        flex: none;
+      }
+
+      .square-image img {
+        width: 100%;
+        height: auto;
+      }
+
+      .element-controls {
+        margin: 0px 15px 32px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .element-controls button {
+        margin: 0;
+      }
+
+      .element-controls button.active {
+        padding: 6px 10px;
+      }
+
+      .element-container {
+        margin: 0 auto 64px;
+        padding: 0 15px;
+        box-sizing: border-box;
+      }
+
+      .element-text {
+        margin-bottom: 20px;
+      }
+
+      .element-image {
+        width: 100%;
+        height: auto;
+      }
+
+      .element-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .section-line {
+  margin-bottom: 40px;
+}
     }
 
   </style>
@@ -570,12 +711,12 @@ In response, a park within the new plane is conceived as a dialogue with the rai
     </div>
   </section>
 
-  <div id="lightbox">
-    <span id="lightbox-close">&times;</span>
-  <img src="" alt="Lightbox Image">
-</div>
-
   </main>
+
+  <div id="lightbox">
+    <span id="lightbox-close" class="lightbox-close">&times;</span>
+    <img class="lightbox-img" src="" alt="Lightbox Image">
+  </div>
 
   <script src="../../../../header/header.js">  </script>
 

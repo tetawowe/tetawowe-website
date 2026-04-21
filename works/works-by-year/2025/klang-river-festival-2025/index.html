@@ -141,9 +141,10 @@
   width: 100%;
   max-width: 965px;
   height: 625px;         /* 固定高度 */
-  object-fit: cover;     /* 居中裁剪 */
+  object-fit: contain;   /* 保持原图比例 */
   object-position: center;
-  margin-bottom: 0px;
+  margin-bottom: 8px;
+  background: #ffffff;
 }
 
 /* 缩略图容器：最多两行，每行 8 张 */
@@ -418,17 +419,19 @@
   width: 100%;
   max-width: 965px;
   height: 300px;         /* 固定高度 */
-  object-fit: cover;     /* 居中裁剪 */
+  object-fit: contain;   /* 保持原图比例 */
   object-position: center;
+  background: #ffffff;
 }
 
 #project-gallery .gallery-main {
   width: 100%;
   max-width: 965px;
   height: 300px;         /* 固定高度 */
-  object-fit: cover;     /* 居中裁剪 */
+  object-fit: contain;   /* 保持原图比例 */
   object-position: center;
-  margin-bottom: 0px;
+  margin-bottom: 8px;
+  background: #ffffff;
 }
 
 /* 缩略图 */
@@ -449,7 +452,7 @@
   gap: 8px;
   max-width: 965px;
   margin: 0 auto;
-  margin-top: -8px;
+  margin-top: 0;
   margin-bottom: 50px;
 }
 
@@ -561,7 +564,7 @@
           <div class="label">Type</div><div class="value">Placemaking</div>
           <div class="label">Team</div><div class="value">Tey Tat Sing <br> Wong Wei Ping <br> Goh Zhou Jayne <br> Wong Jie Shan <br> Chairil Danish Bin Fazzrudin <br> Scarlet Koon Si Qi (KongsiKL) <br> Guma Sylvester Makajil (KongsiKL) </div>
           <div class="label">Location</div><div class="value">Klang River</div>
-          <div class="label">Collaboration</div><div class="value">KongsiKL</div>
+          <div class="label">Collabration</div><div class="value"><a href="https://www.kongsikl.co/" target="_blank" rel="noopener noreferrer">KongsiKL</a></div>
         </div>
 
         <div id="project-text" style="margin-top:0px;">
@@ -840,6 +843,8 @@ const galleryMain = document.getElementById("gallery-main");
 const galleryThumbs = document.querySelectorAll(".gallery-thumb");
 const galleryLeft = document.querySelector("#project-gallery .gallery-arrow.left");
 const galleryRight = document.querySelector("#project-gallery .gallery-arrow.right");
+const galleryMainWrapper = document.querySelector("#project-gallery .gallery-main-wrapper");
+const galleryGroup = "festival-gallery";
 
 function updateGallery(index) {
   galleryMain.src = galleryImages[index];
@@ -866,6 +871,27 @@ galleryRight.addEventListener("click", () => {
   updateGallery(next);
 });
 
+let galleryTouchStartX = 0;
+let galleryTouchEndX = 0;
+
+galleryMain.dataset.lightboxGroup = galleryGroup;
+
+galleryMainWrapper.addEventListener("touchstart", (e) => {
+  galleryTouchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+
+galleryMainWrapper.addEventListener("touchend", (e) => {
+  galleryTouchEndX = e.changedTouches[0].screenX;
+  const diff = galleryTouchStartX - galleryTouchEndX;
+
+  if (Math.abs(diff) < 50) return;
+  updateGallery(diff > 0
+    ? (galleryIndex + 1) % galleryImages.length
+    : (galleryIndex - 1 + galleryImages.length) % galleryImages.length);
+});
+
+updateGallery(galleryIndex);
+
 /* =========================
  Portrait Gallery Logic
 ========================= */
@@ -880,6 +906,8 @@ const portraitMainImg = document.getElementById("portrait-main-img");
 const portraitThumbs = document.querySelectorAll(".portrait-thumb");
 const portraitLeft = document.querySelector(".portrait-arrow.left");
 const portraitRight = document.querySelector(".portrait-arrow.right");
+const portraitMain = document.querySelector(".portrait-main");
+const portraitGroup = "festival-portrait-gallery";
 
 function updatePortrait(index) {
   portraitMainImg.src = portraitImages[index];
@@ -904,43 +932,130 @@ portraitRight.addEventListener("click", () => {
   updatePortrait(next);
 });
 
+let portraitTouchStartX = 0;
+let portraitTouchEndX = 0;
 
-  // Lightbox 功能 - 所有大图
+portraitMainImg.dataset.lightboxGroup = portraitGroup;
+
+portraitMain.addEventListener("touchstart", (e) => {
+  portraitTouchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+
+portraitMain.addEventListener("touchend", (e) => {
+  portraitTouchEndX = e.changedTouches[0].screenX;
+  const diff = portraitTouchStartX - portraitTouchEndX;
+
+  if (Math.abs(diff) < 50) return;
+  updatePortrait(diff > 0
+    ? (portraitIndex + 1) % portraitImages.length
+    : (portraitIndex - 1 + portraitImages.length) % portraitImages.length);
+});
+
+updatePortrait(portraitIndex);
+
+
 function enableLightbox() {
   const lightbox = document.getElementById("lightbox");
   const lightboxImg = lightbox.querySelector("img");
   const closeBtn = document.getElementById("lightbox-close");
+  const lightboxGroups = {
+    [galleryGroup]: galleryImages,
+    [portraitGroup]: portraitImages
+  };
+  const regularImgs = document.querySelectorAll(".slider-img, .project-image, .project-image1");
+  let activeLightboxGroup = null;
+  let lightboxIndex = -1;
+  let lightboxTouchStartX = 0;
+  let lightboxTouchEndX = 0;
+  let lightboxHistoryOpen = false;
 
-  // 所有普通大图
-  const allImgs = document.querySelectorAll(".slider-img, .project-image, .project-image1, .gallery-main");
-  
-  allImgs.forEach(img => {
-    img.addEventListener("click", () => {
-      lightboxImg.src = img.src;
-      lightbox.style.display = "flex";
-    });
-  });
+  function openLightbox(src, group = null) {
+    activeLightboxGroup = group;
+    lightboxIndex = group && lightboxGroups[group]
+      ? lightboxGroups[group].findIndex((imageSrc) => imageSrc === src)
+      : -1;
 
-  // Portrait gallery 绑定容器
-  const portraitMain = document.querySelector(".portrait-main");
-  portraitMain.addEventListener("click", (e) => {
-    // 如果点击到箭头就不要触发
-    if (e.target.classList.contains("portrait-arrow")) return;
-
-    const img = portraitMain.querySelector("img");
-    lightboxImg.src = img.src;
+    lightboxImg.src = src;
     lightbox.style.display = "flex";
-  });
 
-  // 点击背景关闭
-  lightbox.addEventListener("click", (e) => {
-    if (e.target === lightbox) lightbox.style.display = "none";
-  });
+    if (!lightboxHistoryOpen) {
+      history.pushState({ projectLightbox: true }, "", window.location.href);
+      lightboxHistoryOpen = true;
+    }
+  }
 
-  // 点击右上角 X 关闭
-  closeBtn.addEventListener("click", () => {
+  function closeLightbox(fromPopState = false) {
     lightbox.style.display = "none";
+    lightboxIndex = -1;
+    activeLightboxGroup = null;
+
+    if (lightboxHistoryOpen && !fromPopState) {
+      lightboxHistoryOpen = false;
+      history.back();
+      return;
+    }
+
+    lightboxHistoryOpen = false;
+  }
+
+  function stepLightbox(direction) {
+    if (!activeLightboxGroup || !lightboxGroups[activeLightboxGroup]) return;
+
+    const images = lightboxGroups[activeLightboxGroup];
+    lightboxIndex = (lightboxIndex + direction + images.length) % images.length;
+    lightboxImg.src = images[lightboxIndex];
+  }
+
+  regularImgs.forEach((img) => {
+    img.addEventListener("click", () => openLightbox(img.src));
   });
+
+  galleryMain.addEventListener("click", () => {
+    openLightbox(galleryMain.src, galleryGroup);
+  });
+
+  portraitMainImg.addEventListener("click", (e) => {
+    e.stopPropagation();
+    openLightbox(portraitMainImg.src, portraitGroup);
+  });
+
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  closeBtn.addEventListener("click", () => {
+    closeLightbox();
+  });
+
+  lightbox.addEventListener("touchstart", (e) => {
+    lightboxTouchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  lightbox.addEventListener("touchend", (e) => {
+    lightboxTouchEndX = e.changedTouches[0].screenX;
+    const diff = lightboxTouchStartX - lightboxTouchEndX;
+
+    if (Math.abs(diff) < 50) return;
+    stepLightbox(diff > 0 ? 1 : -1);
+  });
+
+  if (!document.body.dataset.projectLightboxBound) {
+    document.body.dataset.projectLightboxBound = "true";
+
+    document.addEventListener("keydown", (e) => {
+      if (lightbox.style.display !== "flex") return;
+
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") stepLightbox(-1);
+      if (e.key === "ArrowRight") stepLightbox(1);
+    });
+
+    window.addEventListener("popstate", () => {
+      if (lightbox.style.display === "flex") {
+        closeLightbox(true);
+      }
+    });
+  }
 }
 
 
