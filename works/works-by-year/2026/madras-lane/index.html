@@ -1,24 +1,905 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project</title>
-  <link rel="stylesheet" href="/header/header.css">
-  <link rel="stylesheet" href="/project/project.css">
-  <link rel="icon" type="image/x-icon" href="/header/favicon.ico">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="../../../../header/favicon.ico">
+  <title>Madras Lane</title>
+
+  <!-- header.css 和 header.js -->
+  <link rel="stylesheet" href="../../../../header/header.css">
+
+  <!-- 复用 project.css -->
+  <link rel="stylesheet" href="../../../../project/project.css">
+
+  <!-- special 项目的覆盖样式 -->
+  <style>
+    /* meta + description 容器：左右并排，顶端对齐 */
+    #meta-text-wrapper {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;  /* 顶端对齐 */
+      margin: 24px auto;
+      max-width: 965px;
+      margin-top: 15px;   /* 强制顶端对齐 */
+    }
+
+    #project-meta {
+      flex: 0 0 280px;  /* 固定左栏宽度 */
+    }
+
+    #project-meta h2 {
+      margin: 0 0 0 0;
+    }
+
+    #project-text {
+      flex: 1;
+      margin-top: 0;   /* 强制顶端对齐 */
+      font-size: 14px;
+      line-height: 1.6;
+      margin-top: -21px; /* 数字可以自己调，比如 -4px, -8px */
+    }
+/* =========================
+ Portrait Gallery Slider
+========================= */
+#portrait-gallery {
+  max-width: 965px;
+  margin: 120px auto;
+}
+
+/* 主图 */
+.portrait-main {
+  position: relative;
+  width: 100%;
+  height: 900px;              /* 关键：portrait 高度 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  overflow: hidden;
+  margin-top: -75px;
+}
+
+.portrait-main img {
+  height: 100%;
+  width: auto;                /* 维持竖向比例 */
+  object-fit: contain;
+}
+
+/* 箭头 */
+.portrait-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 40px;
+  color: rgba(0,0,0,0.35);
+  cursor: pointer;
+  user-select: none;
+  padding: 10px;
+}
+
+.portrait-arrow.left { left: 10px; }
+.portrait-arrow.right { right: 10px; }
+
+/* thumbnails */
+.portrait-thumbs {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 8px;
+  margin-top: 25px;
+}
+
+#portrait-gallery .portrait-thumb {
+  width: 100%;
+  height: 75px;                /* 比 80px 略高，呼应竖图 */
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.7;
+}
+
+#portrait-gallery .portrait-thumb:hover,
+#portrait-gallery .portrait-thumb.active {
+  opacity: 1;
+}
+
+.gallery-wrapper[data-gallery-group="project-gallery"] .gallery-thumbs {
+  grid-template-columns: repeat(10, 1fr);
+}
+
+.gallery-wrapper[data-gallery-group="project-gallery"] {
+  margin-bottom: 20px;
+}
+
+.gallery-wrapper[data-gallery-group="project-gallery"] + .middle-description {
+  margin-top: 20px;
+}
+
+
+    /* Lightbox 样式 */
+    #lightbox {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      align-items: center;
+      justify-content: center;
+    }
+    #lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+#lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  font-size: 40px;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Lightbox 可点击图片鼠标变成手指 */
+.project-first-image,
+.project-image,
+.portrait-main img {
+  cursor: pointer;
+}
+
+/* middle-description */
+#project-gallery .middle-description {
+  max-width: 965px;
+  margin: 0 auto 25px auto;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  white-space: pre-line;
+}
+
+    /* 小屏幕时上下堆叠 */
+        @media (max-width: 768px) {
+  #meta-text-wrapper {
+    flex-direction: column;
+  }
+
+  #project-meta {
+    flex: none;
+    width: 100%;
+  }
+
+  #project-first-image img {
+  max-width: 965px;
+  width: 100%;
+  height: 285px;             /* 固定高度 */
+  object-fit: cover;         /* 超出部分裁剪 */
+  object-position: center;   /* 裁剪时居中 */
+  display: block;
+  margin: 0 auto 0px auto;
+}
+
+#project-meta {
+  width: 350px;
+  display: grid;
+  grid-template-columns: 125px 1fr; /* 左侧固定 85px，右侧自适应 */
+  gap: 8px 0;                      /* 行间距 */
+  font-size: 14px;
+  color: #525252; 
+  line-height: 1.1;
+  margin-left: 15px;
+  margin-top: -5px;
+}
+
+#project-meta h2 {
+  grid-column: 1 / -1;  /* 标题独占整行 */
+  margin-top: 0;
+  margin-bottom: 0px;
+  font-size: 16px;
+  color: #2e2e2e;
+}
+
+#project-text {
+  font-size: 14px;
+  flex: 1;
+  color: #333;
+  line-height: 1.6;
+  white-space: pre-line;
+  margin: -20px 15px 0px 15px; /* 左右留白15px，下方间距75px，上方为0 */
+}
+
+.project-image {
+  max-width: 965px;
+  width: 100%;
+  display: block;
+  margin: 0px auto; /* 居中并留点间隔 */
+  margin-bottom: 20px;
+}
+
+.middle-description {
+  max-width: 965px;
+  margin: 0px auto; /* 水平居中 + 上下间距 */
+  line-height: 1.6;
+  font-size: 14px;
+  padding: 0 20px;   /* 保证小屏幕也有左右留白 */
+  white-space: pre-line; /* 保持换行 */
+  margin-bottom: 50px;
+  margin-top: 50px;
+}
+
+
+  .portrait-main {
+  position: relative;
+  width: 100%;
+  height: 550px;              /* 关键：portrait 高度 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  overflow: hidden;
+  margin-top: -50px;
+}
+
+#portrait-gallery .portrait-thumb {
+  width: 100%;
+  height: 55px;                /* 比 80px 略高，呼应竖图 */
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.7;
+}
+    }
+    
+  </style>
 </head>
 <body>
   <header id="header-placeholder"></header>
 
-<main id="project-container">
-  <div id="project-first-image"></div>
-  <div id="project-meta"></div>
-  <div id="project-text"></div>
-  <div id="project-images"></div>
-</main>
+  <main id="project-container" class="special-main">
 
-  <script src="/header/header.js"></script>
-  <script src="/project/project.js"></script>
+    <!-- 001 封面 -->
+    <div id="project-first-image">
+      <img src="001.jpg" class="project-first-img" alt="Office — Cover">
+    </div>
+
+    <!-- meta + 主描述 -->
+    <div id="meta-text-wrapper">
+      <div id="project-meta">
+        <h2>Madras Lane</h2>
+        <div class="label">Year</div><div class="value">2026</div>
+        <div class="label">Type</div><div class="value">Placemaking</div>
+        <div class="label">Team</div><div class="value">Tey Tat Sing <br> Gan Jing Wen <br> Jasmin Tan</div>
+        <div class="label">Location</div><div class="value">Jalan Tun H.S. Lee</div>
+        <div class="label">Collabration</div><div class="value">Cahaya Dimaju Sdn Bhd <br>
+          <a href="https://thinkcity.com.my/" target="_blank" rel="noopener noreferrer">Think City</a> <br>
+          <a href="https://www.tongsim.com.my/" target="_blank" rel="noopener noreferrer">Tong Sim Wood Industries Sdn Bhd</a> <br>
+          Stantrade Enterprise <br>
+          <a href="https://www.instagram.com/cibola.arc/" target="_blank" rel="noopener noreferrer">Cibola.arc</a>
+        </div>
+      </div>
+
+      <div id="project-text">
+      Jalan Sang Guna, (which is also known as Drury Lane, Madras Lane, Penjaja Gallery Jalan Tun H.S. Lee and Pasar Lee Lam Thye) has long been a hidden gem in the city’s urban fabric. 
+
+      Once known for Chinese theatre performances, a cinema and later a bustling hawker street centred around a wet market, the lane gradually lost its vibrancy as businesses closed and buildings deteriorated. Over time, its cleanliness, accessibility and walkability declined. The need for rejuvenation was therefore driven not only by its historical value, but also by practical concerns. 
+  
+      </div>
+    </div>
+
+    <!-- 002–003 普通图片 -->
+    <div id="project-images">
+      <img class="project-image" src="002.jpg" alt="002 — Office">
+      <img class="project-image" src="003.jpg" alt="003 — Office">
+      <img class="project-image" src="004.jpg" alt="004 — Office">
+      <img class="project-image" src="005.jpg" alt="005 — Office">
+      <img class="project-image" src="006.jpg" alt="006 — Office">
+    </div>
+
+    <div class="middle-description">
+  The rejuvenation and revitalisation of Jalan Sang Guna was undertaken to restore the laneway to its original condition while enhancing public spaces, improving accessibility and celebrating local heritage. The identity of the laneway was strengthened by revealing the authentic architectural character of the shophouse back-lanes after the removal of the covered awning. The newly fabricated archway further enhances the visual identity of the laneway entrance, creating a welcoming gateway for the public.
+</div>
+
+    <div class="gallery-wrapper" data-gallery-group="project-gallery">
+      <div class="gallery-main">
+        <span class="gallery-arrow left">&#10094;</span>
+        <img class="gallery-main-img" src="007.jpg" alt="Madras Lane gallery image 1" data-lightbox-group="project-gallery">
+        <span class="gallery-arrow right">&#10095;</span>
+      </div>
+      <div class="gallery-thumbs">
+        <img class="gallery-thumb active" data-index="0" src="007.jpg" alt="Madras Lane thumbnail 1">
+        <img class="gallery-thumb" data-index="1" src="008.jpg" alt="Madras Lane thumbnail 2">
+        <img class="gallery-thumb" data-index="2" src="009.jpg" alt="Madras Lane thumbnail 3">
+        <img class="gallery-thumb" data-index="3" src="010.jpg" alt="Madras Lane thumbnail 4">
+        <img class="gallery-thumb" data-index="4" src="011.jpg" alt="Madras Lane thumbnail 5">
+        <img class="gallery-thumb" data-index="5" src="012.jpg" alt="Madras Lane thumbnail 6">
+        <img class="gallery-thumb" data-index="6" src="013.jpg" alt="Madras Lane thumbnail 7">
+        <img class="gallery-thumb" data-index="7" src="014.jpg" alt="Madras Lane thumbnail 8">
+        <img class="gallery-thumb" data-index="8" src="015.jpg" alt="Madras Lane thumbnail 9">
+        <img class="gallery-thumb" data-index="9" src="016.JPG" alt="Madras Lane thumbnail 10">
+      </div>
+    </div>
+
+    <div class="middle-description">
+  From the 1800s to the early 1900s, this area was famous for its Chinese theatre shows. Madras Theatre was then built at the same location in 1926 and was rebuilt after a fire in June 1952, but did not survive another fire in 1978.
+
+In the 1930s, the area around Jalan Sang Guna was popular for its street hawking activities, which were later formalised with the establishment of Pasar Lee Lam Thye in the 1990s.
+
+The area eventually fell into a dilapidation state, with poor lighting and unsanitary conditions.
+</div>
+
+    <div class="gallery-wrapper" data-gallery-group="project-gallery">
+      <div class="gallery-main">
+        <span class="gallery-arrow left">&#10094;</span>
+        <img class="gallery-main-img" src="007.jpg" alt="Madras Lane gallery image 1" data-lightbox-group="project-gallery">
+        <span class="gallery-arrow right">&#10095;</span>
+      </div>
+      <div class="gallery-thumbs">
+        <img class="gallery-thumb active" data-index="0" src="007.jpg" alt="Madras Lane thumbnail 1">
+        <img class="gallery-thumb" data-index="1" src="008.jpg" alt="Madras Lane thumbnail 2">
+        <img class="gallery-thumb" data-index="2" src="009.jpg" alt="Madras Lane thumbnail 3">
+        <img class="gallery-thumb" data-index="3" src="010.jpg" alt="Madras Lane thumbnail 4">
+        <img class="gallery-thumb" data-index="4" src="011.jpg" alt="Madras Lane thumbnail 5">
+        <img class="gallery-thumb" data-index="5" src="012.jpg" alt="Madras Lane thumbnail 6">
+        <img class="gallery-thumb" data-index="6" src="013.jpg" alt="Madras Lane thumbnail 7">
+        <img class="gallery-thumb" data-index="7" src="014.jpg" alt="Madras Lane thumbnail 8">
+        <img class="gallery-thumb" data-index="8" src="015.jpg" alt="Madras Lane thumbnail 9">
+        <img class="gallery-thumb" data-index="9" src="016.JPG" alt="Madras Lane thumbnail 10">
+      </div>
+    </div>
+
+    <div class="middle-description">
+The rejuvenation journey began in 2019, construction works commenced in 2024 and completed in 2025.
+
+Today, the refreshed laneway features improved new street lighting, porous pavements, upgraded drainage system, storytelling interpretation panels, heritage facade murals and the new Pasar Lee Lam Thye Archway. Together, these interventions helped breathe new life into the space for the community and pedestrians alike.
+</div>
+
+    <div class="gallery-wrapper" data-gallery-group="madras-lane-final-gallery">
+      <div class="gallery-main">
+        <span class="gallery-arrow left">&#10094;</span>
+        <img class="gallery-main-img" src="018.png" alt="Madras Lane gallery image 18" data-lightbox-group="madras-lane-final-gallery">
+        <span class="gallery-arrow right">&#10095;</span>
+      </div>
+      <div class="gallery-thumbs">
+        <img class="gallery-thumb active" data-index="0" src="018.png" alt="Madras Lane thumbnail 18">
+        <img class="gallery-thumb" data-index="1" src="019.png" alt="Madras Lane thumbnail 19">
+        <img class="gallery-thumb" data-index="2" src="020.JPG" alt="Madras Lane thumbnail 20">
+        <img class="gallery-thumb" data-index="3" src="021.jpg" alt="Madras Lane thumbnail 21">
+      </div>
+    </div>
+
+    <div class="middle-description">
+The previous archway was taken down as it caused several functional and social concerns. It obstructs the pedestrian walkway and creates concealed spaces that have led to undesirable activities such as littering and misuse of the area.
+</div>
+
+<div class="middle-description">
+A new archway was installed at the laneway entrance to enhance visual identity and signify a welcoming gateway of Pasar Lee Lam Thye. The structure is constructed using glued laminated timber (glulam), an engineered wood material known for its high structural strength. Its concept is inspired by the traditional Dougong wood joinery system, reflecting vernacular craftsmanship while integrating modern fabrication techniques.</div>
+
+
+  <div id="lightbox">
+    <span id="lightbox-close">&times;</span>
+  <img src="" alt="Lightbox Image">
+</div>
+
+  </main>
+
+  <script src="../../../../header/header.js">  </script>
+
+    <script>
+if (document.getElementById("portrait-main-img")) {
+/* =========================
+ Portrait Gallery Logic
+========================= */
+const portraitImages = [
+  "007.JPG","008.JPG","009.JPG","010.JPG","011.JPG","012.JPG","013.JPG","014.JPG",
+  "015.JPG","016.JPG","017.JPG","018.JPG","019.JPG","020.jpg","021.jpg","022.jpg","023.jpg","024.jpg","025.JPG","026.JPG","027.JPG"
+];
+
+let portraitIndex = 0;
+
+const portraitMainImg = document.getElementById("portrait-main-img");
+const portraitThumbs = document.querySelectorAll(".portrait-thumb");
+const portraitLeft = document.querySelector(".portrait-arrow.left");
+const portraitRight = document.querySelector(".portrait-arrow.right");
+
+function updatePortrait(index) {
+  portraitMainImg.src = portraitImages[index];
+  portraitThumbs.forEach(t => t.classList.remove("active"));
+  portraitThumbs[index].classList.add("active");
+  portraitIndex = index;
+}
+
+portraitThumbs.forEach(thumb => {
+  thumb.addEventListener("click", () => {
+    updatePortrait(parseInt(thumb.dataset.index));
+  });
+});
+
+portraitLeft.addEventListener("click", () => {
+  let next = (portraitIndex - 1 + portraitImages.length) % portraitImages.length;
+  updatePortrait(next);
+});
+
+portraitRight.addEventListener("click", () => {
+  let next = (portraitIndex + 1) % portraitImages.length;
+  updatePortrait(next);
+});
+
+  // Lightbox 功能 - 所有大图
+function enableLightbox() {
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = lightbox.querySelector("img");
+  const closeBtn = document.getElementById("lightbox-close");
+
+  // 选取所有大图图片
+const allImgs = document.querySelectorAll(".project-first-img, .project-image, .gallery-main， portrait-main img");
+
+allImgs.forEach(img => {
+  img.style.cursor = "pointer";  // 可选：鼠标变手指
+  img.addEventListener("click", () => {
+    lightboxImg.src = img.src;
+    lightbox.style.display = "flex";
+  });
+});
+
+  // Portrait gallery 绑定容器
+  const portraitMain = document.querySelector(".portrait-main");
+  portraitMain.addEventListener("click", (e) => {
+    // 如果点击到箭头就不要触发
+    if (e.target.classList.contains("portrait-arrow")) return;
+
+    const img = portraitMain.querySelector("img");
+    lightboxImg.src = img.src;
+    lightbox.style.display = "flex";
+  });
+
+  // 点击背景关闭
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) lightbox.style.display = "none";
+  });
+
+  // 点击右上角 X 关闭
+  closeBtn.addEventListener("click", () => {
+    lightbox.style.display = "none";
+  });
+}
+
+
+
+
+  enableLightbox();
+
+function adjustProjectImage() {
+  const images = document.querySelectorAll(".project-image");
+  if (window.innerWidth <= 768) return;
+
+  images.forEach(img => {
+    // 图片距离页面顶部的距离
+    const topContentHeight = img.getBoundingClientRect().top + window.scrollY;
+
+    if (topContentHeight < 900) {
+      // 如果不足 900px，就强制让图片从 950px 开始
+      img.style.marginTop = (950 - topContentHeight) + "px";
+    } else {
+      // 如果超过 900px，就保持与上方内容 50px 间隔
+      img.style.marginTop = "50px";
+    }
+  });
+}
+
+// 页面加载时执行一次
+window.addEventListener("load", adjustProjectImage);
+// 窗口大小变动时也重算
+window.addEventListener("resize", adjustProjectImage);
+}
+  </script>
+  <script>
+  (() => {
+    const portraitImages = [
+      "007.JPG","008.JPG","009.JPG","010.JPG","011.JPG","012.JPG","013.JPG","014.JPG",
+      "015.JPG","016.JPG","017.JPG","018.JPG","019.JPG","020.jpg","021.jpg","022.jpg",
+      "023.jpg","024.jpg","025.JPG","026.JPG","027.JPG"
+    ];
+    const portraitGroup = "portrait-gallery";
+    const currentLightbox = document.getElementById("lightbox");
+    const portraitMain = document.querySelector(".portrait-main");
+    const portraitMainImg = document.getElementById("portrait-main-img");
+    const portraitThumbs = document.querySelectorAll(".portrait-thumb");
+    const portraitLeft = document.querySelector(".portrait-arrow.left");
+    const portraitRight = document.querySelector(".portrait-arrow.right");
+
+    if (!currentLightbox || !portraitMain || !portraitMainImg || !portraitThumbs.length || !portraitLeft || !portraitRight) {
+      return;
+    }
+
+    const lightboxReplacement = currentLightbox.cloneNode(true);
+    currentLightbox.replaceWith(lightboxReplacement);
+
+    portraitMainImg.dataset.lightboxGroup = portraitGroup;
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    function currentPortraitIndex() {
+      return Math.max(portraitImages.indexOf(portraitMainImg.getAttribute("src")), 0);
+    }
+
+    function updatePortrait(index) {
+      portraitMainImg.src = portraitImages[index];
+      portraitMainImg.dataset.lightboxGroup = portraitGroup;
+      portraitThumbs.forEach((thumb) => thumb.classList.remove("active"));
+      portraitThumbs[index].classList.add("active");
+    }
+
+    portraitMain.addEventListener("touchstart", (event) => {
+      if (!event.touches.length) return;
+      touchStartX = event.touches[0].clientX;
+      touchEndX = touchStartX;
+    }, { passive: true });
+
+    portraitMain.addEventListener("touchmove", (event) => {
+      if (!event.touches.length) return;
+      touchEndX = event.touches[0].clientX;
+    }, { passive: true });
+
+    portraitMain.addEventListener("touchend", () => {
+      const deltaX = touchEndX - touchStartX;
+      const swipeThreshold = 50;
+      const portraitIndex = currentPortraitIndex();
+
+      if (Math.abs(deltaX) < swipeThreshold) {
+        touchStartX = 0;
+        touchEndX = 0;
+        return;
+      }
+
+      if (deltaX < 0) {
+        updatePortrait((portraitIndex + 1) % portraitImages.length);
+      } else {
+        updatePortrait((portraitIndex - 1 + portraitImages.length) % portraitImages.length);
+      }
+
+      touchStartX = 0;
+      touchEndX = 0;
+    });
+
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = lightbox.querySelector("img");
+    const closeBtn = document.getElementById("lightbox-close");
+    let lightboxIndex = -1;
+    let activeLightboxGroup = null;
+    let lightboxTouchStartX = 0;
+    let lightboxTouchEndX = 0;
+    let lightboxHistoryOpen = false;
+
+    function normalizeLightboxSrc(src) {
+      try {
+        return new URL(src, window.location.href).href;
+      } catch (error) {
+        return src;
+      }
+    }
+
+    function openLightbox(src, group = null) {
+      const normalizedSrc = normalizeLightboxSrc(src);
+      activeLightboxGroup = group;
+      lightboxIndex = group === portraitGroup
+        ? portraitImages.findIndex((imageSrc) => normalizeLightboxSrc(imageSrc) === normalizedSrc)
+        : -1;
+      lightboxImg.src = src;
+      lightbox.style.display = "flex";
+
+      if (!lightboxHistoryOpen) {
+        history.pushState({ projectLightbox: true }, "", window.location.href);
+        lightboxHistoryOpen = true;
+      }
+    }
+
+    function closeLightbox(fromPopState = false) {
+      lightbox.style.display = "none";
+      lightboxIndex = -1;
+      activeLightboxGroup = null;
+
+      if (lightboxHistoryOpen && !fromPopState) {
+        lightboxHistoryOpen = false;
+        history.back();
+        return;
+      }
+
+      lightboxHistoryOpen = false;
+    }
+
+    function stepLightbox(direction) {
+      if (lightbox.style.display !== "flex" || lightboxIndex === -1 || activeLightboxGroup !== portraitGroup) {
+        return;
+      }
+
+      lightboxIndex = (lightboxIndex + direction + portraitImages.length) % portraitImages.length;
+      lightboxImg.src = portraitImages[lightboxIndex];
+    }
+
+    document.querySelectorAll(".project-first-img, .project-image").forEach((img) => {
+      img.style.cursor = "pointer";
+      img.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        openLightbox(img.src);
+      });
+    });
+
+    portraitMainImg.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      openLightbox(portraitMainImg.src, portraitMainImg.dataset.lightboxGroup || portraitGroup);
+    });
+
+    lightbox.addEventListener("click", (event) => {
+      if (event.target === lightbox || event.target.id === "lightbox-close") {
+        closeLightbox();
+      }
+    });
+
+    closeBtn.addEventListener("click", () => {
+      closeLightbox();
+    });
+
+    lightboxImg.addEventListener("touchstart", (event) => {
+      if (!event.touches.length) return;
+      lightboxTouchStartX = event.touches[0].clientX;
+      lightboxTouchEndX = lightboxTouchStartX;
+    }, { passive: true });
+
+    lightboxImg.addEventListener("touchmove", (event) => {
+      if (!event.touches.length) return;
+      lightboxTouchEndX = event.touches[0].clientX;
+    }, { passive: true });
+
+    lightboxImg.addEventListener("touchend", () => {
+      const deltaX = lightboxTouchEndX - lightboxTouchStartX;
+      const swipeThreshold = 50;
+
+      if (Math.abs(deltaX) < swipeThreshold) {
+        lightboxTouchStartX = 0;
+        lightboxTouchEndX = 0;
+        return;
+      }
+
+      if (deltaX < 0) {
+        stepLightbox(1);
+      } else {
+        stepLightbox(-1);
+      }
+
+      lightboxTouchStartX = 0;
+      lightboxTouchEndX = 0;
+    });
+
+    if (!document.body.dataset.projectLightboxBound) {
+      document.addEventListener("keydown", (event) => {
+        if (lightbox.style.display !== "flex") return;
+
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          stepLightbox(-1);
+        }
+
+        if (event.key === "ArrowRight") {
+          event.preventDefault();
+          stepLightbox(1);
+        }
+
+        if (event.key === "Escape") {
+          closeLightbox();
+        }
+      });
+
+      window.addEventListener("popstate", (event) => {
+        if (lightbox.style.display !== "flex") return;
+        if (event.state && event.state.projectLightbox) return;
+        closeLightbox(true);
+      });
+
+      document.body.dataset.projectLightboxBound = "true";
+    }
+  })();
+  </script>
+  <script>
+  (() => {
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = lightbox.querySelector("img");
+    const closeBtn = document.getElementById("lightbox-close");
+    const lightboxGroups = {};
+    let lightboxIndex = -1;
+    let activeLightboxGroup = null;
+    let lightboxTouchStartX = 0;
+    let lightboxTouchEndX = 0;
+    let lightboxHistoryOpen = false;
+
+    function adjustProjectImage() {
+      const images = document.querySelectorAll(".project-image");
+      if (window.innerWidth <= 768) {
+        images.forEach((img) => {
+          img.style.marginTop = "";
+        });
+        return;
+      }
+
+      images.forEach((img) => {
+        const topContentHeight = img.getBoundingClientRect().top + window.scrollY;
+        img.style.marginTop = topContentHeight < 900 ? `${950 - topContentHeight}px` : "50px";
+      });
+    }
+
+    document.querySelectorAll(".gallery-wrapper[data-gallery-group]").forEach((container) => {
+      const galleryGroup = container.dataset.galleryGroup;
+      const galleryImages = Array.from(container.querySelectorAll(".gallery-thumb")).map((thumb) => thumb.src);
+      const galleryMain = container.querySelector(".gallery-main");
+      const mainImg = container.querySelector(".gallery-main-img");
+      const thumbs = Array.from(container.querySelectorAll(".gallery-thumb"));
+      const leftArrow = container.querySelector(".gallery-arrow.left");
+      const rightArrow = container.querySelector(".gallery-arrow.right");
+      let galleryIndex = Math.max(galleryImages.indexOf(mainImg.src), 0);
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      lightboxGroups[galleryGroup] = galleryImages;
+
+      function updateGallery(index) {
+        mainImg.src = galleryImages[index];
+        mainImg.dataset.lightboxGroup = galleryGroup;
+        thumbs.forEach((thumb) => thumb.classList.remove("active"));
+        thumbs[index].classList.add("active");
+        galleryIndex = index;
+      }
+
+      thumbs.forEach((thumb) => {
+        thumb.addEventListener("click", () => {
+          const nextIndex = parseInt(thumb.dataset.index, 10);
+          if (!Number.isNaN(nextIndex)) updateGallery(nextIndex);
+        });
+      });
+
+      leftArrow.addEventListener("click", () => {
+        updateGallery((galleryIndex - 1 + galleryImages.length) % galleryImages.length);
+      });
+
+      rightArrow.addEventListener("click", () => {
+        updateGallery((galleryIndex + 1) % galleryImages.length);
+      });
+
+      galleryMain.addEventListener("touchstart", (event) => {
+        if (!event.touches.length) return;
+        touchStartX = event.touches[0].clientX;
+        touchEndX = touchStartX;
+      }, { passive: true });
+
+      galleryMain.addEventListener("touchmove", (event) => {
+        if (!event.touches.length) return;
+        touchEndX = event.touches[0].clientX;
+      }, { passive: true });
+
+      galleryMain.addEventListener("touchend", () => {
+        const deltaX = touchEndX - touchStartX;
+        if (Math.abs(deltaX) >= 50) {
+          updateGallery(deltaX < 0
+            ? (galleryIndex + 1) % galleryImages.length
+            : (galleryIndex - 1 + galleryImages.length) % galleryImages.length);
+        }
+        touchStartX = 0;
+        touchEndX = 0;
+      });
+
+      updateGallery(galleryIndex);
+    });
+
+    function normalizeLightboxSrc(src) {
+      try {
+        return new URL(src, window.location.href).href;
+      } catch (error) {
+        return src;
+      }
+    }
+
+    function openLightbox(src, group = null) {
+      const normalizedSrc = normalizeLightboxSrc(src);
+      activeLightboxGroup = group;
+      lightboxIndex = group && lightboxGroups[group]
+        ? lightboxGroups[group].findIndex((imageSrc) => normalizeLightboxSrc(imageSrc) === normalizedSrc)
+        : -1;
+      lightboxImg.src = src;
+      lightbox.style.display = "flex";
+
+      if (!lightboxHistoryOpen) {
+        history.pushState({ projectLightbox: true }, "", window.location.href);
+        lightboxHistoryOpen = true;
+      }
+    }
+
+    function closeLightbox(fromPopState = false) {
+      lightbox.style.display = "none";
+      lightboxIndex = -1;
+      activeLightboxGroup = null;
+
+      if (lightboxHistoryOpen && !fromPopState) {
+        lightboxHistoryOpen = false;
+        history.back();
+        return;
+      }
+
+      lightboxHistoryOpen = false;
+    }
+
+    function stepLightbox(direction) {
+      if (lightbox.style.display !== "flex" || lightboxIndex === -1 || !activeLightboxGroup || !lightboxGroups[activeLightboxGroup]) return;
+      const activeImages = lightboxGroups[activeLightboxGroup];
+      lightboxIndex = (lightboxIndex + direction + activeImages.length) % activeImages.length;
+      lightboxImg.src = activeImages[lightboxIndex];
+    }
+
+    document.querySelectorAll(".project-first-img, .project-image, .gallery-main-img").forEach((img) => {
+      img.style.cursor = "pointer";
+      img.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        openLightbox(img.src, img.dataset.lightboxGroup || null);
+      });
+    });
+
+    lightbox.addEventListener("click", (event) => {
+      if (event.target === lightbox || event.target.id === "lightbox-close") closeLightbox();
+    });
+
+    closeBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      closeLightbox();
+    });
+
+    lightboxImg.addEventListener("touchstart", (event) => {
+      if (!event.touches.length) return;
+      lightboxTouchStartX = event.touches[0].clientX;
+      lightboxTouchEndX = lightboxTouchStartX;
+    }, { passive: true });
+
+    lightboxImg.addEventListener("touchmove", (event) => {
+      if (!event.touches.length) return;
+      lightboxTouchEndX = event.touches[0].clientX;
+    }, { passive: true });
+
+    lightboxImg.addEventListener("touchend", () => {
+      const deltaX = lightboxTouchEndX - lightboxTouchStartX;
+      if (Math.abs(deltaX) >= 50) stepLightbox(deltaX < 0 ? 1 : -1);
+      lightboxTouchStartX = 0;
+      lightboxTouchEndX = 0;
+    });
+
+    if (!document.body.dataset.projectLightboxBound) {
+      document.addEventListener("keydown", (event) => {
+        if (lightbox.style.display !== "flex") return;
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          stepLightbox(-1);
+        }
+        if (event.key === "ArrowRight") {
+          event.preventDefault();
+          stepLightbox(1);
+        }
+        if (event.key === "Escape") closeLightbox();
+      });
+
+      window.addEventListener("popstate", (event) => {
+        if (lightbox.style.display !== "flex") return;
+        if (event.state && event.state.projectLightbox) return;
+        closeLightbox(true);
+      });
+
+      document.body.dataset.projectLightboxBound = "true";
+    }
+
+    window.addEventListener("load", adjustProjectImage);
+    window.addEventListener("resize", adjustProjectImage);
+  })();
+  </script>
 </body>
 </html>
