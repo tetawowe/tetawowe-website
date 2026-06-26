@@ -1,24 +1,1044 @@
-<!DOCTYPE html>
-<html lang="zh-Hans">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project</title>
-  <link rel="stylesheet" href="/header/header.css">
-  <link rel="stylesheet" href="/project/project.css">
-  <link rel="icon" type="image/x-icon" href="/header/favicon.ico">
-</head>
-<body>
-  <header id="header-placeholder"></header>
+  <!DOCTYPE html>
+  <html lang="zh-Hans">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="../../../../header/favicon.ico">
+    <title>Sea Whisperer @Taoyuan LAF</title>
 
-<main id="project-container">
-  <div id="project-first-image"></div>
-  <div id="project-meta"></div>
-  <div id="project-text"></div>
-  <div id="project-images"></div>
-</main>
+    <!-- header.css 和 header.js -->
+    <link rel="stylesheet" href="../../../../header/header.css">
 
-  <script src="/header/header.js"></script>
-  <script src="/project/project.js"></script>
-</body>
-</html>
+    <!-- 复用 project.css -->
+    <link rel="stylesheet" href="../../../../project/project.css">
+
+    <!-- special 项目的覆盖样式 -->
+    <style>
+  #meta-text-wrapper {
+    display: flex;
+    gap: 25px;                  /* 左右间距 */
+    align-items: flex-start;    /* 顶部对齐 */
+    margin: 15px auto;
+    max-width: 965px;           /* 和图片同宽 */
+  }
+
+  #project-meta {
+    width: 305px;
+    display: grid;
+    grid-template-columns: 125px 1fr; /* 左侧固定 85px，右侧自适应 */
+    gap: 8px 0;                      /* 行间距 */
+    font-size: 14px;
+    color: #525252; 
+    line-height: 1.4;
+    flex-shrink: 0;  /* 阻止压缩 */
+  }
+
+  #project-meta h2 {
+    grid-column: 1 / -1;  /* 标题独占整行 */
+    margin-top: 0;
+    margin-bottom: 0px;
+    font-size: 16px;
+    color: #2e2e2e;
+  }
+
+  #project-meta .label {
+    font-weight: bold;
+    color: #525252;
+  }
+
+  #project-meta .value {
+    padding-left: 0; /* 保证和 label 分开 */
+  }
+
+  /* 右侧 description */
+  #project-text {
+    font-size: 14px;
+    flex: 1;
+    color: #333;
+    line-height: 1.6;
+    white-space: pre-line; /* 保留换行 */
+    margin-top: 28px; /* 根据需要调整距离 */
+  }
+
+  #project-first-image .project-first-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* =========================
+    slider
+  ========================= */
+  #project-first-image {
+    max-width: 965px;
+    width: 100%;
+    height: 575px; /* 保持原封面尺寸 */
+    margin: 0 auto 0px auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slider-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .slider-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  .slider-img.active {
+    opacity: 1;
+    z-index: 2;
+  }
+
+  .slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 40px;
+    color: #acacac81;
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+    z-index: 3;
+  }
+
+  .slider-arrow.left {
+    left: 10px;
+  }
+
+  .slider-arrow.right {
+    right: 10px;
+  }
+
+  #project-first-slider:hover .slider-arrow {
+    opacity: 1;
+  }
+
+  /* =========================
+   Gallery 主图 & 缩略图
+========================= */
+
+/* gallery 容器 */
+#project-gallery {
+  max-width: 965px;
+  margin: 30px auto; /* 可调整与上方内容间距 */
+}
+
+/* gallery 主图包裹层（新增） */
+#project-gallery .gallery-main-wrapper {
+  position: relative;
+  max-width: 965px;
+  margin: 0 auto;
+}
+
+/* 主图 */
+#project-gallery .gallery-main {
+  width: 100%;
+  max-width: 965px;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+  margin-bottom: 8px;
+  background: #ffffff;
+}
+
+/* 缩略图容器：最多两行，每行 8 张 */
+#project-gallery .gallery-thumbs {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 8px;
+  max-width: 965px;
+  margin: 0 auto;
+  margin-top: 0px;
+  margin-bottom: -25px;
+}
+
+/* 缩略图 */
+#project-gallery .gallery-thumb {
+  width: 100%;
+  height: 80px;         /* 固定高度 */
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.7;
+}
+
+/* Gallery arrows */
+#project-gallery .gallery-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 40px;
+  color: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  user-select: none;
+  padding: 10px;
+  z-index: 5;
+}
+
+#project-gallery .gallery-arrow.left {
+  left: 10px;
+}
+
+#project-gallery .gallery-arrow.right {
+  right: 10px;
+}
+
+
+/* hover 效果 */
+#project-gallery .gallery-thumb:hover {
+  opacity: 1;
+}
+
+/* active 效果 */
+#project-gallery .gallery-thumb.active {
+  opacity: 1;
+}
+
+/* middle-description */
+#project-gallery .middle-description {
+  max-width: 965px;
+  margin: 0 auto 25px auto;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  white-space: pre-line;
+}
+
+
+
+    /* Lightbox 样式 */
+    #lightbox {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      align-items: center;
+      justify-content: center;
+    }
+    #lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+#lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  font-size: 40px;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+}
+
+
+  /* =========================
+   Image + Text 左右排版
+========================= */
+.image-text-row {
+  max-width: 965px;
+  margin: 50px auto;
+  display: flex;
+  gap: 5px;                  /* 图片与文字的间距 */
+  align-items: flex-start;
+}
+
+.image-text-row + .image-text-row {
+  margin-top: -50px;
+}
+
+/* 左侧图片 */
+.image-text-row .image-col {
+  flex: 0 0 43%;              /* 图片占比 */
+}
+
+.image-text-row .image-col img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 右侧文字 */
+.image-text-row .text-col {
+  flex: 1;
+}
+
+.image-text-row .middle-description {
+      text-align: left;
+      margin-left: 25px;
+      color: #555;
+      word-break: break-word;
+      margin-top: 0;
+      margin-bottom: 35px;
+}
+
+/* =========================
+ Portrait Gallery Slider
+========================= */
+#portrait-gallery {
+  max-width: 965px;
+  margin: 120px auto;
+}
+
+/* 主图 */
+.portrait-main {
+  position: relative;
+  width: 100%;
+  height: 600px;              /* 关键：portrait 高度 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  overflow: hidden;
+  margin-top: -75px;
+}
+
+.portrait-main img {
+  height: 100%;
+  width: auto;                /* 维持竖向比例 */
+  object-fit: contain;
+}
+
+/* 箭头 */
+.portrait-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 40px;
+  color: rgba(0,0,0,0.35);
+  cursor: pointer;
+  user-select: none;
+  padding: 10px;
+}
+
+.portrait-arrow.left { left: 10px; }
+.portrait-arrow.right { right: 10px; }
+
+/* thumbnails */
+.portrait-thumbs {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 8px;
+  margin-top: 25px;
+}
+
+#portrait-gallery .portrait-thumb {
+  width: 100%;
+  height: 75px;                /* 比 80px 略高，呼应竖图 */
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.7;
+}
+
+#portrait-gallery .portrait-thumb:hover,
+#portrait-gallery .portrait-thumb.active {
+  opacity: 1;
+}
+
+.project-image1 {
+  max-width: 965px;
+  width: 100%;
+  display: block;
+  margin: 0px auto; /* 居中并留点间隔 */
+}
+
+/* Lightbox 可点击图片鼠标变成手指 */
+.project-first-image,
+.project-image,
+.project-image1,
+.gallery-main,
+.portrait-main img {
+  cursor: pointer;
+}
+
+    /* 小屏幕时上下堆叠 */
+        @media (max-width: 768px) {
+  #meta-text-wrapper {
+    flex-direction: column;
+  }
+
+  #project-meta {
+    flex: none;
+    width: 100%;
+  }
+
+  #project-first-image {
+  max-width: 965px;
+  width: 100%;
+  height: 285px;             /* 固定高度 */
+  object-fit: cover;         /* 超出部分裁剪 */
+  object-position: center;   /* 裁剪时居中 */
+  display: block;
+  margin: 0 auto 0px auto;
+}
+
+#project-meta {
+  width: 350px;
+  display: grid;
+  grid-template-columns: 125px 1fr; /* 左侧固定 85px，右侧自适应 */
+  gap: 8px 0;                      /* 行间距 */
+  font-size: 14px;
+  color: #525252; 
+  line-height: 1.1;
+  margin-left: 15px;
+  margin-top: -5px;
+}
+
+#project-meta h2 {
+  grid-column: 1 / -1;  /* 标题独占整行 */
+  margin-top: 0;
+  margin-bottom: 0px;
+  font-size: 16px;
+  color: #2e2e2e;
+}
+
+#project-text {
+  font-size: 14px;
+  flex: 1;
+  color: #333;
+  line-height: 1.6;
+  white-space: pre-line;
+  margin: -20px 15px 35px 15px; /* 左右留白15px，下方间距75px，上方为0 */
+}
+
+.project-image1 {
+  max-width: 965px;
+  width: 100%;
+  display: block;
+  margin-bottom: -50px;
+}
+
+
+.gallery-main {
+  width: 100%;
+  max-width: 965px;
+  height: 300px;         /* 固定高度 */
+  object-fit: contain;   /* 保持原图比例 */
+  object-position: center;
+  background: #ffffff;
+}
+
+#project-gallery .gallery-main {
+  width: 100%;
+  max-width: 965px;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+  margin-bottom: 8px;
+  background: #ffffff;
+}
+
+/* 缩略图 */
+#project-gallery .gallery-thumb {
+  width: 100%;
+  height: 50px;         /* 固定高度 */
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.7;
+}
+
+/* 縮略圖容器：最多兩行，每行 7 張 */
+.gallery-thumbs {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  max-width: 965px;
+  margin: 0 auto;
+  margin-top: 0;
+  margin-bottom: 50px;
+}
+
+/* 縮略圖 */
+.gallery-thumb {
+  width: 100%;
+  height: 20px;         /* 固定高度 */
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.7;
+}
+  .special-text-wrapper {
+    flex-direction: column; /* 上下堆叠 */
+    gap: 12px;              /* 可以调整上下间距 */
+  }
+
+  .special-text-cn,
+  .special-text-en {
+    margin: 0;               /* 去掉左右 margin */
+    max-width: 95%;         /* 占满宽度 */
+    margin: 35px 15px 0px 15px;
+  }
+
+  .portrait-main {
+  position: relative;
+  width: 100%;
+  height: 500px;              /* 关键：portrait 高度 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  overflow: hidden;
+  margin-top: -50px;
+}
+
+#portrait-gallery .portrait-thumb {
+  width: 100%;
+  height: 55px;                /* 比 80px 略高，呼应竖图 */
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.7;
+}
+
+/* 小屏幕：上下堆叠图片 + 文字 */
+  .image-text-row {
+    flex-direction: column;       /* 改成上下堆叠 */
+    align-items: center;          /* 图片水平居中 */
+    gap: 0px;                    /* 图片与文字间距可调整 */
+    margin: 20px auto;            /* 控制整体上下间距 */
+  }
+
+  /* 左侧图片占满宽度或保持比例 */
+  .image-text-row .image-col {
+    flex: 0 0 auto;               /* 不限制宽度 */
+    width: 70%;                  /* 或者 80%-90% 看你的设计 */
+  }
+
+  .image-text-row .image-col img {
+    width: 100%;                  /* 图片自适应容器宽度 */
+    height: auto;
+  }
+
+  /* 右侧文字全宽显示，并去掉左边 margin */
+  .image-text-row .text-col {
+    flex: 1;
+    width: 100%;
+    margin-top: -90px;
+  }
+
+  .image-text-row .middle-description {
+    margin-left: 0;               /* 去掉原来的左间距 */
+    text-align: left;             /* 保持文字左对齐 */
+  }
+
+    }
+
+
+    </style>
+  </head>
+  <body>
+    <header id="header-placeholder"></header>
+
+    <main id="project-container" class="special-main">
+
+      <div id="project-first-image">
+        <img src="001.jpg" class="project-first-image" alt="Sea Whisperer @Taoyuan LAF">
+      </div>
+
+      <!-- meta + 主描述 -->
+      <div id="meta-text-wrapper">
+        <div id="project-meta">
+          <h2>Sea Whisperer @Taoyuan LAF</h2>
+          <div class="label">Year</div><div class="value">2026</div>
+          <div class="label">Type</div><div class="value">Placemaking</div>
+          <div class="label">Team</div><div class="value">Tey Tat Sing <br> Wong Wei Ping <br> Goh Zhou Jayne <br> Wong Jie Shan </div>
+          <div class="label">Location</div><div class="value">Tao Yuan</div>
+          <div class="label">Collabration</div><div class="value"><a href="https://www.kongsikl.co/" target="_blank" rel="noopener noreferrer"></a></div>
+        </div>
+
+        <div id="project-text" style="margin-top:0px;">
+        <strong>With the rise and fall of the tides, what is brought ashore? What is left behind?</strong>
+Grains of sand carrying geological memory, driftwood returning to shore after a long journey, air tinged with salt and the marks of time...<br>
+<strong>The crowds come and go. What do they leave at the water's edge?</strong>
+An unsent secret, a longing extended endlessly along the coastline, an immeasurable loneliness...<br>
+
+<strong>海潮漲退，帶來什麽？留下什麽？</strong>
+裝載地質記憶的沙礫、遠行后靠岸的漂流木，帶著鹹味的空氣和時間印記……<br>
+<strong>人潮來去，又在岸邊存放了什麽？</strong>
+一則寄不出去的心事、一份隨海岸綫無限延長的思念、一種無限遼闊的孤寂……
+
+        </div>
+      </div>
+
+      <!-- 006–013 Gallery -->
+<div id="project-gallery" class="gallery-wrapper">
+
+  <!-- 主图 + 箭头 -->
+  <div class="gallery-main-wrapper">
+    <span class="gallery-arrow left">&#10094;</span>
+    <img id="gallery-main" class="gallery-main" src="002.jpg" alt="Gallery Main">
+    <span class="gallery-arrow right">&#10095;</span>
+  </div>
+
+  <!-- 缩略图 -->
+  <div class="gallery-thumbs">
+    <img src="002.jpg" class="gallery-thumb active" data-index="0">
+  </div>
+
+</div>
+
+<!-- Gallery 下方文字 -->
+<div class="middle-description">
+  <strong>If time is a language for measuring the sea, how might those on shore respond to the sea's greeting?</strong>
+Sea Whisperer takes the coast as its field, using installations for writing, lingering, and collecting to establish a loose yet continuous dialogue between people and the sea. These installations do not seek to foreground the transmission of messages; instead, they make language, distance, and time perceptible and offer them a place to rest. The sea both connects and separates, continually composing replies through wind, drift matter, and shifting terrain. Human responses are not aimed at arrival; they may take the form of writing, gazing, or pausing. Within these exchanges, the dialogue need not be completed, yet between every act of sensing and setting forth, a faint but real connection takes shape.
+  
+<strong>如果時間是用來丈量海的語言，岸邊的人又要用什麼方式去回應海的問候？</strong>
+《海的問候》以海岸為場域，透過書寫、停留與收集的裝置，建立人與海之間鬆散而持續的對話關係。這些裝置並不強調訊息的傳遞，而是讓語言、距離與時間得以被感知與安放。海既連結也阻隔，並以風、漂流物與變動的地景持續生成回應；人的回應不以抵達為目的，可以是書寫、凝視或停留。在這樣的往返之中，對話不一定被完成，卻在每一次感知與投放之間，形成一種微弱而真實的連結。
+</div>
+
+<div class="image-text-row">
+  <div class="image-col">
+    <img class="project-image" src="00a.png" alt="015 — rubber">
+    
+  </div>
+
+  <div class="text-col">
+    <div class="middle-description">
+      <strong>[The Sea's Mailbox · 海的信箱]</strong>
+      An installation embedded along the shore, gathering and recording memories of time and geology.
+
+As the tide opens and closes, seawater flows through, lingers, and recedes.
+In this continual cycle, it is both an hourglass and a mailbox, naturally sifting and retaining the driftwood, grains of sand, and stones brought in by the sea.
+      
+它是一個嵌入在岸邊，收集並記錄著時間和地質記憶的裝置
+
+隨著潮汐開合，讓海水流經、停留、退去——
+在往復之間，它如沙漏、也如信箱，
+將海潮帶來的漂流木、沙粒與石頭自然篩選與留下。
+    </div>
+  </div>
+</div>
+
+<div class="image-text-row">
+  <div class="image-col">
+    <img class="project-image" src="00b.png" alt="017 — jetty">
+  </div>
+
+  <div class="text-col">
+    <div class="middle-description">
+      <strong>[The Letter-Writing Platform · 信箋台]</strong>
+      A temporary resting place shared by people and birds. Migratory birds travel along the coastline and pause here; people, too, face the sea and allow themselves a moment to linger and write.
+
+      Waiting for someone to write a letter, for a bird to land, for a letter to be sent,
+and for the sea, at some moment, to gently write back.
+
+人與鳥共棲的一處暫停之地。候鳥沿著海岸線來去，在此停靠；
+人們也在這裡，面向大海，留下片刻的停留與書寫。
+
+等人來寫信，等鳥落腳，等信寄出，
+ 也等大海，在某個時刻，輕輕回信。
+
+</div>
+  </div>
+</div>
+
+<div class="image-text-row">
+  <div class="image-col">
+    <img class="project-image" src="00c.png" alt="018 — anglers">
+  </div>
+
+  <div class="text-col">
+    <div class="middle-description">
+      <strong>[That Person · 彼人]</strong>
+     In the sound of waves, thoughts are infinitely amplified. People cast their private thoughts into the mailbox by the shore, where they are held in the care of the mailbox keepers until, at some point in time, they are sent out.
+
+     That Person mailbox collects letters addressed to recipients in Taiwan and overseas. Its red and green mailboxes draw on the imagery of Taiwan's familiar red and green postal boxes.
+
+在海浪聲中，人們的思緒被無限放大，心事被人們投放進岸邊的信箱裏，被岸邊的信箱人守護著，並在某個時間點被寄出。
+
+《彼人》信箱收集著人們寄給台灣本地/海外的信件，紅綠信箱分別為紅綠中華郵箱的意象。
+    </div>
+  </div>
+</div>
+
+<div class="image-text-row">
+  <div class="image-col">
+    <img class="project-image" src="00d.png" alt="016 — children">
+  </div>
+
+  <div class="text-col">
+    <div class="middle-description">
+      <strong>[That Shore · 彼岸]</strong>
+      The Other Shore mailbox carries the longing shaped by geographical and spatial distance. It gathers letters written to people far away, to places that may or may not be reached.
+
+      《彼岸》信箱裝載著地理與空間距離的思念，它收集著人們寫給遠方的人的信件——一些能被抵達、或無法抵達的遠方。
+</div>
+  </div>
+</div>
+
+<div class="image-text-row">
+  <div class="image-col">
+    <img class="project-image" src="00e.png" alt="019 — dobi">
+  </div>
+
+  <div class="text-col">
+    <div class="middle-description">
+      <strong>[That Time · 彼時]</strong>
+That Time mailbox speaks of temporal distance. Letters may be written to one's past or future self, becoming a time capsule at the shore.
+
+Years later, these letters may finally be retrieved and exhibited again, connecting memories of the past and present, and allowing each story to be read and felt anew.
+
+      《彼時》信箱則訴説著時間距離。信件可以寫給過去或未來的自己，成爲一個岸邊的時間膠囊。
+
+數年後，信件或許終於被取出，再展出，串起過去與現在的記憶，也讓每一段故事被重新閱讀與感受。
+</div>
+  </div>
+</div>
+
+<!-- =========================
+ Portrait Gallery Slider
+========================= -->
+<div id="portrait-gallery">
+
+  <!-- 主图区域 -->
+  <div class="portrait-main">
+    <span class="portrait-arrow left">&#10094;</span>
+    <img id="portrait-main-img" src="020.jpg" alt="Portrait 020">
+    <span class="portrait-arrow right">&#10095;</span>
+  </div>
+
+  <!-- 缩略图 -->
+  <div class="portrait-thumbs">
+    <!-- 020–035 -->
+    <img src="101.jpg" class="portrait-thumb active" data-index="0">
+    <img src="102.jpg" class="portrait-thumb" data-index="1">
+    <img src="103.jpg" class="portrait-thumb" data-index="2">
+    <img src="104.jpg" class="portrait-thumb" data-index="3">
+    <img src="105.jpg" class="portrait-thumb" data-index="4">
+    <img src="106.jpg" class="portrait-thumb" data-index="5">
+    <img src="107.jpg" class="portrait-thumb" data-index="6">
+    <img src="108.jpg" class="portrait-thumb" data-index="7">
+  </div>
+
+</div>
+
+  <div id="lightbox">
+    <span id="lightbox-close">&times;</span>
+  <img src="" alt="Lightbox Image">
+</div>
+
+
+    </main>
+
+    <script src="../../../../header/header.js">  </script>
+
+      <script>
+  /* Removed the copied hero slider: Sea Whisperer uses a fixed 001.jpg image. */
+  /*
+  const sliderImgs = document.querySelectorAll("#project-first-slider .slider-img");
+  const leftArrow = document.querySelector("#project-first-slider .slider-arrow.left");
+  const rightArrow = document.querySelector("#project-first-slider .slider-arrow.right");
+
+  let current = 0;
+  let interval = 4000; // 4.5 秒
+  let sliderTimer;
+
+  // 显示指定索引
+  function showSlide(index) {
+    sliderImgs.forEach((img, i) => {
+      img.classList.toggle("active", i === index);
+    });
+    current = index;
+  }
+
+  // 下一张
+  function nextSlide() {
+    let next = (current + 1) % sliderImgs.length;
+    showSlide(next);
+  }
+
+  // 上一张
+  function prevSlide() {
+    let prev = (current - 1 + sliderImgs.length) % sliderImgs.length;
+    showSlide(prev);
+  }
+
+  // 自动播放函数（先清除再启动，防止重复计时）
+  function startSlider() {
+    stopSlider(); // 防止多重计时器
+    sliderTimer = setInterval(nextSlide, interval);
+  }
+
+  // 停止自动播放
+  function stopSlider() {
+    clearInterval(sliderTimer);
+    sliderTimer = null;
+  }
+
+  // 初始化
+  startSlider();
+
+  // 鼠标悬停暂停，移开继续
+  const sliderContainer = document.querySelector("#project-first-slider");
+  sliderContainer.addEventListener("mouseenter", stopSlider);
+  sliderContainer.addEventListener("mouseleave", startSlider);
+
+  // 箭头点击切换
+  leftArrow.addEventListener("click", () => {
+    prevSlide();
+    startSlider(); // 点击后重新启动计时器
+  });
+
+  rightArrow.addEventListener("click", () => {
+    nextSlide();
+    startSlider(); // 点击后重新启动计时器
+  });
+
+
+*/
+/* =========================
+   Gallery Logic (006–013)
+========================= */
+
+const galleryImages = ["002.jpg"];
+
+let galleryIndex = 0;
+
+const galleryMain = document.getElementById("gallery-main");
+const galleryThumbs = document.querySelectorAll(".gallery-thumb");
+const galleryLeft = document.querySelector("#project-gallery .gallery-arrow.left");
+const galleryRight = document.querySelector("#project-gallery .gallery-arrow.right");
+const galleryMainWrapper = document.querySelector("#project-gallery .gallery-main-wrapper");
+const galleryGroup = "festival-gallery";
+
+function updateGallery(index) {
+  galleryMain.src = galleryImages[index];
+  galleryThumbs.forEach(t => t.classList.remove("active"));
+  galleryThumbs[index].classList.add("active");
+  galleryIndex = index;
+}
+
+// thumbnails
+galleryThumbs.forEach(thumb => {
+  thumb.addEventListener("click", () => {
+    updateGallery(parseInt(thumb.dataset.index));
+  });
+});
+
+// arrows
+galleryLeft.addEventListener("click", () => {
+  let next = (galleryIndex - 1 + galleryImages.length) % galleryImages.length;
+  updateGallery(next);
+});
+
+galleryRight.addEventListener("click", () => {
+  let next = (galleryIndex + 1) % galleryImages.length;
+  updateGallery(next);
+});
+
+let galleryTouchStartX = 0;
+let galleryTouchEndX = 0;
+
+galleryMain.dataset.lightboxGroup = galleryGroup;
+
+galleryMainWrapper.addEventListener("touchstart", (e) => {
+  galleryTouchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+
+galleryMainWrapper.addEventListener("touchend", (e) => {
+  galleryTouchEndX = e.changedTouches[0].screenX;
+  const diff = galleryTouchStartX - galleryTouchEndX;
+
+  if (Math.abs(diff) < 50) return;
+  updateGallery(diff > 0
+    ? (galleryIndex + 1) % galleryImages.length
+    : (galleryIndex - 1 + galleryImages.length) % galleryImages.length);
+});
+
+updateGallery(galleryIndex);
+
+/* =========================
+ Portrait Gallery Logic
+========================= */
+const portraitImages = [
+  "101.jpg","102.jpg","103.jpg","104.jpg","105.jpg","106.jpg","107.jpg","108.jpg"
+];
+
+let portraitIndex = 0;
+
+const portraitMainImg = document.getElementById("portrait-main-img");
+const portraitThumbs = document.querySelectorAll(".portrait-thumb");
+const portraitLeft = document.querySelector(".portrait-arrow.left");
+const portraitRight = document.querySelector(".portrait-arrow.right");
+const portraitMain = document.querySelector(".portrait-main");
+const portraitGroup = "festival-portrait-gallery";
+
+function updatePortrait(index) {
+  portraitMainImg.src = portraitImages[index];
+  portraitThumbs.forEach(t => t.classList.remove("active"));
+  portraitThumbs[index].classList.add("active");
+  portraitIndex = index;
+}
+
+portraitThumbs.forEach(thumb => {
+  thumb.addEventListener("click", () => {
+    updatePortrait(parseInt(thumb.dataset.index));
+  });
+});
+
+portraitLeft.addEventListener("click", () => {
+  let next = (portraitIndex - 1 + portraitImages.length) % portraitImages.length;
+  updatePortrait(next);
+});
+
+portraitRight.addEventListener("click", () => {
+  let next = (portraitIndex + 1) % portraitImages.length;
+  updatePortrait(next);
+});
+
+let portraitTouchStartX = 0;
+let portraitTouchEndX = 0;
+
+portraitMainImg.dataset.lightboxGroup = portraitGroup;
+
+portraitMain.addEventListener("touchstart", (e) => {
+  portraitTouchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+
+portraitMain.addEventListener("touchend", (e) => {
+  portraitTouchEndX = e.changedTouches[0].screenX;
+  const diff = portraitTouchStartX - portraitTouchEndX;
+
+  if (Math.abs(diff) < 50) return;
+  updatePortrait(diff > 0
+    ? (portraitIndex + 1) % portraitImages.length
+    : (portraitIndex - 1 + portraitImages.length) % portraitImages.length);
+});
+
+updatePortrait(portraitIndex);
+
+
+function enableLightbox() {
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = lightbox.querySelector("img");
+  const closeBtn = document.getElementById("lightbox-close");
+  const lightboxGroups = {
+    [galleryGroup]: galleryImages,
+    [portraitGroup]: portraitImages
+  };
+  const regularImgs = document.querySelectorAll(".project-first-image, .project-image, .project-image1");
+  let activeLightboxGroup = null;
+  let lightboxIndex = -1;
+  let lightboxTouchStartX = 0;
+  let lightboxTouchEndX = 0;
+  let lightboxHistoryOpen = false;
+
+  function openLightbox(src, group = null) {
+    activeLightboxGroup = group;
+    lightboxIndex = group && lightboxGroups[group]
+      ? lightboxGroups[group].findIndex((imageSrc) => imageSrc === src)
+      : -1;
+
+    lightboxImg.src = src;
+    lightbox.style.display = "flex";
+
+    if (!lightboxHistoryOpen) {
+      history.pushState({ projectLightbox: true }, "", window.location.href);
+      lightboxHistoryOpen = true;
+    }
+  }
+
+  function closeLightbox(fromPopState = false) {
+    lightbox.style.display = "none";
+    lightboxIndex = -1;
+    activeLightboxGroup = null;
+
+    if (lightboxHistoryOpen && !fromPopState) {
+      lightboxHistoryOpen = false;
+      history.back();
+      return;
+    }
+
+    lightboxHistoryOpen = false;
+  }
+
+  function stepLightbox(direction) {
+    if (!activeLightboxGroup || !lightboxGroups[activeLightboxGroup]) return;
+
+    const images = lightboxGroups[activeLightboxGroup];
+    lightboxIndex = (lightboxIndex + direction + images.length) % images.length;
+    lightboxImg.src = images[lightboxIndex];
+  }
+
+  regularImgs.forEach((img) => {
+    img.addEventListener("click", () => openLightbox(img.src));
+  });
+
+  galleryMain.addEventListener("click", () => {
+    openLightbox(galleryMain.src, galleryGroup);
+  });
+
+  portraitMainImg.addEventListener("click", (e) => {
+    e.stopPropagation();
+    openLightbox(portraitMainImg.src, portraitGroup);
+  });
+
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  closeBtn.addEventListener("click", () => {
+    closeLightbox();
+  });
+
+  lightbox.addEventListener("touchstart", (e) => {
+    lightboxTouchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  lightbox.addEventListener("touchend", (e) => {
+    lightboxTouchEndX = e.changedTouches[0].screenX;
+    const diff = lightboxTouchStartX - lightboxTouchEndX;
+
+    if (Math.abs(diff) < 50) return;
+    stepLightbox(diff > 0 ? 1 : -1);
+  });
+
+  if (!document.body.dataset.projectLightboxBound) {
+    document.body.dataset.projectLightboxBound = "true";
+
+    document.addEventListener("keydown", (e) => {
+      if (lightbox.style.display !== "flex") return;
+
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") stepLightbox(-1);
+      if (e.key === "ArrowRight") stepLightbox(1);
+    });
+
+    window.addEventListener("popstate", () => {
+      if (lightbox.style.display === "flex") {
+        closeLightbox(true);
+      }
+    });
+  }
+}
+
+
+
+  enableLightbox();
+
+  window.addEventListener("resize", adjustProjectImage);
+    </script>
+  </body>
+  </html>
