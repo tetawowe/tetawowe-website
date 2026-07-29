@@ -1,24 +1,555 @@
-<!DOCTYPE html>
-<html lang="zh-Hans">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project</title>
-  <link rel="stylesheet" href="/header/header.css">
-  <link rel="stylesheet" href="/project/project.css">
-  <link rel="icon" type="image/x-icon" href="/header/favicon.ico">
-</head>
-<body>
-  <header id="header-placeholder"></header>
+  <!DOCTYPE html>
+  <html lang="zh-Hans">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="../../../../header/favicon.ico">
+    <title>Factory 19</title>
 
-<main id="project-container">
-  <div id="project-first-image"></div>
-  <div id="project-meta"></div>
-  <div id="project-text"></div>
-  <div id="project-images"></div>
-</main>
+    <!-- header.css 和 header.js -->
+    <link rel="stylesheet" href="../../../../header/header.css">
 
-  <script src="/header/header.js"></script>
-  <script src="/project/project.js"></script>
-</body>
-</html>
+    <!-- 复用 project.css -->
+    <link rel="stylesheet" href="../../../../project/project.css">
+
+    <!-- special 项目的覆盖样式 -->
+    <style>
+  #meta-text-wrapper {
+    display: flex;
+    gap: 25px;                  /* 左右间距 */
+    align-items: flex-start;    /* 顶部对齐 */
+    margin: 15px auto;
+    max-width: 965px;           /* 和图片同宽 */
+  }
+
+  #project-meta {
+    width: 305px;
+    display: grid;
+    grid-template-columns: 125px 1fr; /* 左侧固定 85px，右侧自适应 */
+    gap: 8px 0;                      /* 行间距 */
+    font-size: 14px;
+    color: #525252;
+    line-height: 1.4;
+    flex-shrink: 0;  /* 阻止压缩 */
+  }
+
+  #project-meta h2 {
+    grid-column: 1 / -1;  /* 标题独占整行 */
+    margin-top: 0;
+    margin-bottom: 0px;
+    font-size: 16px;
+    color: #2e2e2e;
+  }
+
+  #project-meta .label {
+    font-weight: bold;
+    color: #525252;
+  }
+
+  #project-meta .value {
+    padding-left: 0; /* 保证和 label 分开 */
+  }
+
+  /* 右侧 description */
+  #project-text {
+    font-size: 14px;
+    flex: 1;
+    color: #333;
+    line-height: 1.6;
+    white-space: pre-line;
+    margin-top: 0;
+  }
+
+  /* =========================
+    slider
+  ========================= */
+  #project-first-slider {
+    max-width: 965px;
+    width: 100%;
+    height: 575px; /* 保持原封面尺寸 */
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slider-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .slider-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  .slider-img.active {
+    opacity: 1;
+    z-index: 2;
+  }
+
+  .slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 40px;
+    color: #acacac81;
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+    z-index: 3;
+  }
+
+  .slider-arrow.left {
+    left: 10px;
+  }
+
+  .slider-arrow.right {
+    right: 10px;
+  }
+
+  .content-slider {
+    max-width: 965px;
+    width: 100%;
+    height: 575px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .content-slider-section {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin: 50px auto;
+  }
+
+  .manual-slider.show-after::after {
+    content: "after";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    z-index: 4;
+    padding: 2px 8px;
+    font-size: 16px;
+    line-height: 1.2;
+    color: #414141;
+    background: rgba(255, 255, 255, 0.8);
+    pointer-events: none;
+  }
+
+  .manual-slider {
+    touch-action: pan-y;
+  }
+
+    /* Lightbox 样式 */
+    #lightbox {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      align-items: center;
+      justify-content: center;
+    }
+    #lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+#lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  font-size: 40px;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+}
+
+
+.slider-img {
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  #meta-text-wrapper {
+    flex-direction: column;
+  }
+
+  #project-first-slider,
+  .content-slider {
+    height: 285px;
+  }
+
+  #project-meta {
+    width: 350px;
+    grid-template-columns: 125px 1fr;
+    line-height: 1.1;
+    margin-left: 15px;
+    margin-top: -5px;
+  }
+
+  #project-text {
+    margin: -20px 15px 35px;
+  }
+
+}
+
+
+    .middle-description {
+      margin-top: -50px !important;
+      margin-bottom: 50px !important;
+    }
+
+    </style>
+  </head>
+  <body>
+    <header id="header-placeholder"></header>
+
+    <main id="project-container" class="special-main">
+
+      <!-- 001–005 Slider -->
+  <div id="project-first-slider" class="manual-slider">
+    <div class="slider-wrapper">
+      <img src="001.jpg" class="slider-img active" alt="Slide 1">
+      <img src="001a.JPG" class="slider-img" data-after="true" alt="Slide 2">
+
+      <!-- 左右箭头 -->
+      <span class="slider-arrow left">&#10094;</span>
+      <span class="slider-arrow right">&#10095;</span>
+    </div>
+  </div>
+
+      <!-- meta + 主描述 -->
+      <div id="meta-text-wrapper">
+        <div id="project-meta">
+          <h2>Factory 19</h2>
+          <div class="label">Year</div><div class="value">2025</div>
+          <div class="label">Type</div><div class="value">Development<br>Retail / Event Space<br>Placemaking</div>
+          <div class="label">Team</div><div class="value">Tey Tat Sing<br>Wong Jie Shan<br>Gasten Gan<br>Teh Yong Peng<br>Andrew Leng<br>Sean Wee<br>Stella</div>
+          <div class="label">Location</div><div class="value">Petaling Jaya</div>
+          <div class="label">Collaboration</div>
+          <div class="value">
+            <a href="https://www.instagram.com/wysa_design/" target="_blank" rel="noopener noreferrer">Wong Yee Shiong Architect</a><br>
+            Landart Design<br>
+            Primareka (JPP)<br>
+            Projek Permata Jaya (PPJ)
+          </div>
+        </div>
+
+        <div id="project-text">
+        Factory 19 comprises two derelict seven-storey blocks and a single sawtooth-roof warehouse — three structures within the larger site of a former cigarette factory in Petaling Jaya.
+
+At its core, the design is an exercise in spatial reconnection and placemaking: locating, within the site's existing idle and transitional spaces, a simple framework capable of drawing three isolated structures into a single, integrated hub.
+        </div>
+      </div>
+
+
+
+<!-- Gallery 下方文字 -->
+<div class="content-slider-section">
+  <div class="content-slider manual-slider" aria-label="Factory 19 images 002 and 002a">
+    <div class="slider-wrapper">
+      <img src="002.jpg" class="slider-img active" alt="Factory 19 — 002">
+    <img src="002a.jpg" class="slider-img" data-after="true" alt="Factory 19 — 002a">
+      <span class="slider-arrow left">&#10094;</span>
+      <span class="slider-arrow right">&#10095;</span>
+    </div>
+  </div>
+
+  <div class="content-slider manual-slider" aria-label="Factory 19 images 003, 003a and 003b">
+    <div class="slider-wrapper">
+      <img src="003.jpg" class="slider-img active" alt="Factory 19 — 003">
+      <img src="003a.JPG" class="slider-img" alt="Factory 19 — 003a">
+      <img src="003b.jpg" class="slider-img" data-after="true" alt="Factory 19 — 003b">
+      <span class="slider-arrow left">&#10094;</span>
+      <span class="slider-arrow right">&#10095;</span>
+    </div>
+  </div>
+</div>
+
+<div class="middle-description">
+  <strong>Establishing the Axis</strong>
+Circulation forms the spine of the project. Two primary axes were drawn through the site, and their intersection was identified as the natural point of arrival — now the main drop-off, marked by an 18-foot beacon installation suspended above its roof.
+
+Across the axis, the intervention was kept deliberately minimal — restrained enough that the original character of the architecture continues to speak for itself. Rather than prescribing fixed uses, this restraint serves as simple preparation: a base condition ready to accommodate future tenants, events, and pop-ups as they arise.
+</div>
+
+<div class="content-slider-section">
+  <div class="content-slider manual-slider" aria-label="Factory 19 images 004, 004a and 004b">
+    <div class="slider-wrapper">
+      <img src="004.jpg" class="slider-img active" alt="Factory 19 — 004">
+      <img src="004a.jpg" class="slider-img" alt="Factory 19 — 004a">
+      <img src="004b.jpg" class="slider-img" data-after="true" alt="Factory 19 — 004b">
+      <span class="slider-arrow left">&#10094;</span>
+      <span class="slider-arrow right">&#10095;</span>
+    </div>
+  </div>
+
+  <div class="content-slider manual-slider" aria-label="Factory 19 images 005 and 005a">
+    <div class="slider-wrapper">
+      <img src="005.jpg" class="slider-img active" alt="Factory 19 — 005">
+      <img src="005a.jpg" class="slider-img" data-after="true" alt="Factory 19 — 005a">
+      <span class="slider-arrow left">&#10094;</span>
+      <span class="slider-arrow right">&#10095;</span>
+    </div>
+  </div>
+
+  <div class="content-slider manual-slider" aria-label="Factory 19 images 006 and 006a">
+    <div class="slider-wrapper">
+      <img src="006.jpg" class="slider-img active" alt="Factory 19 — 006">
+      <img src="006a.png" class="slider-img" data-after="true" alt="Factory 19 — 006a">
+      <span class="slider-arrow left">&#10094;</span>
+      <span class="slider-arrow right">&#10095;</span>
+    </div>
+  </div>
+</div>
+
+<div class="middle-description">
+  <strong>The Laneways</strong>
+The corridors and outdoor verandahs that once served the factory and warehouse purely as services routes have been reframed as the Laneways — spillover space running along the two main axes themselves. Where these edges were once residual, they now carry the site's principal movement, extending activity along the full length of each axis toward their point of intersection.
+</div>
+
+<div class="content-slider-section">
+  <div class="content-slider manual-slider" aria-label="Factory 19 images 007 and 007a">
+    <div class="slider-wrapper">
+      <img src="007.jpg" class="slider-img active" alt="Factory 19 — 007">
+      <img src="007a.jpg" class="slider-img" data-after="true" alt="Factory 19 — 007a">
+      <span class="slider-arrow left">&#10094;</span>
+      <span class="slider-arrow right">&#10095;</span>
+    </div>
+  </div>
+</div>
+
+<div class="middle-description">
+  <strong>The Grounds</strong>
+At that intersection, a leftover courtyard between the three structures has been reworked into The Grounds, the plaza that ties the buildings together. The ground plane was levelled and repaved, skylights were introduced to bring daylight into what had been a shaded void, and walls were removed to open sightlines across the site. Left deliberately unprogrammed, The Grounds functions as the node the Laneways converge upon.
+</div>
+
+<div class="content-slider-section">
+  <div class="content-slider manual-slider" aria-label="Factory 19 images 008 and 008a">
+    <div class="slider-wrapper">
+      <img src="008.jpg" class="slider-img active" alt="Factory 19 — 008">
+      <img src="008a.jpg" class="slider-img" data-after="true" alt="Factory 19 — 008a">
+      <span class="slider-arrow left">&#10094;</span>
+      <span class="slider-arrow right">&#10095;</span>
+    </div>
+  </div>
+</div>
+
+
+
+  <div id="lightbox">
+    <span id="lightbox-close">&times;</span>
+  <img src="" alt="Lightbox Image">
+</div>
+
+
+    </main>
+
+    <script src="../../../../header/header.js">  </script>
+
+      <script>
+  document.querySelectorAll(".manual-slider").forEach((slider) => {
+    const sliderImgs = slider.querySelectorAll(".slider-img");
+    const leftArrow = slider.querySelector(".slider-arrow.left");
+    const rightArrow = slider.querySelector(".slider-arrow.right");
+    let current = 0;
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    function showSlide(index) {
+      sliderImgs.forEach((img, i) => {
+        img.classList.toggle("active", i === index);
+      });
+      slider.classList.toggle("show-after", sliderImgs[index].dataset.after === "true");
+      current = index;
+    }
+
+    leftArrow.addEventListener("click", () => {
+      showSlide((current - 1 + sliderImgs.length) % sliderImgs.length);
+    });
+
+    rightArrow.addEventListener("click", () => {
+      showSlide((current + 1) % sliderImgs.length);
+    });
+
+    slider.addEventListener("touchstart", (event) => {
+      if (!event.touches.length) return;
+      touchStartX = event.touches[0].clientX;
+      touchEndX = touchStartX;
+    }, { passive: true });
+
+    slider.addEventListener("touchmove", (event) => {
+      if (!event.touches.length) return;
+      touchEndX = event.touches[0].clientX;
+    }, { passive: true });
+
+    slider.addEventListener("touchend", () => {
+      const deltaX = touchEndX - touchStartX;
+      const swipeThreshold = 50;
+
+      if (Math.abs(deltaX) >= swipeThreshold) {
+        showSlide(
+          deltaX < 0
+            ? (current + 1) % sliderImgs.length
+            : (current - 1 + sliderImgs.length) % sliderImgs.length
+        );
+      }
+
+      touchStartX = 0;
+      touchEndX = 0;
+    });
+
+    showSlide(current);
+  });
+
+function enableLightbox() {
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = lightbox.querySelector("img");
+  const closeBtn = document.getElementById("lightbox-close");
+  const lightboxGroups = {};
+  let activeLightboxGroup = null;
+  let lightboxIndex = -1;
+  let lightboxTouchStartX = 0;
+  let lightboxTouchEndX = 0;
+  let lightboxHistoryOpen = false;
+
+  document.querySelectorAll(".manual-slider").forEach((slider, sliderIndex) => {
+    const group = `factory19-slider-${sliderIndex}`;
+    const images = Array.from(slider.querySelectorAll(".slider-img"));
+    lightboxGroups[group] = images.map((img) => img.src);
+
+    images.forEach((img) => {
+      img.addEventListener("click", () => {
+        openLightbox(img.src, group);
+      });
+    });
+  });
+
+  function normalizeLightboxSrc(src) {
+    try {
+      return new URL(src, window.location.href).href;
+    } catch (error) {
+      return src;
+    }
+  }
+
+  function openLightbox(src, group = null) {
+    const normalizedSrc = normalizeLightboxSrc(src);
+    activeLightboxGroup = group;
+    lightboxIndex = group && lightboxGroups[group]
+      ? lightboxGroups[group].findIndex(
+          (imageSrc) => normalizeLightboxSrc(imageSrc) === normalizedSrc
+        )
+      : -1;
+
+    lightboxImg.src = src;
+    lightbox.style.display = "flex";
+
+    if (!lightboxHistoryOpen) {
+      history.pushState({ projectLightbox: true }, "", window.location.href);
+      lightboxHistoryOpen = true;
+    }
+  }
+
+  function closeLightbox(fromPopState = false) {
+    lightbox.style.display = "none";
+    lightboxIndex = -1;
+    activeLightboxGroup = null;
+
+    if (lightboxHistoryOpen && !fromPopState) {
+      lightboxHistoryOpen = false;
+      history.back();
+      return;
+    }
+
+    lightboxHistoryOpen = false;
+  }
+
+  function stepLightbox(direction) {
+    if (
+      lightbox.style.display !== "flex" ||
+      lightboxIndex === -1 ||
+      !activeLightboxGroup ||
+      !lightboxGroups[activeLightboxGroup]
+    ) {
+      return;
+    }
+
+    const images = lightboxGroups[activeLightboxGroup];
+    lightboxIndex = (lightboxIndex + direction + images.length) % images.length;
+    lightboxImg.src = images[lightboxIndex];
+  }
+
+  lightbox.addEventListener("click", (event) => {
+    if (event.target === lightbox) {
+      closeLightbox();
+    }
+  });
+
+  closeBtn.addEventListener("click", () => {
+    closeLightbox();
+  });
+
+  lightbox.addEventListener("touchstart", (event) => {
+    if (!event.changedTouches.length) return;
+    lightboxTouchStartX = event.changedTouches[0].screenX;
+    lightboxTouchEndX = lightboxTouchStartX;
+  }, { passive: true });
+
+  lightbox.addEventListener("touchend", (event) => {
+    if (!event.changedTouches.length) return;
+    lightboxTouchEndX = event.changedTouches[0].screenX;
+    const deltaX = lightboxTouchEndX - lightboxTouchStartX;
+
+    if (Math.abs(deltaX) >= 50) {
+      stepLightbox(deltaX < 0 ? 1 : -1);
+    }
+
+    lightboxTouchStartX = 0;
+    lightboxTouchEndX = 0;
+  }, { passive: true });
+
+  if (!document.body.dataset.projectLightboxBound) {
+    document.addEventListener("keydown", (event) => {
+      if (lightbox.style.display !== "flex") return;
+
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        stepLightbox(-1);
+      }
+
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        stepLightbox(1);
+      }
+
+      if (event.key === "Escape") {
+        closeLightbox();
+      }
+    });
+
+    window.addEventListener("popstate", (event) => {
+      if (lightbox.style.display !== "flex") return;
+      if (event.state && event.state.projectLightbox) return;
+      closeLightbox(true);
+    });
+
+    document.body.dataset.projectLightboxBound = "true";
+  }
+}
+
+enableLightbox();
+    </script>
+  </body>
+  </html>

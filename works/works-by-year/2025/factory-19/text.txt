@@ -1,8 +1,11 @@
 title: Factory 19
 project-type: Development, Retail / Event Space, Placemaking
-team: Wong Wei Ping, Lim Zhuan Yang, Ken Wan
-location: Gasing
+team: Tey Tat Sing, Wong Jie Shan, Gasten Gan, Teh Yong Peng, Andrew Leng, Sean Wee, Stella
+location: Petaling Jaya
 project-year: 2025
+layout: special
 skip: yes
+collaboration: Wong Yee Shiong Architect, Landart Design, Primareka (JPP), Projek Permata Jaya (PPJ)
+collaboration-link: https://www.instagram.com/wysa_design/
 
-description: 
+description:
